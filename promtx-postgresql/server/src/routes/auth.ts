@@ -491,3 +491,214 @@ export async function handleAppleRevoke(req: Request, headers: Headers) {
     headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' }
   });
 }
+
+export async function handleMicrosoftAuth(req: Request, headers: Headers) {
+  const state = crypto.randomUUID();
+  const codeVerifier = crypto.randomUUID() + crypto.randomUUID(); 
+  
+  const encoder = new TextEncoder();
+  const data = encoder.encode(codeVerifier);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const codeChallenge = hashArray.map(b => String.fromCharCode(b)).join('');
+  const base64UrlChallenge = btoa(codeChallenge)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+
+  await prisma.oAuthState.create({
+    data: {
+      state,
+      nonce: codeVerifier, 
+      provider: 'microsoft',
+      redirectUri: process.env.MICROSOFT_REDIRECT_URI || 'https://promtx.ai/auth/microsoft/callback',
+      expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+    }
+  });
+
+  const authUrl = new URL('https://login.microsoftonline.com/common/oauth2/v2.0/authorize');
+  authUrl.searchParams.set('client_id', process.env.MICROSOFT_CLIENT_ID || 'placeholder-microsoft-client-id');
+  authUrl.searchParams.set('response_type', 'code');
+  authUrl.searchParams.set('redirect_uri', process.env.MICROSOFT_REDIRECT_URI || 'https://promtx.ai/auth/microsoft/callback');
+  authUrl.searchParams.set('scope', 'openid email profile User.Read');
+  authUrl.searchParams.set('state', state);
+  authUrl.searchParams.set('response_mode', 'query');
+  authUrl.searchParams.set('code_challenge', base64UrlChallenge);
+  authUrl.searchParams.set('code_challenge_method', 'S256');
+  authUrl.searchParams.set('prompt', 'select_account');
+
+  return new Response(null, {
+    status: 302,
+    headers: {
+      ...Object.fromEntries(headers),
+      'Location': authUrl.toString(),
+    }
+  });
+}
+
+export async function handleMicrosoftCallback(req: Request, headers: Headers) {
+  const url = new URL(req.url);
+  const code = url.searchParams.get('code');
+  const state = url.searchParams.get('state');
+
+  if (!code || !state) {
+    return new Response(JSON.stringify({ error: 'Missing code or state' }), {
+      status: 400,
+      headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' }
+    });
+  }
+
+  const savedState = await prisma.oAuthState.findUnique({
+    where: { state }
+  });
+
+  if (!savedState || savedState.expiresAt < new Date()) {
+    return new Response(JSON.stringify({ error: 'Invalid or expired state' }), {
+      status: 400,
+      headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' }
+    });
+  }
+
+  await prisma.oAuthState.delete({ where: { state } });
+
+  const codeVerifier = savedState.nonce || ''; 
+
+  const tokenResponse = await fetch('https://login.microsoftonline.com/common/oauth2/v2.0/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'authorization_code',
+      code,
+      client_id: process.env.MICROSOFT_CLIENT_ID || 'placeholder-microsoft-client-id',
+      client_secret: process.env.MICROSOFT_CLIENT_SECRET || 'placeholder-microsoft-client-secret',
+      redirect_uri: process.env.MICROSOFT_REDIRECT_URI || 'https://promtx.ai/auth/microsoft/callback',
+      code_verifier: codeVerifier,
+      scope: 'openid email profile User.Read',
+    })
+  });
+
+  const tokenData = await tokenResponse.json();
+  if (!tokenResponse.ok || !tokenData.access_token) {
+    return new Response(JSON.stringify({ error: 'Failed to exchange code with Microsoft', details: tokenData }), {
+      status: 400,
+      headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' }
+    });
+  }
+
+  const graphResponse = await fetch('https://graph.microsoft.com/v1.0/me', {
+    headers: {
+      Authorization: `Bearer ${tokenData.access_token}`,
+    }
+  });
+
+  const graphData = await graphResponse.json();
+  const photoUrl = `https://graph.microsoft.com/v1.0/me/photo/$value`;
+  
+  const email = graphData.mail || graphData.userPrincipalName || `${graphData.id}@microsoft.com`;
+  const name = graphData.displayName || email.split('@')[0];
+  const oid = graphData.id as string;
+
+  let userRecord = await prisma.user.findFirst({
+    where: {
+      accounts: {
+        some: {
+          provider: 'microsoft',
+          providerAccountId: oid,
+        }
+      }
+    }
+  });
+
+  if (!userRecord) {
+    userRecord = await prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (!userRecord) {
+      userRecord = await prisma.user.create({
+        data: {
+          email,
+          displayName: name,
+          avatarUrl: photoUrl,
+          isEmailVerified: true,
+          role: 'Free',
+        }
+      });
+    }
+  } else {
+    await prisma.user.update({
+      where: { id: userRecord.id },
+      data: {
+        lastLoginAt: new Date(),
+        loginCount: { increment: 1 },
+      }
+    });
+  }
+
+  const expiresAt = tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null;
+  
+  await prisma.account.upsert({
+    where: {
+      provider_providerAccountId: {
+        provider: 'microsoft',
+        providerAccountId: oid,
+      }
+    },
+    update: {
+      accessToken: tokenData.access_token,
+      refreshToken: tokenData.refresh_token || undefined,
+      expiresAt,
+    },
+    create: {
+      userId: userRecord.id,
+      provider: 'microsoft',
+      providerAccountId: oid,
+      accessToken: tokenData.access_token,
+      refreshToken: tokenData.refresh_token,
+      providerEmail: email,
+      providerName: name,
+      expiresAt,
+      metadata: {
+        jobTitle: graphData.jobTitle || null,
+        officeLocation: graphData.officeLocation || null,
+      }
+    }
+  });
+
+  const jwtPayload = { userId: userRecord.id, email: userRecord.email, role: userRecord.role };
+  const token = await new jose.SignJWT(jwtPayload)
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('1d')
+    .sign(new TextEncoder().encode(process.env.JWT_SECRET || 'placeholder'));
+
+  await prisma.session.create({
+    data: {
+      userId: userRecord.id,
+      tokenHash: crypto.randomUUID(),
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    }
+  });
+
+  await prisma.refreshToken.create({
+    data: {
+      userId: userRecord.id,
+      tokenHash: crypto.randomUUID(),
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    }
+  });
+
+  return new Response(JSON.stringify({
+    message: 'Authentication successful',
+    token,
+    user: {
+      id: userRecord.id,
+      email: userRecord.email,
+      displayName: userRecord.displayName,
+      role: userRecord.role,
+    }
+  }), {
+    status: 200,
+    headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' }
+  });
+}

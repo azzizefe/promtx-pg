@@ -1,5 +1,9 @@
 import { cleanExpiredOAuthStates } from './services/oauthCleanup';
-import { handleGoogleAuth, handleGoogleCallback, handleAppleAuth, handleAppleCallback, handleAppleRevoke } from './routes/auth';
+import { 
+  handleGoogleAuth, handleGoogleCallback, 
+  handleAppleAuth, handleAppleCallback, handleAppleRevoke,
+  handleMicrosoftAuth, handleMicrosoftCallback 
+} from './routes/auth';
 
 // Start cleanup cron (runs every 5 minutes)
 setInterval(cleanExpiredOAuthStates, 5 * 60 * 1000);
@@ -40,6 +44,14 @@ const server = Bun.serve({
 
       if (path === '/api/auth/apple/revoke' && req.method === 'POST') {
         return await handleAppleRevoke(req, headers);
+      }
+
+      if (path === '/api/auth/microsoft' && req.method === 'GET') {
+        return await handleMicrosoftAuth(req, headers);
+      }
+
+      if (path === '/api/auth/microsoft/callback' && req.method === 'GET') {
+        return await handleMicrosoftCallback(req, headers);
       }
       
       return new Response(JSON.stringify({ error: 'Not Found' }), {

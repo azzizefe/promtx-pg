@@ -1607,13 +1607,13 @@ export function generateAppleClientSecret(): string {
 > - Base URL: `https://login.microsoftonline.com/{tenant}/oauth2/v2.0`
 > - Tenant `common` = hem kisisel hem kurum hesaplari
 
-- [ ] Microsoft OAuth endpoint URL'leri:
-  - [ ] Authorization: `https://login.microsoftonline.com/common/oauth2/v2.0/authorize`
-  - [ ] Token: `https://login.microsoftonline.com/common/oauth2/v2.0/token`
-  - [ ] JWKS: `https://login.microsoftonline.com/common/discovery/v2.0/keys`
-  - [ ] UserInfo (Graph): `https://graph.microsoft.com/v1.0/me`
-  - [ ] Photo (Graph): `https://graph.microsoft.com/v1.0/me/photo/$value`
-- [ ] `GET /api/auth/microsoft` — State olustur, Microsoft'a yonlendir:
+- [x] Microsoft OAuth endpoint URL'leri:
+  - [x] Authorization: `https://login.microsoftonline.com/common/oauth2/v2.0/authorize`
+  - [x] Token: `https://login.microsoftonline.com/common/oauth2/v2.0/token`
+  - [x] JWKS: `https://login.microsoftonline.com/common/discovery/v2.0/keys`
+  - [x] UserInfo (Graph): `https://graph.microsoft.com/v1.0/me`
+  - [x] Photo (Graph): `https://graph.microsoft.com/v1.0/me/photo/$value`
+- [x] `GET /api/auth/microsoft` — State olustur, Microsoft'a yonlendir:
   ```
   https://login.microsoftonline.com/common/oauth2/v2.0/authorize?
     client_id={CLIENT_ID}&
@@ -1626,9 +1626,9 @@ export function generateAppleClientSecret(): string {
     code_challenge_method=S256&
     prompt=select_account
   ```
-- [ ] `GET /api/auth/microsoft/callback` — Callback isle:
-  - [ ] State dogrula (CSRF)
-  - [ ] PKCE code_verifier ile token exchange:
+- [x] `GET /api/auth/microsoft/callback` — Callback isle:
+  - [x] State dogrula (CSRF)
+  - [x] PKCE code_verifier ile token exchange:
     ```
     POST https://login.microsoftonline.com/common/oauth2/v2.0/token
     grant_type=authorization_code
@@ -1639,24 +1639,24 @@ export function generateAppleClientSecret(): string {
     code_verifier={code_verifier}
     scope=openid email profile User.Read
     ```
-  - [ ] ID token'i dogrula (Microsoft JWKS ile):
-    - [ ] `iss` formatini kontrol et (tenant'a gore degisir):
+  - [x] ID token'i dogrula (Microsoft JWKS ile):
+    - [x] `iss` formatini kontrol et (tenant'a gore degisir):
       - Kisisel: `https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0`
       - Kurum: `https://login.microsoftonline.com/{tenant_id}/v2.0`
-    - [ ] `aud` = `{CLIENT_ID}`
-    - [ ] `tid` (tenant ID) claim'ini logla
-  - [ ] Microsoft Graph API ile ek bilgi al:
+    - [x] `aud` = `{CLIENT_ID}`
+    - [x] `tid` (tenant ID) claim'ini logla
+  - [x] Microsoft Graph API ile ek bilgi al:
     ```
     GET https://graph.microsoft.com/v1.0/me
     Authorization: Bearer {access_token}
     ```
     Response: `{ id, displayName, mail, userPrincipalName, jobTitle, officeLocation }`
-  - [ ] Profil fotografini al (opsiyonel):
+  - [x] Profil fotografini al (opsiyonel):
     ```
     GET https://graph.microsoft.com/v1.0/me/photo/$value
     Authorization: Bearer {access_token}
     ```
-- [ ] Microsoft kullanici UPSERT:
+- [x] Microsoft kullanici UPSERT:
   ```sql
   -- Microsoft 'oid' claim benzersiz kullanici ID'si (sub tenant'a gore degisir, oid degismez)
   SELECT u.* FROM users u
@@ -1672,7 +1672,7 @@ export function generateAppleClientSecret(): string {
     login_count = users.login_count + 1,
     avatar_url = COALESCE(EXCLUDED.avatar_url, users.avatar_url);
   ```
-- [ ] Account tablosuna kaydet:
+- [x] Account tablosuna kaydet:
   ```sql
   INSERT INTO accounts (user_id, provider, provider_account_id, access_token, refresh_token, expires_at, provider_email, provider_name, metadata)
   VALUES ($userId, 'microsoft', $oid, $accessToken, $refreshToken, $expiresAt, 
@@ -1685,7 +1685,7 @@ export function generateAppleClientSecret(): string {
     provider_name = EXCLUDED.provider_name,
     updated_at = NOW();
   ```
-- [ ] Session + JWT + RefreshToken olustur
+- [x] Session + JWT + RefreshToken olustur
 
 #### 4.3.3 Microsoft Token Refresh
 > **Microsoft access token:** 1 saat gecerli, refresh token ile yenilenebilir
