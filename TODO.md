@@ -1690,7 +1690,7 @@ export function generateAppleClientSecret(): string {
 #### 4.3.3 Microsoft Token Refresh
 > **Microsoft access token:** 1 saat gecerli, refresh token ile yenilenebilir
 
-- [ ] Token refresh mekanizmasi:
+- [x] Token refresh mekanizmasi:
   ```
   POST https://login.microsoftonline.com/common/oauth2/v2.0/token
   grant_type=refresh_token
@@ -1699,8 +1699,8 @@ export function generateAppleClientSecret(): string {
   client_secret={CLIENT_SECRET}
   scope=openid email profile User.Read
   ```
-- [ ] Background token refresh job (süresi dolmadan 10 dk önce yenile)
-- [ ] Refresh token geçersiz olursa kullanıcıyı re-auth'a yönlendir
+- [x] Background token refresh job (süresi dolmadan 10 dk önce yenile)
+- [x] Refresh token geçersiz olursa kullanıcıyı re-auth'a yönlendir
 
 ### 4.4 Ortak OAuth Altyapisi (Shared Backend)
 
@@ -1777,14 +1777,14 @@ class OAuthService {
 }
 ```
 
-- [ ] `OAuthProviderAdapter` interface tanimla
-- [ ] `GoogleOAuthAdapter` implement et
-- [ ] `AppleOAuthAdapter` implement et
-- [ ] `MicrosoftOAuthAdapter` implement et
-- [ ] `OAuthService` sinifi yaz (unified auth flow)
-- [ ] Account linking fonksiyonu yaz
-- [ ] Account unlinking fonksiyonu yaz (minimum 1 login yontemi kontrolu)
-- [ ] `bun add jose` — JWKS dogrulama icin (tum provider'lar)
+- [x] `OAuthProviderAdapter` interface tanimla
+- [x] `GoogleOAuthAdapter` implement et
+- [x] `AppleOAuthAdapter` implement et
+- [x] `MicrosoftOAuthAdapter` implement et
+- [x] `OAuthService` sinifi yaz (unified auth flow)
+- [x] Account linking fonksiyonu yaz
+- [x] Account unlinking fonksiyonu yaz (minimum 1 login yontemi kontrolu)
+- [x] `bun add jose` — JWKS dogrulama icin (tum provider'lar)
 
 #### 4.4.2 Ortak OAuth Endpoint'ler
 
