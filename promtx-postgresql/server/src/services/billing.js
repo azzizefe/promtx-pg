@@ -291,3 +291,40 @@ export async function carryOverCredits(userId) {
         }
     });
 }
+export async function cancelSubscriptionAtPeriodEnd(userId) {
+    const subscription = await prisma.subscription.findUnique({ where: { userId } });
+    if (!subscription || !subscription.stripeSubscriptionId) {
+        throw new Error('No active subscription found');
+    }
+    await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
+        cancel_at_period_end: true,
+    });
+    await prisma.subscription.update({
+        where: { userId },
+        data: { cancelAtPeriodEnd: true }
+    });
+}
+export async function resumeSubscription(userId) {
+    const subscription = await prisma.subscription.findUnique({ where: { userId } });
+    if (!subscription || !subscription.stripeSubscriptionId) {
+        throw new Error('No active subscription found');
+    }
+    await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
+        cancel_at_period_end: false,
+    });
+    await prisma.subscription.update({
+        where: { userId },
+        data: { cancelAtPeriodEnd: false }
+    });
+}
+export async function getSubscriptionInvoices(userId) {
+    const subscription = await prisma.subscription.findUnique({ where: { userId } });
+    if (!subscription || !subscription.stripeCustomerId) {
+        return [];
+    }
+    const invoices = await stripe.invoices.list({
+        customer: subscription.stripeCustomerId,
+        limit: 20,
+    });
+    return invoices.data;
+}

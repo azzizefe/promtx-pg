@@ -346,3 +346,49 @@ export async function carryOverCredits(userId: string): Promise<void> {
     } as any
   });
 }
+
+export async function cancelSubscriptionAtPeriodEnd(userId: string): Promise<void> {
+  const subscription = await prisma.subscription.findUnique({ where: { userId } });
+  if (!subscription || !subscription.stripeSubscriptionId) {
+    throw new Error('No active subscription found');
+  }
+
+  await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
+    cancel_at_period_end: true,
+  });
+
+  await prisma.subscription.update({
+    where: { userId },
+    data: { cancelAtPeriodEnd: true }
+  });
+}
+
+export async function resumeSubscription(userId: string): Promise<void> {
+  const subscription = await prisma.subscription.findUnique({ where: { userId } });
+  if (!subscription || !subscription.stripeSubscriptionId) {
+    throw new Error('No active subscription found');
+  }
+
+  await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
+    cancel_at_period_end: false,
+  });
+
+  await prisma.subscription.update({
+    where: { userId },
+    data: { cancelAtPeriodEnd: false }
+  });
+}
+
+export async function getSubscriptionInvoices(userId: string): Promise<any[]> {
+  const subscription = await prisma.subscription.findUnique({ where: { userId } });
+  if (!subscription || !subscription.stripeCustomerId) {
+    return [];
+  }
+
+  const invoices = await stripe.invoices.list({
+    customer: subscription.stripeCustomerId,
+    limit: 20,
+  });
+
+  return invoices.data;
+}

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { createCustomerPortalSession, carryOverCredits, createSubscriptionCheckout, changeSubscriptionPlan } from '../services/billing';
+import { createCustomerPortalSession, carryOverCredits, createSubscriptionCheckout, changeSubscriptionPlan, cancelSubscriptionAtPeriodEnd, resumeSubscription, getSubscriptionInvoices } from '../services/billing';
 const prisma = new PrismaClient();
 export async function handleBillingWallet(req, headers) {
     try {
@@ -165,6 +165,73 @@ export async function handleBillingSubscriptionChange(req, headers) {
         }
         await changeSubscriptionPlan(userId, newPlan, newPriceId);
         return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) }
+        });
+    }
+    catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+    }
+}
+export async function handleBillingSubscriptionCancel(req, headers) {
+    try {
+        let userId = 'mock-user-id';
+        const user = await prisma.user.findFirst();
+        if (user)
+            userId = user.id;
+        await cancelSubscriptionAtPeriodEnd(userId);
+        return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) }
+        });
+    }
+    catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+    }
+}
+export async function handleBillingSubscriptionResume(req, headers) {
+    try {
+        let userId = 'mock-user-id';
+        const user = await prisma.user.findFirst();
+        if (user)
+            userId = user.id;
+        await resumeSubscription(userId);
+        return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) }
+        });
+    }
+    catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+    }
+}
+export async function handleBillingInvoices(req, headers) {
+    try {
+        let userId = 'mock-user-id';
+        const user = await prisma.user.findFirst();
+        if (user)
+            userId = user.id;
+        const invoices = await getSubscriptionInvoices(userId);
+        return new Response(JSON.stringify(invoices), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) }
+        });
+    }
+    catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+    }
+}
+export async function handleBillingCreditsUsage(req, headers) {
+    try {
+        let userId = 'mock-user-id';
+        const user = await prisma.user.findFirst();
+        if (user)
+            userId = user.id;
+        const subscription = await prisma.subscription.findUnique({
+            where: { userId },
+            select: { monthlyCredits: true, creditsUsedThisPeriod: true }
+        });
+        return new Response(JSON.stringify(subscription), {
             status: 200,
             headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) }
         });

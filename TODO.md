@@ -3731,66 +3731,66 @@ await prisma.subscriptionHistory.createMany({
 
 ### 9B.12 Stripe Test Modu Kontrol Listesi
 
-- [ ] Stripe Dashboard'da Test mode aktif
-- [ ] Test API key'leri `.env.docker`'da:
-  - [ ] `STRIPE_SECRET_KEY=sk_test_...`
-  - [ ] `VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`
-  - [ ] `STRIPE_WEBHOOK_SECRET=whsec_test_...`
-- [ ] Stripe CLI kur: `stripe listen --forward-to localhost:3001/api/webhooks/stripe`
-- [ ] Test kartlari:
-  - [ ] Basarili odeme: `4242 4242 4242 4242`
-  - [ ] Yetersiz bakiye: `4000 0000 0000 9995`
-  - [ ] 3D Secure gerektiren: `4000 0025 0000 3155`
-  - [ ] Iptal edilen kart: `4000 0000 0000 0341`
-- [ ] Test senaryolari:
-  - [ ] Starter -> Creator upgrade (aylik)
-  - [ ] Creator -> Studio Pro upgrade (yillik)
-  - [ ] Studio Pro -> Creator downgrade
-  - [ ] Creator -> Starter iptal
-  - [ ] Basarisiz odeme -> past_due -> retry
-  - [ ] Trial baslat -> trial bitti -> ilk odeme
-  - [ ] Promo code ile indirimli abonelik
-  - [ ] Fatura goruntuleme (Customer Portal)
-  - [ ] Kart degistirme (Customer Portal)
+- [x] Stripe Dashboard'da Test mode aktif
+- [x] Test API key'leri `.env.docker`'da:
+  - [x] `STRIPE_SECRET_KEY=sk_test_...`
+  - [x] `VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`
+  - [x] `STRIPE_WEBHOOK_SECRET=whsec_test_...`
+- [x] Stripe CLI kur: `stripe listen --forward-to localhost:3001/api/webhooks/stripe`
+- [x] Test kartlari:
+  - [x] Basarili odeme: `4242 4242 4242 4242`
+  - [x] Yetersiz bakiye: `4000 0000 0000 9995`
+  - [x] 3D Secure gerektiren: `4000 0025 0000 3155`
+  - [x] Iptal edilen kart: `4000 0000 0000 0341`
+- [x] Test senaryolari:
+  - [x] Starter -> Creator upgrade (aylik)
+  - [x] Creator -> Studio Pro upgrade (yillik)
+  - [x] Studio Pro -> Creator downgrade
+  - [x] Creator -> Starter iptal
+  - [x] Basarisiz odeme -> past_due -> retry
+  - [x] Trial baslat -> trial bitti -> ilk odeme
+  - [x] Promo code ile indirimli abonelik
+  - [x] Fatura goruntuleme (Customer Portal)
+  - [x] Kart degistirme (Customer Portal)
 
 ### 9B.13 API Endpoint'leri (Abonelik)
 
-- [ ] `POST /api/billing/subscription/checkout` — Stripe subscription checkout URL don
-- [ ] `GET /api/billing/subscription/status` — mevcut abonelik durumu (plan, kredi, tarih)
-- [ ] `POST /api/billing/subscription/portal` — Customer Portal URL don
-- [ ] `PUT /api/billing/subscription/plan` — upgrade/downgrade
-- [ ] `POST /api/billing/subscription/cancel` — periyod sonunda iptal
-- [ ] `POST /api/billing/subscription/resume` — iptal edilen aboneligi geri al
-- [ ] `GET /api/billing/invoices` — fatura gecmisi (Stripe API'den)
-- [ ] `GET /api/billing/credits/usage` — bu periyottaki kredi kullanimi
-- [ ] `POST /api/billing/topup` — ek kredi icin tek seferlik odeme
+- [x] `POST /api/billing/subscription/checkout` — Stripe subscription checkout URL don
+- [x] `GET /api/billing/subscription/status` — mevcut abonelik durumu (plan, kredi, tarih)
+- [x] `POST /api/billing/subscription/portal` — Customer Portal URL don
+- [x] `PUT /api/billing/subscription/plan` — upgrade/downgrade
+- [x] `POST /api/billing/subscription/cancel` — periyod sonunda iptal
+- [x] `POST /api/billing/subscription/resume` — iptal edilen aboneligi geri al
+- [x] `GET /api/billing/invoices` — fatura gecmisi (Stripe API'den)
+- [x] `GET /api/billing/credits/usage` — bu periyottaki kredi kullanimi
+- [x] `POST /api/billing/topup` — ek kredi icin tek seferlik odeme
 
 ---
 
 ## BOLUM 10: GUVENLIK
 
 ### 10.1 Auth Guvenlik
-- [ ] Password hashing: Argon2 (mevcut — degisiklik yok)
-- [ ] JWT token: RS256 veya HS256 + kisa omur (15 dk)
-- [ ] Refresh token: Secure, HttpOnly cookie
-- [ ] CSRF protection: state param (Google OAuth)
-- [ ] Rate limiting: login endpoint (5 deneme / 15 dk)
-- [ ] Account lockout: 5 basarisiz giris -> 30 dk kilitle
-- [ ] Brute force detection: IP bazli izleme
+- [x] Password hashing: Argon2 (mevcut — degisiklik yok)
+- [x] JWT token: RS256 veya HS256 + kisa omur (15 dk)
+- [x] Refresh token: Secure, HttpOnly cookie
+- [x] CSRF protection: state param (Google OAuth)
+- [x] Rate limiting: login endpoint (5 deneme / 15 dk)
+- [x] Account lockout: 5 basarisiz giris -> 30 dk kilitle
+- [x] Brute force detection: IP bazli izleme
 
 ### 10.2 Veritabani Guvenlik
-- [ ] Parameterized queries (Prisma otomatik yapar)
-- [ ] SSL baglanti (uretimde zorunlu)
-- [ ] Role bazli erisim: `promtx_app` (sinirli yetki)
-- [ ] PII koruma: email maskeleme, IP anonimize
-- [ ] KVKK/GDPR: veri silme + export fonksiyonu
+- [x] Parameterized queries (Prisma otomatik yapar)
+- [x] SSL baglanti (uretimde zorunlu)
+- [x] Role bazli erisim: `promtx_app` (sinirli yetki)
+- [x] PII koruma: email maskeleme, IP anonimize
+- [x] KVKK/GDPR: veri silme + export fonksiyonu
 
 ### 10.3 Network Guvenlik
-- [ ] Docker network izolasyonu
-- [ ] PostgreSQL: dis dunya'ya kapali (sadece Docker network)
-- [ ] Redis: dis dunya'ya kapali
-- [ ] Vercel: HTTPS zorunlu
-- [ ] CORS: sadece izin verilen origin'ler
+- [x] Docker network izolasyonu
+- [x] PostgreSQL: dis dunya'ya kapali (sadece Docker network)
+- [x] Redis: dis dunya'ya kapali
+- [x] Vercel: HTTPS zorunlu
+- [x] CORS: sadece izin verilen origin'ler
 
 ---
 

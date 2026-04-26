@@ -3,7 +3,7 @@ import { cors } from 'hono/cors';
 import { cleanExpiredOAuthStates } from './services/oauthCleanup';
 import { handleGoogleAuth, handleGoogleCallback, handleAppleAuth, handleAppleCallback, handleAppleRevoke, handleMicrosoftAuth, handleMicrosoftCallback, handleOAuthInit, handleOAuthCallback, handleAccountLink, handleAccountUnlink, handleListProviders, handleAuthVerifyMfa, handleAuthSetup2fa, handleAuthReferralCode, handleAuthApiKeys, handleAuthVerifyToken, handleAuthLogout, handleAuthAvatar, handleAuthForgotPassword, handleAuthResetPassword } from './routes/auth';
 import { handleLlmGenerate, handleLlmGenerateParallel, handleLlmStream, handleLlmAbort, handleLlmUsageHistory, handleLlmUsageSummary } from './routes/llm';
-import { handleBillingWallet, handleBillingTopup, handleBillingPaymentIntent, handleBillingWebhooks, handleBillingLedger, handlePromoCodeValidate, handleIapVerify, handleReceiptDownload, handleBillingSubscriptionManage, handleBillingSubscriptionCheckout, handleBillingSubscriptionStatus, handleBillingSubscriptionChange } from './routes/billing';
+import { handleBillingWallet, handleBillingTopup, handleBillingPaymentIntent, handleBillingWebhooks, handleBillingLedger, handlePromoCodeValidate, handleIapVerify, handleReceiptDownload, handleBillingSubscriptionManage, handleBillingSubscriptionCheckout, handleBillingSubscriptionStatus, handleBillingSubscriptionChange, handleBillingSubscriptionCancel, handleBillingSubscriptionResume, handleBillingInvoices, handleBillingCreditsUsage } from './routes/billing';
 import { handleAdminUsers, handleAdminFreezeUser, handleAdminUpdateCredits, handleAdminLogs, handleAdminImpersonate } from './routes/admin';
 import { handleDnaSave, handleDnaQuery } from './routes/dna';
 import { handlePromptHistorySave, handlePromptHistoryQuery, handlePromptTemplateSave, handlePromptTemplateQuery, handlePromptTemplateDelete } from './routes/prompts';
@@ -14,10 +14,37 @@ const app = new Hono();
 // Start cleanup cron (runs every 5 minutes)
 setInterval(cleanExpiredOAuthStates, 5 * 60 * 1000);
 app.use('/api/*', cors({
-    origin: '*',
+    origin: process.env.ALLOWED_ORIGINS || '*',
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
 }));
+const rateLimitMap = new Map();
+app.use('/api/auth/*', async (c, next) => {
+    const ip = c.req.header('x-forwarded-for') || '127.0.0.1';
+    const now = Date.now();
+    const record = rateLimitMap.get(ip);
+    if (record && record.lockedUntil && record.lockedUntil > now) {
+        return new Response(JSON.stringify({ error: 'Too many failed attempts. Try again later.' }), {
+            status: 429,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+    if (record && now - record.lastAttempt > 15 * 60 * 1000) {
+        rateLimitMap.set(ip, { count: 1, lastAttempt: now });
+    }
+    else if (record) {
+        record.count += 1;
+        record.lastAttempt = now;
+        if (record.count >= 5) {
+            record.lockedUntil = now + 30 * 60 * 1000;
+        }
+        rateLimitMap.set(ip, record);
+    }
+    else {
+        rateLimitMap.set(ip, { count: 1, lastAttempt: now });
+    }
+    await next();
+});
 app.get('/api/auth/google', async (c) => {
     const res = await handleGoogleAuth(c.req.raw, new Headers());
     return new Response(res.body, res);
@@ -152,6 +179,30 @@ app.get('/api/billing/subscription/status', async (c) => {
 });
 app.post('/api/billing/subscription/change', async (c) => {
     const res = await handleBillingSubscriptionChange(c.req.raw, new Headers());
+    return new Response(res.body, res);
+});
+app.post('/api/billing/subscription/portal', async (c) => {
+    const res = await handleBillingSubscriptionManage(c.req.raw, new Headers());
+    return new Response(res.body, res);
+});
+app.put('/api/billing/subscription/plan', async (c) => {
+    const res = await handleBillingSubscriptionChange(c.req.raw, new Headers());
+    return new Response(res.body, res);
+});
+app.post('/api/billing/subscription/cancel', async (c) => {
+    const res = await handleBillingSubscriptionCancel(c.req.raw, new Headers());
+    return new Response(res.body, res);
+});
+app.post('/api/billing/subscription/resume', async (c) => {
+    const res = await handleBillingSubscriptionResume(c.req.raw, new Headers());
+    return new Response(res.body, res);
+});
+app.get('/api/billing/invoices', async (c) => {
+    const res = await handleBillingInvoices(c.req.raw, new Headers());
+    return new Response(res.body, res);
+});
+app.get('/api/billing/credits/usage', async (c) => {
+    const res = await handleBillingCreditsUsage(c.req.raw, new Headers());
     return new Response(res.body, res);
 });
 app.post('/api/billing/payment-intent', async (c) => {

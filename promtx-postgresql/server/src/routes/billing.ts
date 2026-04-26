@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { createCustomerPortalSession, carryOverCredits, createSubscriptionCheckout, changeSubscriptionPlan } from '../services/billing';
+import { createCustomerPortalSession, carryOverCredits, createSubscriptionCheckout, changeSubscriptionPlan, cancelSubscriptionAtPeriodEnd, resumeSubscription, getSubscriptionInvoices } from '../services/billing';
 
 const prisma = new PrismaClient();
 
@@ -190,6 +190,74 @@ export async function handleBillingSubscriptionChange(req: Request, headers: Hea
     await changeSubscriptionPlan(userId, newPlan, newPriceId);
     
     return new Response(JSON.stringify({ success: true }), { 
+      status: 200, 
+      headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) } 
+    });
+  } catch (e: any) {
+    return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+  }
+}
+
+export async function handleBillingSubscriptionCancel(req: Request, headers: Headers) {
+  try {
+    let userId = 'mock-user-id';
+    const user = await prisma.user.findFirst();
+    if (user) userId = user.id;
+
+    await cancelSubscriptionAtPeriodEnd(userId);
+    return new Response(JSON.stringify({ success: true }), { 
+      status: 200, 
+      headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) } 
+    });
+  } catch (e: any) {
+    return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+  }
+}
+
+export async function handleBillingSubscriptionResume(req: Request, headers: Headers) {
+  try {
+    let userId = 'mock-user-id';
+    const user = await prisma.user.findFirst();
+    if (user) userId = user.id;
+
+    await resumeSubscription(userId);
+    return new Response(JSON.stringify({ success: true }), { 
+      status: 200, 
+      headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) } 
+    });
+  } catch (e: any) {
+    return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+  }
+}
+
+export async function handleBillingInvoices(req: Request, headers: Headers) {
+  try {
+    let userId = 'mock-user-id';
+    const user = await prisma.user.findFirst();
+    if (user) userId = user.id;
+
+    const invoices = await getSubscriptionInvoices(userId);
+    return new Response(JSON.stringify(invoices), { 
+      status: 200, 
+      headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) } 
+    });
+  } catch (e: any) {
+    return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+  }
+}
+
+export async function handleBillingCreditsUsage(req: Request, headers: Headers) {
+  try {
+    let userId = 'mock-user-id';
+    const user = await prisma.user.findFirst();
+    if (user) userId = user.id;
+
+    const subscription = await prisma.subscription.findUnique({
+      where: { userId },
+      select: { monthlyCredits: true, creditsUsedThisPeriod: true }
+    });
+
+    return new Response(JSON.stringify(subscription), { 
       status: 200, 
       headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) } 
     });
