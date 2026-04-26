@@ -14,6 +14,7 @@
   "dependencies": {
     "@prisma/client": "6",
     "@react-oauth/google": "^0.13.5",
+    "argon2": "^0.44.0",
     "hono": "^4.12.15",
     "idb-keyval": "^6.2.2",
     "ioredis": "^5.10.1",
@@ -25,6 +26,7 @@
     "react-router-dom": "^7.14.2",
     "sonner": "^2.0.7",
     "stripe": "^22.1.0",
+    "zod": "^4.3.6",
     "zustand": "^5.0.12"
   },
   "devDependencies": {

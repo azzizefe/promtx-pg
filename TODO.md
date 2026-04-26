@@ -4244,177 +4244,177 @@ await prisma.feedback.createMany({
 > **Store:** `useAppStore` — `isAuthenticated`, `userToken`, `email`, `role`, `id`, `isImpersonated`, `impersonatorId`
 
 #### 16.1.1 Register Flow (Kayit) — PostgreSQL Gecisi
-- [ ] `register` API endpoint'i guncelle:
-  - [ ] `User` + `Wallet` + `Subscription(starter)` atomik transaction (tek islemde 3 tablo INSERT)
-  - [ ] UUID `id` donmeli (`@id @default(uuid())`)
-  - [ ] `passwordHash` argon2 ile hash'lenmeli (mevcut — degisiklik yok)
-  - [ ] `role: 'free'` default (mevcut — degisiklik yok)
-  - [ ] `isEmailVerified: false` default (yeni alan)
-  - [ ] `displayName` kayit sirasinda `name` alaninden alinacak (mevcut frontend'de var, backend'e gonderilmiyor!)
-  - [ ] `locale`, `timezone` otomatik algilanmali (frontend'den gonderilmeli)
-  - [ ] `createdAt` TIMESTAMPTZ olarak kaydedilmeli
-  - [ ] `RETURNING id, email, role` ile response donmeli
-  - [ ] Duplicate email kontrolu: `@unique` constraint -> `P2002` Prisma error handle
-- [ ] Email dogrulama flow'u ekle:
-  - [ ] Kayit sonrasi dogrulama email'i gonder (Resend API — mevcut `email_manager.send_welcome_email` var ama verify yok)
-  - [ ] Email dogrulama token'i olustur (24 saat gecerli)
-  - [ ] `/auth/verify-email?token=xxx` endpoint'i
-  - [ ] `isEmailVerified` true yap
-  - [ ] Dogrulanmamis hesaplar icin kisitlama: generation limiti (ornegin 10 kredi)
-- [ ] Kayit sonrasi otomatik islemler:
-  - [ ] Wallet olustur: `credits: 100` (Starter default)
-  - [ ] Subscription olustur: `plan: 'starter'`, `status: 'active'`, `monthlyCredits: 100`
-  - [ ] Stripe Customer olustur: `get_or_create_customer()` (BOLUM 9B.3)
-  - [ ] Hosgeldin notification olustur (Notification tablosu)
-  - [ ] AuditLog kaydi: `action: 'user.register'`
-  - [ ] Referral kodu varsa: Referral tablosuna kaydet, bonus kredi ekle
-- [ ] Frontend register form validasyonu (mevcut — genisletilecek):
-  - [ ] Mevcut: ad, email, sifre, sifre tekrar (korunacak)
-  - [ ] Mevcut: yaygın sifre kontrolu — `commonPasswords` listesi (korunacak)
-  - [ ] Mevcut: regex: buyuk harf + rakam + min 8 karakter (korunacak)
-  - [ ] **FIX:** Sifre guc cubugu geri eklenmeli — onceki versiyonda vardi, yeni Higgsfield tasarimda kayip
-  - [ ] **FIX:** `name` alani backend'e `displayName` olarak gonderilmeli (mevcut `RegisterRequest`'te `name` yok!)
-  - [ ] Yeni: email format validasyonu (RFC 5322)
-  - [ ] Yeni: Terms of Service + Privacy Policy onay checkbox'u (zorunlu — mevcut footer'da sadece metin var)
-  - [ ] Yeni: Kayit basarili -> email dogrulama bilgi ekrani goster (mevcut: sadece "Hesabiniz olusturuldu" mesaji)
-- [ ] Register response'da UUID formatinda `userId` donmeli (mevcut TEXT -> UUID)
+- [x] `register` API endpoint'i guncelle:
+  - [x] `User` + `Wallet` + `Subscription(starter)` atomik transaction (tek islemde 3 tablo INSERT)
+  - [x] UUID `id` donmeli (`@id @default(uuid())`)
+  - [x] `passwordHash` argon2 ile hash'lenmeli (mevcut — degisiklik yok)
+  - [x] `role: 'free'` default (mevcut — degisiklik yok)
+  - [x] `isEmailVerified: false` default (yeni alan)
+  - [x] `displayName` kayit sirasinda `name` alaninden alinacak (mevcut frontend'de var, backend'e gonderilmiyor!)
+  - [x] `locale`, `timezone` otomatik algilanmali (frontend'den gonderilmeli)
+  - [x] `createdAt` TIMESTAMPTZ olarak kaydedilmeli
+  - [x] `RETURNING id, email, role` ile response donmeli
+  - [x] Duplicate email kontrolu: `@unique` constraint -> `P2002` Prisma error handle
+- [x] Email dogrulama flow'u ekle:
+  - [x] Kayit sonrasi dogrulama email'i gonder (Resend API — mevcut `email_manager.send_welcome_email` var ama verify yok)
+  - [x] Email dogrulama token'i olustur (24 saat gecerli)
+  - [x] `/auth/verify-email?token=xxx` endpoint'i
+  - [x] `isEmailVerified` true yap
+  - [x] Dogrulanmamis hesaplar icin kisitlama: generation limiti (ornegin 10 kredi)
+- [x] Kayit sonrasi otomatik islemler:
+  - [x] Wallet olustur: `credits: 100` (Starter default)
+  - [x] Subscription olustur: `plan: 'starter'`, `status: 'active'`, `monthlyCredits: 100`
+  - [x] Stripe Customer olustur: `get_or_create_customer()` (BOLUM 9B.3)
+  - [x] Hosgeldin notification olustur (Notification tablosu)
+  - [x] AuditLog kaydi: `action: 'user.register'`
+  - [x] Referral kodu varsa: Referral tablosuna kaydet, bonus kredi ekle
+- [x] Frontend register form validasyonu (mevcut — genisletilecek):
+  - [x] Mevcut: ad, email, sifre, sifre tekrar (korunacak)
+  - [x] Mevcut: yaygın sifre kontrolu — `commonPasswords` listesi (korunacak)
+  - [x] Mevcut: regex: buyuk harf + rakam + min 8 karakter (korunacak)
+  - [x] **FIX:** Sifre guc cubugu geri eklenmeli — onceki versiyonda vardi, yeni Higgsfield tasarimda kayip
+  - [x] **FIX:** `name` alani backend'e `displayName` olarak gonderilmeli (mevcut `RegisterRequest`'te `name` yok!)
+  - [x] Yeni: email format validasyonu (RFC 5322)
+  - [x] Yeni: Terms of Service + Privacy Policy onay checkbox'u (zorunlu — mevcut footer'da sadece metin var)
+  - [x] Yeni: Kayit basarili -> email dogrulama bilgi ekrani goster (mevcut: sadece "Hesabiniz olusturuldu" mesaji)
+- [x] Register response'da UUID formatinda `userId` donmeli (mevcut TEXT -> UUID)
 
 #### 16.1.2 Login Flow (Giris) — PostgreSQL Gecisi
 
 > **Referans (orijinal proje):** rate limit 10 istek/email, failed_attempts 5'te 30dk kilit, 2FA check, session 1 saat
 
-- [ ] `login` API endpoint'i guncelle:
-  - [ ] `WHERE email = $1` sorgusu PostgreSQL uyumlu (mevcut — degisiklik yok)
-  - [ ] Password verify: argon2 (mevcut — degisiklik yok)
-  - [ ] `loginCount` increment: `UPDATE users SET login_count = login_count + 1`
-  - [ ] `lastLoginAt` guncelle: `NOW()` (TIMESTAMPTZ)
-  - [ ] `failedLoginCount` yonetimi (mevcut — PostgreSQL'e uyarla):
-    - [ ] Basarisiz giris: `failed_login_count + 1` (mevcut `increment_failed_attempts`)
-    - [ ] 5 basarisiz giris: hesabi 30dk kilitle (mevcut — degisiklik yok)
-    - [ ] 10 basarisiz giris: hesabi 1 saat kilitle (yeni — ikinci kademe)
-    - [ ] 20 basarisiz giris: hesabi 24 saat kilitle + admin'e SecurityEvent olustur
-    - [ ] Basarili giris: `failed_login_count = 0, locked_until = NULL` (mevcut `reset_failed_attempts`)
-  - [ ] `locked_until` kontrolu: `WHERE locked_until IS NULL OR locked_until < NOW()` (mevcut — degisiklik yok)
-  - [ ] `isFrozen` kontrolu: donmus hesaplar giris yapamaz
-  - [ ] `isEmailVerified` kontrolu: dogrulanmamis hesaplar giris yapabilir ama kisitli (generation limiti)
-  - [ ] Session olustur: `INSERT INTO sessions` (tokenHash, ipAddress, userAgent, deviceFingerprint)
-    - [ ] IP adresi: `X-Forwarded-For` header'dan (Vercel/proxy arkasinda)
-    - [ ] User agent: `User-Agent` header'dan
-  - [ ] JWT token olustur: `{ sub: userId, role, email, iat, exp }` (mevcut — degisiklik yok)
-  - [ ] Refresh token olustur: `INSERT INTO refresh_tokens` (mevcut — degisiklik yok)
-  - [ ] AuditLog kaydi: `action: 'user.login'`, IP + user agent
-  - [ ] SecurityEvent: yeni cihaz/IP'den giris -> bildirim (yeni)
-- [ ] Frontend login sonrasi:
-  - [ ] `setUserToken(token)` — mevcut (korunacak)
-  - [ ] `setSubscriptionTier(role)` — mevcut (korunacak)
-  - [ ] Yeni: `setUserId(userId)` — UUID formatinda
-  - [ ] Yeni: `setEmail(email)` — store'a kaydet
-  - [ ] Yeni: Wallet bakiyesini cek ve store'a kaydet
-  - [ ] Yeni: Subscription bilgisini cek (plan, kredi, periyod)
-  - [ ] Yeni: Okunmamis bildirim sayisini cek
-- [ ] **"Beni Hatirla" (Remember Me) secenegi:**
-  - [ ] Login formuna "Beni Hatirla" checkbox'u ekle
-  - [ ] Secili ise: session suresi 1 saat -> 30 gun (mevcut: sabit 1 saat)
-  - [ ] Secili ise: refresh token suresi 7 gun -> 90 gun
-  - [ ] Secili degilse: mevcut sureler korunsun (access 1 saat, refresh 7 gun)
-  - [ ] Frontend: `localStorage` vs `sessionStorage` secimi (remember me -> localStorage, degilse -> sessionStorage)
-  - [ ] Backend: `session.expiresAt` remember me'ye gore hesaplanmali
+- [x] `login` API endpoint'i guncelle:
+  - [x] `WHERE email = $1` sorgusu PostgreSQL uyumlu (mevcut — degisiklik yok)
+  - [x] Password verify: argon2 (mevcut — degisiklik yok)
+  - [x] `loginCount` increment: `UPDATE users SET login_count = login_count + 1`
+  - [x] `lastLoginAt` guncelle: `NOW()` (TIMESTAMPTZ)
+  - [x] `failedLoginCount` yonetimi (mevcut — PostgreSQL'e uyarla):
+    - [x] Basarisiz giris: `failed_login_count + 1` (mevcut `increment_failed_attempts`)
+    - [x] 5 basarisiz giris: hesabi 30dk kilitle (mevcut — degisiklik yok)
+    - [x] 10 basarisiz giris: hesabi 1 saat kilitle (yeni — ikinci kademe)
+    - [x] 20 basarisiz giris: hesabi 24 saat kilitle + admin'e SecurityEvent olustur
+    - [x] Basarili giris: `failed_login_count = 0, locked_until = NULL` (mevcut `reset_failed_attempts`)
+  - [x] `locked_until` kontrolu: `WHERE locked_until IS NULL OR locked_until < NOW()` (mevcut — degisiklik yok)
+  - [x] `isFrozen` kontrolu: donmus hesaplar giris yapamaz
+  - [x] `isEmailVerified` kontrolu: dogrulanmamis hesaplar giris yapabilir ama kisitli (generation limiti)
+  - [x] Session olustur: `INSERT INTO sessions` (tokenHash, ipAddress, userAgent, deviceFingerprint)
+    - [x] IP adresi: `X-Forwarded-For` header'dan (Vercel/proxy arkasinda)
+    - [x] User agent: `User-Agent` header'dan
+  - [x] JWT token olustur: `{ sub: userId, role, email, iat, exp }` (mevcut — degisiklik yok)
+  - [x] Refresh token olustur: `INSERT INTO refresh_tokens` (mevcut — degisiklik yok)
+  - [x] AuditLog kaydi: `action: 'user.login'`, IP + user agent
+  - [x] SecurityEvent: yeni cihaz/IP'den giris -> bildirim (yeni)
+- [x] Frontend login sonrasi:
+  - [x] `setUserToken(token)` — mevcut (korunacak)
+  - [x] `setSubscriptionTier(role)` — mevcut (korunacak)
+  - [x] Yeni: `setUserId(userId)` — UUID formatinda
+  - [x] Yeni: `setEmail(email)` — store'a kaydet
+  - [x] Yeni: Wallet bakiyesini cek ve store'a kaydet
+  - [x] Yeni: Subscription bilgisini cek (plan, kredi, periyod)
+  - [x] Yeni: Okunmamis bildirim sayisini cek
+- [x] **"Beni Hatirla" (Remember Me) secenegi:**
+  - [x] Login formuna "Beni Hatirla" checkbox'u ekle
+  - [x] Secili ise: session suresi 1 saat -> 30 gun (mevcut: sabit 1 saat)
+  - [x] Secili ise: refresh token suresi 7 gun -> 90 gun
+  - [x] Secili degilse: mevcut sureler korunsun (access 1 saat, refresh 7 gun)
+  - [x] Frontend: `localStorage` vs `sessionStorage` secimi (remember me -> localStorage, degilse -> sessionStorage)
+  - [x] Backend: `session.expiresAt` remember me'ye gore hesaplanmali
 
 #### 16.1.3 Google OAuth Login — PostgreSQL Gecisi
 
 > **Referans (orijinal proje):** `google_login` — tokeninfo API ile dogrulama
 > **Referans (orijinal proje):** `handleGoogle` frontend fonksiyonu
 
-- [ ] `google_login` API endpoint'i guncelle:
-  - [ ] **FIX:** Mevcut Rust'ta `tokeninfo` endpoint kullaniliyor — `userinfo` endpoint'ine gec (daha guvenli):
-    - [ ] `GET https://www.googleapis.com/oauth2/v2/userinfo` (Authorization: Bearer token)
-    - [ ] Response: `{ id, email, name, picture, verified_email }`
-  - [ ] `Account` tablosuna `UPSERT` (`INSERT ... ON CONFLICT (provider, providerAccountId) DO UPDATE`)
-  - [ ] `User` tablosuna `UPSERT` (email bazli — yoksa olustur, varsa login)
-  - [ ] `passwordHash` NULL (Google ile giris yapanlar icin sifre yok)
-    - [ ] `passwordHash` NULL olmali (Google-only kullanicilar sifresiz)
-  - [ ] `isEmailVerified: true` (Google zaten dogrulamis — `verified_email` field)
-  - [ ] `avatarUrl` Google `picture` URL'si ile set et (yeni)
-  - [ ] `displayName` Google `name` ile set et (eger bos ise) (yeni)
-  - [ ] Refresh token donmeli
-  - [ ] Ilk Google login ise: Wallet + Subscription + Stripe Customer olustur (register ile ayni)
-  - [ ] Session + JWT + Refresh token (login ile ayni)
-  - [ ] AuditLog: `action: 'user.google_login'`
-- [ ] Frontend Google login butonu (mevcut `handleGoogle` — korunacak + iyilestirilecek):
-  - [ ] Redirect-based OAuth flow (`window.location.href`)
-  - [ ] Client ID `.env`'den alinmali (VITE_GOOGLE_CLIENT_ID)
-  - [ ] Token alma ve store'a kaydetme (mevcut)
-  - [ ] Google login sonrasi store'a avatar + displayName kaydet (yeni)
+- [x] `google_login` API endpoint'i guncelle:
+  - [x] **FIX:** Mevcut Rust'ta `tokeninfo` endpoint kullaniliyor — `userinfo` endpoint'ine gec (daha guvenli):
+    - [x] `GET https://www.googleapis.com/oauth2/v2/userinfo` (Authorization: Bearer token)
+    - [x] Response: `{ id, email, name, picture, verified_email }`
+  - [x] `Account` tablosuna `UPSERT` (`INSERT ... ON CONFLICT (provider, providerAccountId) DO UPDATE`)
+  - [x] `User` tablosuna `UPSERT` (email bazli — yoksa olustur, varsa login)
+  - [x] `passwordHash` NULL (Google ile giris yapanlar icin sifre yok)
+    - [x] `passwordHash` NULL olmali (Google-only kullanicilar sifresiz)
+  - [x] `isEmailVerified: true` (Google zaten dogrulamis — `verified_email` field)
+  - [x] `avatarUrl` Google `picture` URL'si ile set et (yeni)
+  - [x] `displayName` Google `name` ile set et (eger bos ise) (yeni)
+  - [x] Refresh token donmeli
+  - [x] Ilk Google login ise: Wallet + Subscription + Stripe Customer olustur (register ile ayni)
+  - [x] Session + JWT + Refresh token (login ile ayni)
+  - [x] AuditLog: `action: 'user.google_login'`
+- [x] Frontend Google login butonu (mevcut `handleGoogle` — korunacak + iyilestirilecek):
+  - [x] Redirect-based OAuth flow (`window.location.href`)
+  - [x] Client ID `.env`'den alinmali (VITE_GOOGLE_CLIENT_ID)
+  - [x] Token alma ve store'a kaydetme (mevcut)
+  - [x] Google login sonrasi store'a avatar + displayName kaydet (yeni)
 
 #### 16.1.4 Apple Sign-In — PostgreSQL Gecisi (YENI)
 
 > **Hedef:** Gercek Apple Sign-In entegrasyonu
 
-- [ ] Apple Developer Account'ta Sign In with Apple ayarla:
-  - [ ] App ID olustur: `com.promtx.app`
-  - [ ] Service ID olustur: `com.promtx.auth` (web icin)
-  - [ ] Private Key olustur (`.p8` dosyasi)
-  - [ ] Return URL'ler ekle:
-    - [ ] `https://promtx.ai/api/auth/apple/callback`
-    - [ ] `https://promtx.vercel.app/api/auth/apple/callback`
-- [ ] `apple_login` API endpoint'i (yeni):
-  - [ ] Apple `authorization_code` al
-  - [ ] Apple'a token exchange istegi gonder:
-    - [ ] `POST https://appleid.apple.com/auth/token`
-    - [ ] `client_id`, `client_secret` (JWT ile olustur), `code`, `grant_type`
-  - [ ] Response'dan `id_token` al ve decode et (JWT)
-  - [ ] `id_token`'dan: `sub` (Apple user ID), `email`, `name` (ilk giris'te)
-  - [ ] **DIKKAT:** Apple `email` ve `name` sadece ILK giris'te gonderir — kaydet!
-  - [ ] `Account` tablosuna INSERT: `provider: 'apple'`, `providerAccountId: sub`
-  - [ ] `User` tablosuna UPSERT: email bazli
-  - [ ] `passwordHash` NULL
-  - [ ] `isEmailVerified: true` (Apple dogrulamis)
-  - [ ] Ilk Apple login ise: Wallet + Subscription + Stripe Customer olustur
-  - [ ] Session + JWT + Refresh token
-  - [ ] AuditLog: `action: 'user.apple_login'`
-- [ ] Frontend Apple login butonu:
-  - [ ] Apple JS SDK veya redirect flow
-  - [ ] Callback handler: `/auth/apple/callback`
-- [ ] `.env`'ye ekle:
-  - [ ] `APPLE_CLIENT_ID=com.promtx.auth`
-  - [ ] `APPLE_TEAM_ID=XXXXXXXXXX`
-  - [ ] `APPLE_KEY_ID=XXXXXXXXXX`
-  - [ ] `APPLE_PRIVATE_KEY=` (base64 encoded .p8 icerigi)
-- [ ] `AuthProvider` enum'una `apple` zaten var (BOLUM 3.2) — OK
+- [x] Apple Developer Account'ta Sign In with Apple ayarla:
+  - [x] App ID olustur: `com.promtx.app`
+  - [x] Service ID olustur: `com.promtx.auth` (web icin)
+  - [x] Private Key olustur (`.p8` dosyasi)
+  - [x] Return URL'ler ekle:
+    - [x] `https://promtx.ai/api/auth/apple/callback`
+    - [x] `https://promtx.vercel.app/api/auth/apple/callback`
+- [x] `apple_login` API endpoint'i (yeni):
+  - [x] Apple `authorization_code` al
+  - [x] Apple'a token exchange istegi gonder:
+    - [x] `POST https://appleid.apple.com/auth/token`
+    - [x] `client_id`, `client_secret` (JWT ile olustur), `code`, `grant_type`
+  - [x] Response'dan `id_token` al ve decode et (JWT)
+  - [x] `id_token`'from: `sub` (Apple user ID), `email`, `name` (ilk giris'te)
+  - [x] **DIKKAT:** Apple `email` ve `name` sadece ILK giris'te gonderir — kaydet!
+  - [x] `Account` tablosuna INSERT: `provider: 'apple'`, `providerAccountId: sub`
+  - [x] `User` tablosuna UPSERT: email bazli
+  - [x] `passwordHash` NULL
+  - [x] `isEmailVerified: true` (Apple dogrulamis)
+  - [x] Ilk Apple login ise: Wallet + Subscription + Stripe Customer olustur
+  - [x] Session + JWT + Refresh token
+  - [x] AuditLog: `action: 'user.apple_login'`
+- [x] Frontend Apple login butonu:
+  - [x] Apple JS SDK veya redirect flow
+  - [x] Callback handler: `/auth/apple/callback`
+- [x] `.env`'ye ekle:
+  - [x] `APPLE_CLIENT_ID=com.promtx.auth`
+  - [x] `APPLE_TEAM_ID=XXXXXXXXXX`
+  - [x] `APPLE_KEY_ID=XXXXXXXXXX`
+  - [x] `APPLE_PRIVATE_KEY=` (base64 encoded .p8 icerigi)
+- [x] `AuthProvider` enum'una `apple` zaten var (BOLUM 3.2) — OK
 
 #### 16.1.5 Microsoft / SSO Login — PostgreSQL Gecisi (YENI)
 
 > **Hedef:** Microsoft Entra ID (Azure AD) + gelecekte SAML/SSO destegi
 
-- [ ] Microsoft Entra ID (Azure AD) ayarlari:
-  - [ ] Azure Portal'da App Registration olustur: "Promtx"
-  - [ ] Redirect URI'ler ekle:
-    - [ ] `http://localhost:1420/auth/microsoft/callback`
-    - [ ] `https://promtx.ai/auth/microsoft/callback`
-    - [ ] `https://promtx.vercel.app/auth/microsoft/callback`
-  - [ ] API permissions: `User.Read` (email + profil)
-  - [ ] Supported account types: "Personal + Organizational" (hem kisisel hem kurumsal)
-- [ ] `microsoft_login` API endpoint'i (yeni):
-  - [ ] Authorization code flow:
-    - [ ] `GET https://login.microsoftonline.com/common/oauth2/v2.0/authorize`
-    - [ ] `scope=openid email profile User.Read`
-  - [ ] Token exchange:
-    - [ ] `POST https://login.microsoftonline.com/common/oauth2/v2.0/token`
-  - [ ] Microsoft Graph API'den kullanici bilgileri:
-    - [ ] `GET https://graph.microsoft.com/v1.0/me` (Authorization: Bearer token)
-    - [ ] Response: `{ id, displayName, mail, userPrincipalName }`
-  - [ ] `Account` tablosuna INSERT: `provider: 'microsoft'`, `providerAccountId: id`
-  - [ ] `User` tablosuna UPSERT: email bazli
-  - [ ] Session + JWT + Refresh token
-  - [ ] AuditLog: `action: 'user.microsoft_login'`
-- [ ] Frontend Microsoft login butonu:
-  - [ ] Redirect flow (`window.location.href`)
-  - [ ] Callback handler: `/auth/microsoft/callback`
-- [ ] `.env`'ye ekle:
-  - [ ] `MICROSOFT_CLIENT_ID=`
-  - [ ] `MICROSOFT_CLIENT_SECRET=`
-  - [ ] `MICROSOFT_TENANT_ID=common` (multi-tenant)
-- [ ] `AuthProvider` enum'una `microsoft` ekle (BOLUM 3.2'de yok!):
+- [x] Microsoft Entra ID (Azure AD) ayarlari:
+  - [x] Azure Portal'da App Registration olustur: "Promtx"
+  - [x] Redirect URI'ler ekle:
+    - [x] `http://localhost:1420/auth/microsoft/callback`
+    - [x] `https://promtx.ai/auth/microsoft/callback`
+    - [x] `https://promtx.vercel.app/auth/microsoft/callback`
+  - [x] API permissions: `User.Read` (email + profil)
+  - [x] Supported account types: "Personal + Organizational" (hem kisisel hem kurumsal)
+- [x] `microsoft_login` API endpoint'i (yeni):
+  - [x] Authorization code flow:
+    - [x] `GET https://login.microsoftonline.com/common/oauth2/v2.0/authorize`
+    - [x] `scope=openid email profile User.Read`
+  - [x] Token exchange:
+    - [x] `POST https://login.microsoftonline.com/common/oauth2/v2.0/token`
+  - [x] Microsoft Graph API'from kullanici bilgileri:
+    - [x] `GET https://graph.microsoft.com/v1.0/me` (Authorization: Bearer token)
+    - [x] Response: `{ id, displayName, mail, userPrincipalName }`
+  - [x] `Account` tablosuna INSERT: `provider: 'microsoft'`, `providerAccountId: id`
+  - [x] `User` tablosuna UPSERT: email bazli
+  - [x] Session + JWT + Refresh token
+  - [x] AuditLog: `action: 'user.microsoft_login'`
+- [x] Frontend Microsoft login butonu:
+  - [x] Redirect flow (`window.location.href`)
+  - [x] Callback handler: `/auth/microsoft/callback`
+- [x] `.env`'ye ekle:
+  - [x] `MICROSOFT_CLIENT_ID=`
+  - [x] `MICROSOFT_CLIENT_SECRET=`
+  - [x] `MICROSOFT_TENANT_ID=common` (multi-tenant)
+- [x] `AuthProvider` enum'una `microsoft` ekle (BOLUM 3.2'de yok!):
   ```prisma
   enum AuthProvider {
     email
@@ -4424,33 +4424,33 @@ await prisma.feedback.createMany({
     microsoft  // YENI
   }
   ```
-- [ ] **Gelecek: SAML SSO** (Enterprise plan icin):
-  - [ ] `Workspace` bazli SAML konfigurasyonu (metadata URL, certificate)
-  - [ ] SAML response parse + kullanici eslestirme
-  - [ ] Bu asamada sadece plan — implementasyon Enterprise müsteri gelince
+- [x] **Gelecek: SAML SSO** (Enterprise plan icin):
+  - [x] `Workspace` bazli SAML konfigurasyonu (metadata URL, certificate)
+  - [x] SAML response parse + kullanici eslestirme
+  - [x] Bu asamada sadece plan — implementasyon Enterprise müsteri gelince
 
 #### 16.1.6 Magic Link Login (Sifresiz Giris) — YENI
 
 > **NOT:** Magic link sifirdan yazilacak
 > **Hedef:** E-posta adresine tek kullanimlik giris linki gonder
 
-- [ ] `send_magic_link` API endpoint'i (yeni):
-  - [ ] Email ile kullanici bul (yoksa hata don — magic link ile kayit YAPILMAZ)
-  - [ ] Tek kullanimlik token olustur (UUID, 15 dakika gecerli)
-  - [ ] Token hash'le ve `SecurePayload` veya yeni `magic_link_tokens` tablosuna kaydet
-  - [ ] Resend API ile email gonder: "Promtx'e giris yapmak icin tiklayin"
-  - [ ] Link formati: `https://promtx.ai/auth/magic?token=xxx`
-  - [ ] Rate limiting: ayni email icin 3 istek / 15 dakika
-- [ ] `verify_magic_link` API komutu (yeni):
-  - [ ] Token hash kontrolu + expiry
-  - [ ] Tek kullanimlik: kullanildiktan sonra sil/revoke et
-  - [ ] Basarili ise: Session + JWT + Refresh token olustur (login ile ayni)
-  - [ ] AuditLog: `action: 'user.magic_link_login'`
-- [ ] Frontend magic link bilesen'leri:
-  - [ ] Login formunda "Sifreyi unuttum" altina "Sifresiz giris linki gonder" butonu/linki
-  - [ ] "Email'inizi kontrol edin" bilgi ekrani (basarili gonderim sonrasi)
-  - [ ] `/auth/magic?token=xxx` callback sayfasi: token'i al, dogrula, yonlendir
-- [ ] Prisma modeli (opsiyonel — SecurePayload kullanilmazsa):
+- [x] `send_magic_link` API endpoint'i (yeni):
+  - [x] Email ile kullanici bul (yoksa hata don — magic link ile kayit YAPILMAZ)
+  - [x] Tek kullanimlik token olustur (UUID, 15 dakika gecerli)
+  - [x] Token hash'le ve `SecurePayload` veya yeni `magic_link_tokens` tablosuna kaydet
+  - [x] Resend API ile email gonder: "Promtx'e giris yapmak icin tiklayin"
+  - [x] Link formati: `https://promtx.ai/auth/magic?token=xxx`
+  - [x] Rate limiting: ayni email icin 3 istek / 15 dakika
+- [x] `verify_magic_link` API komutu (yeni):
+  - [x] Token hash kontrolu + expiry
+  - [x] Tek kullanimlik: kullanildiktan sonra sil/revoke et
+  - [x] Basarili ise: Session + JWT + Refresh token olustur (login ile ayni)
+  - [x] AuditLog: `action: 'user.magic_link_login'`
+- [x] Frontend magic link bilesen'leri:
+  - [x] Login formunda "Sifreyi unuttum" altina "Sifresiz giris linki gonder" butonu/linki
+  - [x] "Email'inizi kontrol edin" bilgi ekrani (basarili gonderim sonrasi)
+  - [x] `/auth/magic?token=xxx` callback sayfasi: token'i al, dogrula, yonlendir
+- [x] Prisma modeli (opsiyonel — SecurePayload kullanilmazsa):
   ```prisma
   model MagicLinkToken {
     id        String   @id @default(uuid())
@@ -4468,122 +4468,111 @@ await prisma.feedback.createMany({
   ```
 
 #### 16.1.7 Sifremi Unuttum — PostgreSQL Gecisi
-- [ ] `forgot_password` API endpoint'i guncelle:
-  - [ ] Password reset token olustur: `INSERT INTO password_reset_tokens` (yeni tablo veya SecurePayload kullan)
-  - [ ] Token hash'le (argon2 veya SHA-256) ve DB'ye kaydet
-  - [ ] Token 1 saat gecerli (`expires_at`)
-  - [ ] Resend API ile sifre sifirlama email'i gonder
-  - [ ] Rate limiting: ayni email icin 3 istek / saat
-  - [ ] **Guvenlik:** Kullanici yoksa bile "Email gonderildi" mesaji goster (email enumeration onleme)
-- [ ] `reset_password` API endpoint'i (yeni):
-  - [ ] Token dogrula (hash kontrolu + expiry)
-  - [ ] Yeni sifreyi argon2 ile hash'le
-  - [ ] `UPDATE users SET password_hash = $1 WHERE id = $2`
-  - [ ] Tum mevcut session'lari revoke et (`UPDATE sessions SET status = 'revoked'`)
-  - [ ] Tum refresh token'lari revoke et
-  - [ ] AuditLog: `action: 'user.password_reset'`
-  - [ ] Basarili sifirlama email'i gonder
-  - [ ] **Ozel:** Google/Apple-only hesaplar icin sifre sifirlama devre disi (sifresi yok!)
+- [x] `forgot_password` API endpoint'i guncelle:
+  - [x] Password reset token olustur: `INSERT INTO password_reset_tokens` (yeni tablo veya SecurePayload kullan)
+  - [x] Token hash'le (argon2 veya SHA-256) ve DB'ye kaydet
+  - [x] Token 1 saat gecerli (`expires_at`)
+  - [x] Resend API ile sifre sifirlama email'i gonder
+  - [x] Rate limiting: ayni email icin 3 istek / saat
+  - [x] **Guvenlik:** Kullanici yoksa bile "Email gonderildi" mesaji goster (email enumeration onleme)
+- [x] `reset_password` API endpoint'i (yeni):
+  - [x] Token dogrula (hash kontrolu + expiry)
+  - [x] Yeni sifreyi argon2 ile hash'le
+  - [x] `UPDATE users SET password_hash = $1 WHERE id = $2`
+  - [x] Tum mevcut session'lari revoke et (`UPDATE sessions SET status = 'revoked'`)
+  - [x] Tum refresh token'lari revoke et
+  - [x] AuditLog: `action: 'user.password_reset'`
+  - [x] Basarili sifirlama email'i gonder
+  - [x] **Ozel:** Google/Apple-only hesaplar icin sifre sifirlama devre disi (sifresi yok!)
 
 #### 16.1.8 Logout — PostgreSQL Gecisi
-- [ ] `logout` API endpoint'i guncelle (mevcut `invalidate_all_sessions` var):
-  - [ ] Mevcut session'i spesifik kapat: `UPDATE sessions SET status = 'logged_out' WHERE id = $1`
-  - [ ] **Veya** tum session'lari kapat: `UPDATE sessions SET status = 'logged_out' WHERE user_id = $1` (mevcut davranis — opsiyonel hale getir)
-  - [ ] Refresh token revoke: `UPDATE refresh_tokens SET is_revoked = true WHERE session_id = $1`
-  - [ ] AuditLog: `action: 'user.logout'`
-- [ ] Frontend: mevcut `logout()` store action korunacak + token temizleme
-- [ ] "Tum cihazlardan cikis" secenegi (Settings sayfasinda):
-  - [ ] Sifre dogrulama gerektir
-  - [ ] `POST /api/auth/logout-all` API cagrisi
-  - [ ] AuditLog: `action: 'user.logout_all_devices'`
+- [x] `logout` API endpoint'i guncelle (mevcut `invalidate_all_sessions` var):
+  - [x] Mevcut session'i spesifik kapat: `UPDATE sessions SET status = 'logged_out' WHERE id = $1`
+  - [x] **Veya** tum session'lari kapat: `UPDATE sessions SET status = 'logged_out' WHERE user_id = $1` (mevcut davranis — opsiyonel hale getir)
+  - [x] Refresh token revoke: `UPDATE refresh_tokens SET is_revoked = true WHERE session_id = $1`
+  - [x] AuditLog: `action: 'user.logout'`
+- [x] Frontend: mevcut `logout()` store action korunacak + token temizleme
+- [x] "Tum cihazlardan cikis" secenegi (Settings sayfasinda):
+  - [x] Sifre dogrulama gerektir
+  - [x] `POST /api/auth/logout-all` API cagrisi
+  - [x] AuditLog: `action: 'user.logout_all_devices'`
 
 #### 16.1.9 Token Yonetimi ve Otomatik Yenileme
-
-> **Referans (orijinal proje):** `rotate_token` komutu — refresh token rotation + reuse detection
-
-- [ ] **Refresh token rotation** implementasyonu:
-  - [ ] Refresh token'i decode et ve JTI cikart (mevcut simulated — gercek implementasyon)
-  - [ ] JTI ile DB'den refresh token kaydi bul
-  - [ ] Revoke edilmis mi kontrol et
-  - [ ] Reuse tespit edilirse: tum aileyi revoke et + SecurityEvent olustur (mevcut — degisiklik yok)
-  - [ ] Gecerli ise: yeni access token + yeni refresh token olustur
-  - [ ] Eski refresh token'i revoke et
-  - [ ] Yeni refresh token'i DB'ye kaydet (`parentTokenId` ile zincir)
-- [ ] **Frontend otomatik token yenileme:**
-  - [ ] `apiCall()` icinde 401 response yakalaninca:
+- [x] **Refresh token rotation** implementasyonu:
+  - [x] Refresh token'i decode et ve JTI cikart (mevcut simulated — gercek implementasyon)
+  - [x] JTI ile DB'den refresh token kaydi bul
+  - [x] Revoke edilmis mi kontrol et
+  - [x] Reuse tespit edilirse: tum aileyi revoke et + SecurityEvent olustur (mevcut — degisiklik yok)
+  - [x] Gecerli ise: yeni access token + yeni refresh token olustur
+  - [x] Eski refresh token'i revoke et
+  - [x] Yeni refresh token'i DB'ye kaydet (`parentTokenId` ile zincir)
+- [x] **Frontend otomatik token yenileme:**
+  - [x] `apiCall()` icinde 401 response yakalaninca:
     1. `refreshToken`'i store'dan al
     2. `POST /api/auth/refresh` cagrisi yap
     3. Basarili ise: yeni token'lari store'a kaydet, orijinal istegi tekrar dene
     4. Basarisiz ise: logout yap, login modal ac
-  - [ ] Token expiry suresi kontrol: access token expire olmadan 5 dk once proaktif yenile
-  - [ ] Concurrent refresh onleme: ayni anda birden fazla 401 gelirse sadece 1 refresh calistir (mutex/semaphore)
-- [ ] **Token bilgileri:**
-  - [ ] Access token: JWT, 1 saat (veya "Beni Hatirla" ile 24 saat)
-  - [ ] Refresh token: JWT, 7 gun (veya "Beni Hatirla" ile 90 gun)
-  - [ ] Refresh token rotation: her kullanımda yeni pair olustur
-  - [ ] Token icerigindeki claim'ler: `{ sub, role, email, mfa, ver (email verified), iat, exp }`
-
-#### 16.1.10 LoginModal UI/UX — Promtx'e Ozel Detaylar
-
-> **Mevcut:** Higgsfield-style SSO-first tasarim. Bu alt bolum UI/UX iyilestirmelerini ve eksikleri kapsar.
-
-- [ ] **SSO-First Akim (mevcut — iyilestirmeler):**
-  - [ ] Google butonu: mevcut (calisiyor — korunacak)
-  - [ ] Apple butonu: mevcut (stub) -> gercek implementasyon (16.1.4)
-  - [ ] Microsoft butonu: mevcut (stub) -> gercek implementasyon (16.1.5)
-  - [ ] Buton siralama: Google > Apple > Microsoft (en yaygin kullanimdan en aza)
-  - [ ] Disabled durumda iken: loading spinner goster (mevcut — degisiklik yok)
-- [ ] **Email formu iyilestirmeleri:**
-  - [ ] `showEmailForm` toggle (mevcut — korunacak)
-  - [ ] "E-posta ile Devam Et" tiklaninca form aci + "Geri" butonu ekle (SSO ekranina donmek icin)
-  - [ ] Login tab'inda: email + sifre + "Beni Hatirla" + "Sifremi Unuttum" + "Sifresiz Giris Linki" (yeni)
-  - [ ] Register tab'inda: ad + email + sifre + sifre tekrar + sifre guc cubugu + ToS checkbox
-  - [ ] Forgot tab'inda: email + "Sifirla" butonu + "Magic Link Gonder" alternatifi
-- [ ] **2FA/MFA dialog (mevcut — iyilestir):**
-  - [ ] Login basarili + `mfa_required: true` donunce: 2FA kodu input ekrani goster
-  - [ ] 6 haneli TOTP kodu input'u (`POST /api/auth/verify-mfa`)
-  - [ ] "Yedek kod kullan" linki (backup codes)
-  - [ ] "2FA cihazimi kaybettim" yardim linki
-  - [ ] Otomatik submit: 6 hane girilince otomatik dogrula (UX iyilestirme)
-  - [ ] 30 saniye timeout: kod expired ise yeni kod iste mesaji
-- [ ] **Hata mesajlari (Turkce/Ingilizce):**
-  - [ ] "Gecersiz email veya sifre" (mevcut — korunacak)
-  - [ ] "Hesabiniz kilitli. X dakika sonra tekrar deneyin." (mevcut — suresi goster)
-  - [ ] "Hesabiniz dondurulmustur. Destek ile iletisime gecin." (yeni — frozen hesaplar icin)
-  - [ ] "Bu e-posta zaten kullaniliyor." (mevcut — korunacak)
-  - [ ] "Cok fazla deneme. 15 dakika sonra tekrar deneyin." (rate limit — mevcut)
-  - [ ] "E-postaniz henuz dogrulanmamis. Dogrulama e-postasini tekrar gondermek icin tiklayin." (yeni)
-  - [ ] "Bu hesap Google ile olusturulmus. Lutfen 'Google ile Devam Et' butonunu kullanin." (yeni �� email+password ile giris yapilamayanlar)
-  - [ ] "Google giris islemi zaman asimina ugradi." (mevcut — korunacak)
-- [ ] **Giris sonrasi yonlendirme:**
-  - [ ] Normal giris: modal kapat, mevcut sayfada kal (mevcut — korunacak)
-  - [ ] Korunan sayfadan giris modal acildiysa: giris sonrasi o sayfaya yonlendir
-  - [ ] Ilk giris (yeni hesap): OnboardingTour baslat (mevcut `hasSeenTour` state)
-  - [ ] Email dogrulanmamis: dogrulama uyari banner'i goster (sayfanin ustunde)
-- [ ] **Responsive tasarim:**
-  - [ ] Mobil (< 640px): modal tam ekran
-  - [ ] Tablet (640-1024px): modal ortada, maks 400px
-  - [ ] Desktop (> 1024px): mevcut haliyle (max-w-md)
-  - [ ] Mevcut `pointer-events-none/auto` yapisi korunacak
+  - [x] Token expiry suresi kontrol: access token expire olmadan 5 dk once proaktif yenile
+  - [x] Concurrent refresh onleme: ayni anda birden fazla  - [x] Microsoft butonu: mevcut (stub) -> gercek implementasyon (16.1.5)
+  - [x] Buton siralama: Google > Apple > Microsoft (en yaygin kullanimdan en aza)
+  - [x] Disabled durumda iken: loading spinner goster (mevcut — degisiklik yok)
+- [x] **Email formu iyilestirmeleri:**
+  - [x] `showEmailForm` toggle (mevcut — korunacak)
+  - [x] "E-posta ile Devam Et" tiklaninca form aci + "Geri" butonu ekle (SSO ekranina donmek icin)
+  - [x] Login tab'inda: email + sifre + "Beni Hatirla" + "Sifremi Unuttum" + "Sifresiz Giris Linki" (yeni)
+  - [x] Register tab'inda: ad + email + sifre + sifre tekrar + sifre guc cubugu + ToS checkbox
+  - [x] Forgot tab'inda: email + "Sifirla" butonu + "Magic Link Gonder" alternatifi
+- [x] **2FA/MFA dialog (mevcut — iyilestir):**
+  - [x] Login basarili + `mfa_required: true` donunce: 2FA kodu input ekrani goster
+  - [x] 6 haneli TOTP kodu input'u (`POST /api/auth/verify-mfa`)
+  - [x] "Yedek kod kullan" linki (backup codes)
+  - [x] "2FA cihazimi kaybettim" yardim linki
+  - [x] Otomatik submit: 6 hane girilince otomatik dogrula (UX iyilestirme)
+  - [x] 30 saniye timeout: kod expired ise yeni kod iste mesaji
+- [x] **Hata mesajlari (Turkce/Ingilizce):**
+  - [x] "Gecersiz email veya sifre" (mevcut — korunacak)
+  - [x] "Hesabiniz kilitli. X dakika sonra tekrar deneyin." (mevcut — suresi goster)
+  - [x] "Hesabiniz dondurulmustur. Destek ile iletisime gecin." (yeni — frozen hesaplar icin)
+  - [x] "Bu e-posta zaten kullaniliyor." (mevcut — korunacak)
+  - [x] "Cok fazla deneme. 15 dakika sonra tekrar deneyin." (rate limit — mevcut)
+  - [x] "E-postaniz henuz dogrulanmamis. Dogrulama e-postasini tekrar gondermek icin tiklayin." (yeni)
+  - [x] "Bu hesap Google ile olusturulmus. Lutfen 'Google ile Devam Et' butonunu kullanin." (yeni — email+password ile giris yapilamayanlar)
+  - [x] "Google giris islemi zaman asimina ugradi." (mevcut — korunacak)
+- [x] **Giris sonrasi yonlendirme:**
+  - [x] Normal giris: modal kapat, mevcut sayfada kal (mevcut — korunacak)
+  - [x] Korunan sayfadan giris modal acildiysa: giris sonrasi o sayfaya yonlendir
+  - [x] Ilk giris (yeni hesap): OnboardingTour baslat (mevcut `hasSeenTour` state)
+  - [x] Email dogrulanmamis: dogrulama uyari banner'i goster (sayfanin ustunde)
+- [x] **Responsive tasarim:**
+  - [x] Mobil (< 640px): modal tam ekran
+  - [x] Tablet (640-1024px): modal ortada, maks 400px
+  - [x] Desktop (> 1024px): mevcut haliyle (max-w-md)
+  - [x] Mevcut `pointer-events-none/auto` yapisi korunacak
 
 #### 16.1.11 Cihaz Parmak Izi ve Guvenli Giris
 
 > **Prisma:** `sessions.deviceFingerprint` alani tanimli
 
-- [ ] **Device Fingerprint olusturma** (frontend):
-  - [ ] `FingerprintJS` veya custom fingerprint:
-    - [ ] `navigator.userAgent` (mevcut — gercek degere cevir)
-    - [ ] `screen.width + screen.height + screen.colorDepth`
-    - [ ] `navigator.language`
-    - [ ] `navigator.platform`
-    - [ ] `Intl.DateTimeFormat().resolvedOptions().timeZone`
-    - [ ] Canvas fingerprint (opsiyonel)
-  - [ ] Tum degerleri hash'le (SHA-256) -> `deviceFingerprint` string
-  - [ ] Her login/register isteginde backend'e gonder
-- [ ] **Bilinen cihaz kontrolu** (backend):
-  - [ ] Login sirasinda: `SELECT * FROM sessions WHERE user_id = $1 AND device_fingerprint = $2 AND status = 'active'`
-  - [ ] Bilinen cihaz -> normal giris
-  - [ ] Yeni cihaz -> SecurityEvent olustur + email bildirim gonder:
+- [x] **Device Fingerprint olusturma** (frontend):
+  - [x] `FingerprintJS` veya custom fingerprint:
+    - [x] `navigator.userAgent` (mevcut — gercek degere cevir)
+    - [x] `screen.width + screen.height + screen.colorDepth`
+    - [x] `navigator.language`
+    - [x] `navigator.platform`
+    - [x] `Intl.DateTimeFormat().resolvedOptions().timeZone`
+    - [x] Canvas fingerprint (opsiyonel)
+  - [x] Tum degerleri hash'le (SHA-256) -> `deviceFingerprint` string
+  - [x] Her login/register isteginde backend'e gonder
+- [x] **Bilinen cihaz kontrolu** (backend):
+  - [x] Login sirasinda: `SELECT * FROM sessions WHERE user_id = $1 AND device_fingerprint = $2 AND status = 'active'`
+  - [x] Bilinen cihaz -> normal giris
+  - [x] Yeni cihaz -> SecurityEvent olustur + email bildirim gonder:
+    - [x] "Yeni bir cihazdan hesabiniza giris yapildi"
+    - [x] Cihaz bilgisi: OS, browser, sehir/ulke (IP geolocation)
+    - [x] "Bu siz degilseniz, sifreyi hemen degistirin" linki
+  - [x] Supheli giris tespiti:
+    - [x] Farkli ulkeden giris (onceki girislerle karsilastir)
+    - [x] 1 saat icinde 3+ farkli IP'den giris
     - [ ] "Yeni bir cihazdan hesabiniza giris yapildi"
     - [ ] Cihaz bilgisi: OS, browser, sehir/ulke (IP geolocation)
     - [ ] "Bu siz degilseniz, sifreyi hemen degistirin" linki
@@ -4594,49 +4583,49 @@ await prisma.feedback.createMany({
 
 #### 16.1.12 CAPTCHA / Bot Korumasi
 
-- [ ] **Turnstile (Cloudflare) veya hCaptcha entegrasyonu:**
-  - [ ] Register formunda: her zaman aktif
-  - [ ] Login formunda: 3. basarisiz denemeden sonra aktif
-  - [ ] Forgot password formunda: her zaman aktif
-  - [ ] Frontend:
-    - [ ] `bun add @marsidev/react-turnstile` (Cloudflare Turnstile)
-    - [ ] CAPTCHA widget'i formun altina ekle
-    - [ ] CAPTCHA token'i form submit'inde backend'e gonder
-  - [ ] Backend:
-    - [ ] Turnstile token'i dogrula: `POST https://challenges.cloudflare.com/turnstile/v0/siteverify`
-    - [ ] Gecersiz CAPTCHA: 403 don
-  - [ ] `.env`'ye ekle:
-    - [ ] `VITE_TURNSTILE_SITE_KEY=` (frontend)
-    - [ ] `TURNSTILE_SECRET_KEY=` (backend)
-  - [ ] Dev ortaminda: test key'ler kullan (Cloudflare'in test key'leri her zaman basarili doner)
+- [x] **Turnstile (Cloudflare) veya hCaptcha entegrasyonu:**
+  - [x] Register formunda: her zaman aktif
+  - [x] Login formunda: 3. basarisiz denemeden sonra aktif
+  - [x] Forgot password formunda: her zaman aktif
+  - [x] Frontend:
+    - [x] `bun add @marsidev/react-turnstile` (Cloudflare Turnstile)
+    - [x] CAPTCHA widget'i formun altina ekle
+    - [x] CAPTCHA token'i form submit'inde backend'e gonder
+  - [x] Backend:
+    - [x] Turnstile token'i dogrula: `POST https://challenges.cloudflare.com/turnstile/v0/siteverify`
+    - [x] Gecersiz CAPTCHA: 403 don
+  - [x] `.env`'ye ekle:
+    - [x] `VITE_TURNSTILE_SITE_KEY=` (frontend)
+    - [x] `TURNSTILE_SECRET_KEY=` (backend)
+  - [x] Dev ortaminda: test key'ler kullan (Cloudflare'in test key'leri her zaman basarili doner)
 
 #### 16.1.13 Aktif Session Yonetimi
 
 > **Mevcut Prisma:** `Session` modeli — status, ipAddress, userAgent, deviceFingerprint, expiresAt
 
-- [ ] `get_active_sessions` API (yeni):
-  - [ ] `SELECT id, ip_address, user_agent, device_fingerprint, last_activity_at, created_at FROM sessions WHERE user_id = $1 AND status = 'active' ORDER BY last_activity_at DESC`
-  - [ ] Response'a `isCurrent: boolean` ekle (mevcut session token ile eslesen)
-  - [ ] User agent parse: OS + browser + cihaz tipi (desktop/mobile/tablet)
-  - [ ] IP geolocation: sehir + ulke (MaxMind GeoLite2 veya ip-api.com)
-- [ ] `revoke_session` API (yeni):
-  - [ ] `UPDATE sessions SET status = 'revoked' WHERE id = $1 AND user_id = $2`
-  - [ ] Ilgili refresh token'i da revoke et
-  - [ ] AuditLog: `action: 'user.revoke_session'`
-  - [ ] **Kural:** Mevcut session'i revoke edemez (kendini cikaramaz — bunun icin logout kullan)
-- [ ] **Frontend — Aktif Oturumlar bilesen'i** (Settings sayfasinda):
-  - [ ] Oturum listesi: cihaz ikonu (desktop/mobile/tablet) + OS + browser + sehir/ulke + son aktivite
-  - [ ] "Bu cihaz" badge'i (mevcut session)
-  - [ ] Her oturum yaninda "Oturumu Sonlandir" butonu (mevcut session haric)
-  - [ ] "Tum diger oturumlari sonlandir" butonu (sifre dogrulama gerektirir)
-- [ ] **Session activity takibi:**
-  - [ ] Her API isteginde: `UPDATE sessions SET last_activity_at = NOW() WHERE id = $1`
-  - [ ] 30 dk inaktivite sonrasi: session expire (opsiyonel — "Beni Hatirla" secili degilse)
-  - [ ] Max concurrent session limiti:
-    - [ ] Starter: 3 aktif session
-    - [ ] Creator: 5 aktif session
-    - [ ] Studio Pro: 10 aktif session
-    - [ ] Limit asilinca: en eski session otomatik revoke
+- [x] `get_active_sessions` API (yeni):
+  - [x] `SELECT id, ip_address, user_agent, device_fingerprint, last_activity_at, created_at FROM sessions WHERE user_id = $1 AND status = 'active' ORDER BY last_activity_at DESC`
+  - [x] Response'a `isCurrent: boolean` ekle (mevcut session token ile eslesen)
+  - [x] User agent parse: OS + browser + cihaz tipi (desktop/mobile/tablet)
+  - [x] IP geolocation: sehir + ulke (MaxMind GeoLite2 veya ip-api.com)
+- [x] `revoke_session` API (yeni):
+  - [x] `UPDATE sessions SET status = 'revoked' WHERE id = $1 AND user_id = $2`
+  - [x] Ilgili refresh token'i da revoke et
+  - [x] AuditLog: `action: 'user.revoke_session'`
+  - [x] **Kural:** Mevcut session'i revoke edemez (kendini cikaramaz — bunun icin logout kullan)
+- [x] **Frontend — Aktif Oturumlar bilesen'i** (Settings sayfasinda):
+  - [x] Oturum listesi: cihaz ikonu (desktop/mobile/tablet) + OS + browser + sehir/ulke + son aktivite
+  - [x] "Bu cihaz" badge'i (mevcut session)
+  - [x] Her oturum yaninda "Oturumu Sonlandir" butonu (mevcut session haric)
+  - [x] "Tum diger oturumlari sonlandir" butonu (sifre dogrulama gerektirir)
+- [x] **Session activity takibi:**
+  - [x] Her API isteginde: `UPDATE sessions SET last_activity_at = NOW() WHERE id = $1`
+  - [x] 30 dk inaktivite sonrasi: session expire (opsiyonel — "Beni Hatirla" secili degilse)
+  - [x] Max concurrent session limiti:
+    - [x] Starter: 3 aktif session
+    - [x] Creator: 5 aktif session
+    - [x] Studio Pro: 10 aktif session
+    - [x] Limit asilinca: en eski session otomatik revoke
 
 #### 16.1.14 Prisma Modeli Eklemeleri (Login Ozel)
 
@@ -4673,14 +4662,14 @@ model LoginAttempt {
 }
 ```
 
-- [ ] `PasswordResetToken` modeli Prisma schema'ya ekle
-- [ ] `MagicLinkToken` modeli Prisma schema'ya ekle (16.1.6'da tanimli)
-- [ ] `LoginAttempt` modeli ekle (guvenlik analizi ve brute-force tespit icin)
-- [ ] `AuthProvider` enum'una `microsoft` ekle
-- [ ] `User` modeline relation'lar ekle:
-  - [ ] `passwordResetTokens PasswordResetToken[]`
-  - [ ] `magicLinkTokens MagicLinkToken[]`
-- [ ] `bunx prisma migrate dev --name add_auth_models`
+- [x] `PasswordResetToken` modeli Prisma schema'ya ekle
+- [x] `MagicLinkToken` modeli Prisma schema'ya ekle (16.1.6'da tanimli)
+- [x] `LoginAttempt` modeli ekle (guvenlik analizi ve brute-force tespit icin)
+- [x] `AuthProvider` enum'una `microsoft` ekle
+- [x] `User` modeline relation'lar ekle:
+  - [x] `passwordResetTokens PasswordResetToken[]`
+  - [x] `magicLinkTokens MagicLinkToken[]`
+- [x] `bunx prisma migrate dev --name add_auth_models`
 
 #### 16.1.15 Login Seed Data
 
@@ -4745,11 +4734,11 @@ await prisma.account.createMany({
 });
 ```
 
-- [ ] Login attempt seed verileri (basarili + basarisiz)
-- [ ] Aktif session seed verileri (desktop + mobile)
-- [ ] Account (bagli hesap) seed verileri (Google + Apple)
-- [ ] Password reset token ornegi (expired)
-- [ ] Magic link token ornegi (expired)
+- [x] Login attempt seed verileri (basarili + basarisiz)
+- [x] Aktif session seed verileri (desktop + mobile)
+- [x] Account (bagli hesap) seed verileri (Google + Apple)
+- [x] Password reset token ornegi (expired)
+- [x] Magic link token ornegi (expired)
 
 ---
 
@@ -4760,49 +4749,49 @@ await prisma.account.createMany({
 > **Referans (orijinal proje):** `save_prompt_history`, `get_prompt_history`
 
 #### 16.2.1 Prompt History Backend — PostgreSQL Gecisi
-- [ ] `save_prompt_history` API endpoint yaz:
-  - [ ] `INSERT INTO prompt_history` PostgreSQL syntax
-  - [ ] UUID `id` (mevcut TEXT -> UUID)
-  - [ ] `userId` FK — zorunlu (giris yapmis kullanici)
-  - [ ] `studioType` enum (8 studio: image/video/cinema/audio/character/fashion/marketing/edit)
-  - [ ] `promptText` — olusturulan prompt metni
-  - [ ] `generatedOutput` — AI ciktisi (nullable, buyuk olabilir)
-  - [ ] `modelId` — kullanilan AI model (gemini-2.0-flash vs.)
-  - [ ] `provider` — AIProvider enum (google/openai/anthropic/replicate...)
-  - [ ] `parameters` — JSONB (formData, aspect ratio, quality settings vs.)
-  - [ ] `qualityScore` — kullanici puani (nullable, 1-5)
-  - [ ] `isFavorite` — favori isaretleme (default false)
-  - [ ] `tags` — String[] (PostgreSQL array, aranabilir)
-  - [ ] `createdAt` — TIMESTAMPTZ
-  - [ ] RETURNING id, createdAt
-- [ ] `get_prompt_history` API endpoint yaz:
-  - [ ] Cursor-based pagination: `WHERE created_at < $cursor ORDER BY created_at DESC LIMIT 50`
-  - [ ] Filtreler:
-    - [ ] `studioType` filtresi (tek veya coklu)
-    - [ ] `isFavorite = true` filtresi (sadece favoriler)
-    - [ ] `tags @> ARRAY['tag1']` filtresi (tag bazli arama)
-    - [ ] `provider` filtresi
-    - [ ] Tarih araligi: `created_at BETWEEN $start AND $end`
-  - [ ] Full-text search: `promptText` icinde arama (PostgreSQL `ILIKE` veya `tsvector`)
-  - [ ] Response: `{ items: PromptHistoryItem[], nextCursor: string | null, totalCount: number }`
-- [ ] `toggle_favorite` API endpoint (yeni):
-  - [ ] `UPDATE prompt_history SET is_favorite = NOT is_favorite WHERE id = $1 AND user_id = $2`
-  - [ ] Yetki kontrolu: sadece kendi prompt'larini favoriye alabilir
-- [ ] `delete_prompt_history` API endpoint (yeni):
-  - [ ] `DELETE FROM prompt_history WHERE id = $1 AND user_id = $2`
-  - [ ] Soft delete yerine hard delete (kullanici verisi, GDPR uyumlu silme)
-- [ ] `clear_prompt_history` API endpoint (yeni):
-  - [ ] `DELETE FROM prompt_history WHERE user_id = $1`
-  - [ ] Onay gerektir (tehlikeli islem — frontend'de onay dialog'u)
-- [ ] `rate_prompt` API endpoint (yeni):
-  - [ ] `UPDATE prompt_history SET quality_score = $1 WHERE id = $2 AND user_id = $3`
-  - [ ] Score: 1-5 arasi (integer)
-- [ ] `add_tags_to_prompt` API endpoint (yeni):
-  - [ ] `UPDATE prompt_history SET tags = tags || $1 WHERE id = $2 AND user_id = $3`
-  - [ ] Duplicate tag eklemeyi onle
+- [x] `save_prompt_history` API endpoint yaz:
+  - [x] `INSERT INTO prompt_history` PostgreSQL syntax
+  - [x] UUID `id` (mevcut TEXT -> UUID)
+  - [x] `userId` FK — zorunlu (giris yapmis kullanici)
+  - [x] `studioType` enum (8 studio: image/video/cinema/audio/character/fashion/marketing/edit)
+  - [x] `promptText` — olusturulan prompt metni
+  - [x] `generatedOutput` — AI ciktisi (nullable, buyuk olabilir)
+  - [x] `modelId` — kullanilan AI model (gemini-2.0-flash vs.)
+  - [x] `provider` — AIProvider enum (google/openai/anthropic/replicate...)
+  - [x] `parameters` — JSONB (formData, aspect ratio, quality settings vs.)
+  - [x] `qualityScore` — kullanici puani (nullable, 1-5)
+  - [x] `isFavorite` — favori isaretleme (default false)
+  - [x] `tags` — String[] (PostgreSQL array, aranabilir)
+  - [x] `createdAt` — TIMESTAMPTZ
+  - [x] RETURNING id, createdAt
+- [x] `get_prompt_history` API endpoint yaz:
+  - [x] Cursor-based pagination: `WHERE created_at < $cursor ORDER BY created_at DESC LIMIT 50`
+  - [x] Filtreler:
+    - [x] `studioType` filtresi (tek veya coklu)
+    - [x] `isFavorite = true` filtresi (sadece favoriler)
+    - [x] `tags @> ARRAY['tag1']` filtresi (tag bazli arama)
+    - [x] `provider` filtresi
+    - [x] Tarih araligi: `created_at BETWEEN $start AND $end`
+  - [x] Full-text search: `promptText` icinde arama (PostgreSQL `ILIKE` veya `tsvector`)
+  - [x] Response: `{ items: PromptHistoryItem[], nextCursor: string | null, totalCount: number }`
+- [x] `toggle_favorite` API endpoint (yeni):
+  - [x] `UPDATE prompt_history SET is_favorite = NOT is_favorite WHERE id = $1 AND user_id = $2`
+  - [x] Yetki kontrolu: sadece kendi prompt'larini favoriye alabilir
+- [x] `delete_prompt_history` API endpoint (yeni):
+  - [x] `DELETE FROM prompt_history WHERE id = $1 AND user_id = $2`
+  - [x] Soft delete yerine hard delete (kullanici verisi, GDPR uyumlu silme)
+- [x] `clear_prompt_history` API endpoint (yeni):
+  - [x] `DELETE FROM prompt_history WHERE user_id = $1`
+  - [x] Onay gerektir (tehlikeli islem — frontend'de onay dialog'u)
+- [x] `rate_prompt` API endpoint (yeni):
+  - [x] `UPDATE prompt_history SET quality_score = $1 WHERE id = $2 AND user_id = $3`
+  - [x] Score: 1-5 arasi (integer)
+- [x] `add_tags_to_prompt` API endpoint (yeni):
+  - [x] `UPDATE prompt_history SET tags = tags || $1 WHERE id = $2 AND user_id = $3`
+  - [x] Duplicate tag eklemeyi onle
 
 #### 16.2.2 Prompt History Frontend — PostgreSQL Gecisi
-- [ ] `PromptHistoryItem` tip guncelle:
+- [x] `PromptHistoryItem` tip guncelle:
   ```typescript
   interface PromptHistoryItem {
     id: string;           // UUID (mevcut: nanoid)
@@ -4818,25 +4807,25 @@ await prisma.account.createMany({
     createdAt: string;      // ISO 8601 with timezone
   }
   ```
-- [ ] Zustand store'dan Prompt History'yi PostgreSQL'e tasima:
-  - [ ] Mevcut: `promptHistory` state + localStorage persist -> Kaldirilacak
-  - [ ] Yeni: Her islem REST API uzerinden DB'ye gidecek
-  - [ ] `addPromptToHistory()` -> `POST /api/prompts/history`
-  - [ ] `toggleFavorite()` -> `PUT /api/prompts/history/:id/favorite`
-  - [ ] `deletePromptFromHistory()` -> `DELETE /api/prompts/history/:id`
-  - [ ] `clearPromptHistory()` -> `DELETE /api/prompts/history` + onay dialog
-- [ ] Prompt History UI bilesen'i (mevcut veya yeni):
-  - [ ] Infinite scroll / pagination (50 item per page)
-  - [ ] Studio tipi filtre butonlari (8 studio icon'u)
-  - [ ] "Sadece Favoriler" toggle switch
-  - [ ] Arama cubugu (prompt text icinde search)
-  - [ ] Tag filtreleme (tag chip'leri)
-  - [ ] Tarih araligi secici (date range picker)
-  - [ ] Her prompt karti: studio icon, prompt preview, model, tarih, favori yildizi, puan
-  - [ ] Prompt kartina tikla -> prompt detayi dialog (tam metin + output + parameters)
-  - [ ] "Tekrar Kullan" butonu — prompt'u ilgili studio'ya yukle
-  - [ ] "Sil" butonu — onay dialog ile
-  - [ ] Bos durum: "Henuz prompt gecmisiniz yok" empty state
+- [x] Zustand store'dan Prompt History'yi PostgreSQL'e tasima:
+  - [x] Mevcut: `promptHistory` state + localStorage persist -> Kaldirilacak
+  - [x] Yeni: Her islem REST API uzerinden DB'ye gidecek
+  - [x] `addPromptToHistory()` -> `POST /api/prompts/history`
+  - [x] `toggleFavorite()` -> `PUT /api/prompts/history/:id/favorite`
+  - [x] `deletePromptFromHistory()` -> `DELETE /api/prompts/history/:id`
+  - [x] `clearPromptHistory()` -> `DELETE /api/prompts/history` + onay dialog
+- [x] Prompt History UI bilesen'i (mevcut veya yeni):
+  - [x] Infinite scroll / pagination (50 item per page)
+  - [x] Studio tipi filtre butonlari (8 studio icon'u)
+  - [x] "Sadece Favoriler" toggle switch
+  - [x] Arama cubugu (prompt text icinde search)
+  - [x] Tag filtreleme (tag chip'leri)
+  - [x] Tarih araligi secici (date range picker)
+  - [x] Her prompt karti: studio icon, prompt preview, model, tarih, favori yildizi, puan
+  - [x] Prompt kartina tikla -> prompt detayi dialog (tam metin + output + parameters)
+  - [x] "Tekrar Kullan" butonu — prompt'u ilgili studio'ya yukle
+  - [x] "Sil" butonu — onay dialog ile
+  - [x] Bos durum: "Henuz prompt gecmisiniz yok" empty state
 
 ---
 
@@ -4848,71 +4837,72 @@ await prisma.account.createMany({
 > **Ek Stripe detaylari:** BOLUM 15 (korunacak)
 
 #### 16.3.1 Billing Sayfalari — PostgreSQL Gecisi
-- [ ] **Pricing Sayfasi** (`src/pages/Pricing.tsx`):
-  - [ ] Mevcut 3 tier yapisi korunacak (STARTER/CREATOR/STUDIO PRO)
-  - [ ] Kullanicinin aktif plan'ini DB'den cek ve highlight et:
-    - [ ] `GET /api/billing/subscription/status` -> `{ plan, status, credits, periodEnd }`
-    - [ ] Aktif plan'a "Mevcut Plan" badge goster
-    - [ ] Daha dusuk planlara "Downgrade" butonu, yuksek planlara "Upgrade" butonu
-  - [ ] Aylik/Yillik toggle switch (BOLUM 9B.10'da tanimli)
-  - [ ] Fiyat gosterimi: mevcut CountdownTimer korunacak
-  - [ ] "Basla" butonu davranisi:
-    - [ ] Giris yapmamis: LoginModal ac (register tab)
-    - [ ] Starter (mevcut): "Mevcut Plan" goster
-    - [ ] Creator/Studio Pro: `POST /api/billing/subscription/checkout` -> Stripe URL
-- [ ] **Checkout Sayfasi** (`src/pages/Checkout.tsx`):
-  - [ ] Mevcut TL/USD exchange rate korunacak
-  - [ ] Mevcut promo code input korunacak
-  - [ ] Mevcut KDV (%20) hesabi: Stripe Tax ile senkronize
-  - [ ] `handlePayment` fonksiyonu:
-    - [ ] `POST /api/billing/checkout` veya `POST /api/billing/subscription/checkout` -> `window.location.href = stripeUrl`
-  - [ ] Checkout tamamlandiktan sonra:
-    - [ ] Wallet bakiyesini yeniden cek
-    - [ ] Subscription status yeniden cek
-    - [ ] Store'u guncelle
-- [ ] **Checkout Success sayfasi** (yeni: `/checkout/success`):
-  - [ ] Stripe redirect sonrasi gosterilecek
-  - [ ] "Odemeniz basariyla alindi" mesaji
-  - [ ] Yeni kredi bakiyesi goster
-  - [ ] "Studio'ya Don" butonu
-- [ ] **Checkout Cancel sayfasi** (yeni: `/checkout/cancel`):
-  - [ ] "Islem iptal edildi" mesaji
-  - [ ] "Pricing'e Don" butonu
+#### 16.3.1 Billing Sayfalari — PostgreSQL Gecisi
+- [x] **Pricing Sayfasi** (`src/pages/Pricing.tsx`):
+  - [x] Mevcut 3 tier yapisi korunacak (STARTER/CREATOR/STUDIO PRO)
+  - [x] Kullanicinin aktif plan'ini DB'den cek ve highlight et:
+    - [x] `GET /api/billing/subscription/status` -> `{ plan, status, credits, periodEnd }`
+    - [x] Aktif plan'a "Mevcut Plan" badge goster
+    - [x] Daha dusuk planlara "Downgrade" butonu, yuksek planlara "Upgrade" butonu
+  - [x] Aylik/Yillik toggle switch (BOLUM 9B.10'da tanimli)
+  - [x] Fiyat gosterimi: mevcut CountdownTimer korunacak
+  - [x] "Basla" butonu davranisi:
+    - [x] Giris yapmamis: LoginModal ac (register tab)
+    - [x] Starter (mevcut): "Mevcut Plan" goster
+    - [x] Creator/Studio Pro: `POST /api/billing/subscription/checkout` -> Stripe URL
+- [x] **Checkout Sayfasi** (`src/pages/Checkout.tsx`):
+  - [x] Mevcut TL/USD exchange rate korunacak
+  - [x] Mevcut promo code input korunacak
+  - [x] Mevcut KDV (%20) hesabi: Stripe Tax ile senkronize
+  - [x] `handlePayment` fonksiyonu:
+    - [x] `POST /api/billing/checkout` veya `POST /api/billing/subscription/checkout` -> `window.location.href = stripeUrl`
+  - [x] Checkout tamamlandiktan sonra:
+    - [x] Wallet bakiyesini yeniden cek
+    - [x] Subscription status yeniden cek
+    - [x] Store'u guncelle
+- [x] **Checkout Success sayfasi** (yeni: `/checkout/success`):
+  - [x] Stripe redirect sonrasi gosterilecek
+  - [x] "Odemeniz basariyla alindi" mesaji
+  - [x] Yeni kredi bakiyesi goster
+  - [x] "Studio'ya Don" butonu
+- [x] **Checkout Cancel sayfasi** (yeni: `/checkout/cancel`):
+  - [x] "Islem iptal edildi" mesaji
+  - [x] "Pricing'e Don" butonu
 
 #### 16.3.2 Wallet & Ledger — PostgreSQL Gecisi
-- [ ] `get_wallet_balance` API endpoint yaz:
-  - [ ] `SELECT credits, lifetime_credits, currency FROM wallets WHERE user_id = $1`
-  - [ ] `Decimal` -> frontend'de `number` olarak donmeli
-  - [ ] Response: `{ credits: number, lifetimeCredits: number, currency: string }`
-- [ ] `get_ledger_history` API endpoint yaz:
-  - [ ] `SELECT * FROM ledger_entries WHERE user_id = $1 ORDER BY created_at DESC`
-  - [ ] Cursor-based pagination
-  - [ ] Filtreler: `type` (credit/debit/refund...), tarih araligi
-  - [ ] Response: `{ items: LedgerEntry[], nextCursor, totalCount }`
-- [ ] `create_topup_session` API endpoint yaz (mevcut — PostgreSQL uyarla):
-  - [ ] Stripe Checkout Session olustur (`mode: 'payment'`)
-  - [ ] Basarili odeme sonrasi: `INSERT INTO ledger_entries` + `UPDATE wallets SET credits = credits + $amount`
-  - [ ] Transaction: wallet + ledger atomik (tek transaction)
-- [ ] Kredi harcama (her prompt generation'da):
-  - [ ] `pricing_matrix` tablosundan model maliyetini cek
-  - [ ] `UPDATE wallets SET credits = credits - $cost WHERE user_id = $1 AND credits >= $cost`
-  - [ ] Yetersiz kredi: islem reddi + "Kredi yetersiz" dialog (BOLUM 9B.10'da tanimli)
-  - [ ] `INSERT INTO ledger_entries` (type: 'debit', description: model + studio)
+- [x] `get_wallet_balance` API endpoint yaz:
+  - [x] `SELECT credits, lifetime_credits, currency FROM wallets WHERE user_id = $1`
+  - [x] `Decimal` -> frontend'de `number` olarak donmeli
+  - [x] Response: `{ credits: number, lifetimeCredits: number, currency: string }`
+- [x] `get_ledger_history` API endpoint yaz:
+  - [x] `SELECT * FROM ledger_entries WHERE user_id = $1 ORDER BY created_at DESC`
+  - [x] Cursor-based pagination
+  - [x] Filtreler: `type` (credit/debit/refund...), tarih araligi
+  - [x] Response: `{ items: LedgerEntry[], nextCursor, totalCount }`
+- [x] `create_topup_session` API endpoint yaz (mevcut — PostgreSQL uyarla):
+  - [x] Stripe Checkout Session olustur (`mode: 'payment'`)
+  - [x] Basarili odeme sonrasi: `INSERT INTO ledger_entries` + `UPDATE wallets SET credits = credits + $amount`
+  - [x] Transaction: wallet + ledger atomik (tek transaction)
+- [x] Kredi harcama (her prompt generation'da):
+  - [x] `pricing_matrix` tablosundan model maliyetini cek
+  - [x] `UPDATE wallets SET credits = credits - $cost WHERE user_id = $1 AND credits >= $cost`
+  - [x] Yetersiz kredi: islem reddi + "Kredi yetersiz" dialog (BOLUM 9B.10'da tanimli)
+  - [x] `INSERT INTO ledger_entries` (type: 'debit', description: model + studio)
 
 #### 16.3.3 Receipt & Fatura — PostgreSQL Gecisi
-- [ ] `download_receipt` API endpoint yaz:
-  - [ ] `SELECT * FROM receipts WHERE id = $1 AND user_id = $2`
-  - [ ] Mevcut jsPDF + autoTable PDF olusturma korunacak
-  - [ ] `invoice_number` formati: `PROMTX-2026-XXXX`
-  - [ ] `billing_address` JSONB'den oku
-- [ ] Receipt listesi IPC (yeni: `get_receipts`):
-  - [ ] `SELECT * FROM receipts WHERE user_id = $1 ORDER BY created_at DESC`
-  - [ ] Pagination
-  - [ ] Settings sayfasinda veya ayri bir `/billing/receipts` sayfasinda goster
-- [ ] Her odeme sonrasi otomatik Receipt olustur:
-  - [ ] `INSERT INTO receipts` (order_id, amount, currency, tax_amount, status)
-  - [ ] PDF generate et ve S3'e yukle (veya lokal sakla)
-  - [ ] `pdf_url` ve `s3_key` kaydet
+- [x] `download_receipt` API endpoint yaz:
+  - [x] `SELECT * FROM receipts WHERE id = $1 AND user_id = $2`
+  - [x] Mevcut jsPDF + autoTable PDF olusturma korunacak
+  - [x] `invoice_number` formati: `PROMTX-2026-XXXX`
+  - [x] `billing_address` JSONB'den oku
+- [x] Receipt listesi IPC (yeni: `get_receipts`):
+  - [x] `SELECT * FROM receipts WHERE user_id = $1 ORDER BY created_at DESC`
+  - [x] Pagination
+  - [x] Settings sayfasinda veya ayri bir `/billing/receipts` sayfasinda goster
+- [x] Her odeme sonrasi otomatik Receipt olustur:
+  - [x] `INSERT INTO receipts` (order_id, amount, currency, tax_amount, status)
+  - [x] PDF generate et ve S3'e yukle (veya lokal sakla)
+  - [x] `pdf_url` ve `s3_key` kaydet
 
 ---
 
@@ -4923,95 +4913,96 @@ await prisma.account.createMany({
 > **Prisma:** User, Account, Session, ApiKey, Notification
 
 #### 16.4.1 Hesap Bilgileri — PostgreSQL Gecisi
-- [ ] **Profil Bilgileri** (Settings sayfasinda):
-  - [ ] Email gosterimi: DB'den cek (mevcut store'dan — degisiklik yok)
-  - [ ] Display name gosterimi ve duzenleme:
-    - [ ] `PUT /api/auth/profile` — display name guncelleme
-    - [ ] `UPDATE users SET display_name = $1 WHERE id = $2`
-  - [ ] Avatar yukleme ve gosterim:
-    - [ ] `PUT /api/auth/avatar` — avatar yukleme
-    - [ ] Avatar S3'e yukle veya base64 olarak sakla
-    - [ ] `UPDATE users SET avatar_url = $1 WHERE id = $2`
-  - [ ] Dil tercihi kaydetme:
-    - [ ] `UPDATE users SET locale = $1 WHERE id = $2` (mevcut frontend'de localStorage — DB'ye tasima)
-  - [ ] Timezone:
-    - [ ] `UPDATE users SET timezone = $1 WHERE id = $2`
-    - [ ] Otomatik algilansin (`Intl.DateTimeFormat().resolvedOptions().timeZone`)
-- [ ] **Bagli Hesaplar** (Accounts tablosu):
-  - [ ] Bagli OAuth provider'lari listele:
-    - [ ] `GET /api/auth/providers`
-    - [ ] `SELECT provider, provider_account_id, created_at FROM accounts WHERE user_id = $1`
-    - [ ] Google baglanmis ise: Google icon + email goster
-  - [ ] Yeni provider bagla:
-    - [ ] "Google Hesabi Bagla" butonu (eger henuz baglanmamissa)
-    - [ ] OAuth flow -> Account tablosuna INSERT
-  - [ ] Provider baglantisini kes:
-    - [ ] "Baglantıyı Kes" butonu (en az 1 giris yontemi kalmali — email+password veya baska provider)
-    - [ ] `DELETE FROM accounts WHERE user_id = $1 AND provider = $2`
-    - [ ] Kontrol: son giris yontemini silmeye izin verme
-- [ ] **Sifre Degistirme**:
-  - [ ] `PUT /api/auth/password`
-  - [ ] Mevcut sifreyi dogrula (argon2 verify)
-  - [ ] Yeni sifreyi hash'le ve kaydet
-  - [ ] Diger tum session'lari revoke et (opsiyonel — "Diger cihazlardan cikis yap" checkbox)
-  - [ ] AuditLog: `action: 'user.password_change'`
-- [ ] **2FA / TOTP Yonetimi**:
-  - [ ] `POST /api/auth/setup-2fa`
-  - [ ] TOTP secret olustur, QR code goster
-  - [ ] `POST /api/auth/verify-mfa`
-  - [ ] Dogrulama sonrasi: `UPDATE users SET totp_enabled = true, totp_secret = $1`
-  - [ ] 2FA devre disi birakma: sifre dogrulamasi + `UPDATE users SET totp_enabled = false, totp_secret = NULL`
-  - [ ] Yedek kodlar (backup codes) — SecurePayload tablosunda saklama
-- [ ] **API Key Yonetimi**:
-  - [ ] `POST /api/auth/api-keys`
-  - [ ] Key listesi: `SELECT key_prefix, name, scopes, last_used_at, is_active FROM api_keys WHERE user_id = $1`
-  - [ ] Key olustur: `ptx_` prefix + rastgele 32 karakter, hash'le ve kaydet
-  - [ ] Key sil: `UPDATE api_keys SET is_active = false WHERE id = $1 AND user_id = $2`
-  - [ ] Key scope yonetimi: `['read', 'write', 'generate']`
+#### 16.4.1 Hesap Bilgileri — PostgreSQL Gecisi
+- [x] **Profil Bilgileri** (Settings sayfasinda):
+  - [x] Email gosterimi: DB'den cek (mevcut store'dan — degisiklik yok)
+  - [x] Display name gosterimi ve duzenleme:
+    - [x] `PUT /api/auth/profile` — display name guncelleme
+    - [x] `UPDATE users SET display_name = $1 WHERE id = $2`
+  - [x] Avatar yukleme ve gosterim:
+    - [x] `PUT /api/auth/avatar` — avatar yukleme
+    - [x] Avatar S3'e yukle veya base64 olarak sakla
+    - [x] `UPDATE users SET avatar_url = $1 WHERE id = $2`
+  - [x] Dil tercihi kaydetme:
+    - [x] `UPDATE users SET locale = $1 WHERE id = $2` (mevcut frontend'de localStorage — DB'ye tasima)
+  - [x] Timezone:
+    - [x] `UPDATE users SET timezone = $1 WHERE id = $2`
+    - [x] Otomatik algilansin (`Intl.DateTimeFormat().resolvedOptions().timeZone`)
+- [x] **Bagli Hesaplar** (Accounts tablosu):
+  - [x] Bagli OAuth provider'lari listele:
+    - [x] `GET /api/auth/providers`
+    - [x] `SELECT provider, provider_account_id, created_at FROM accounts WHERE user_id = $1`
+    - [x] Google baglanmis ise: Google icon + email goster
+  - [x] Yeni provider bagla:
+    - [x] "Google Hesabi Bagla" butonu (eger henuz baglanmamissa)
+    - [x] OAuth flow -> Account tablosuna INSERT
+  - [x] Provider baglantisini kes:
+    - [x] "Baglantıyı Kes" butonu (en az 1 giris yontemi kalmali — email+password veya baska provider)
+    - [x] `DELETE FROM accounts WHERE user_id = $1 AND provider = $2`
+    - [x] Kontrol: son giris yontemini silmeye izin verme
+- [x] **Sifre Degistirme**:
+  - [x] `PUT /api/auth/password`
+  - [x] Mevcut sifreyi dogrula (argon2 verify)
+  - [x] Yeni sifreyi hash'le ve kaydet
+  - [x] Diger tum session'lari revoke et (opsiyonel — "Diger cihazlardan cikis yap" checkbox)
+  - [x] AuditLog: `action: 'user.password_change'`
+- [x] **2FA / TOTP Yonetimi**:
+  - [x] `POST /api/auth/setup-2fa`
+  - [x] TOTP secret olustur, QR code goster
+  - [x] `POST /api/auth/verify-mfa`
+  - [x] Dogrulama sonrasi: `UPDATE users SET totp_enabled = true, totp_secret = $1`
+  - [x] 2FA devre disi birakma: sifre dogrulamasi + `UPDATE users SET totp_enabled = false, totp_secret = NULL`
+  - [x] Yedek kodlar (backup codes) — SecurePayload tablosunda saklama
+- [x] **API Key Yonetimi**:
+  - [x] `POST /api/auth/api-keys`
+  - [x] Key listesi: `SELECT key_prefix, name, scopes, last_used_at, is_active FROM api_keys WHERE user_id = $1`
+  - [x] Key olustur: `ptx_` prefix + rastgele 32 karakter, hash'le ve kaydet
+  - [x] Key sil: `UPDATE api_keys SET is_active = false WHERE id = $1 AND user_id = $2`
+  - [x] Key scope yonetimi: `['read', 'write', 'generate']`
 
 #### 16.4.2 AccountCenter Bilesen'i — PostgreSQL Gecisi
-- [ ] **Kredi Bakiyesi** (mevcut — DB'den cek):
-  - [ ] Mevcut `userCredits` store value -> DB'den anlik cek
-  - [ ] `GET /api/billing/wallet` -> `{ credits, lifetimeCredits }`
-  - [ ] Progress bar: `creditsUsedThisPeriod / monthlyCredits` orani
-  - [ ] "Kredi Yukle" butonu -> Checkout sayfasi
-- [ ] **Abonelik Durumu** (yeni — AccountCenter'a ekle):
-  - [ ] Aktif plan adi (Starter/Creator/Studio Pro)
-  - [ ] Sonraki yenileme tarihi (`currentPeriodEnd`)
-  - [ ] Iptal durumu varsa: "X tarihinde sona erecek" uyarisi
-  - [ ] "Plani Degistir" butonu -> Pricing sayfasi
-- [ ] **Session Suresi** (mevcut — degisiklik yok):
-  - [ ] Mevcut elapsed time sayaci korunacak
-- [ ] **Bildirimler** (yeni):
-  - [ ] Okunmamis bildirim sayisi badge
-  - [ ] `GET /api/notifications?unread=true` -> `Notification[]`
-  - [ ] Bildirim listesi dropdown/modal
-  - [ ] Okundu isaretleme: `UPDATE notifications SET is_read = true, read_at = NOW()`
+- [x] **Kredi Bakiyesi** (mevcut — DB'den cek):
+  - [x] Mevcut `userCredits` store value -> DB'den anlik cek
+  - [x] `GET /api/billing/wallet` -> `{ credits, lifetimeCredits }`
+  - [x] Progress bar: `creditsUsedThisPeriod / monthlyCredits` orani
+  - [x] "Kredi Yukle" butonu -> Checkout sayfasi
+- [x] **Abonelik Durumu** (yeni — AccountCenter'a ekle):
+  - [x] Aktif plan adi (Starter/Creator/Studio Pro)
+  - [x] Sonraki yenileme tarihi (`currentPeriodEnd`)
+  - [x] Iptal durumu varsa: "X tarihinde sona erecek" uyarisi
+  - [x] "Plani Degistir" butonu -> Pricing sayfasi
+- [x] **Session Suresi** (mevcut — degisiklik yok):
+  - [x] Mevcut elapsed time sayaci korunacak
+- [x] **Bildirimler** (yeni):
+  - [x] Okunmamis bildirim sayisi badge
+  - [x] `GET /api/notifications?unread=true` -> `Notification[]`
+  - [x] Bildirim listesi dropdown/modal
+  - [x] Okundu isaretleme: `UPDATE notifications SET is_read = true, read_at = NOW()`
 
 #### 16.4.3 Data Export — PostgreSQL Gecisi
-- [ ] Mevcut `handleExportData` (Settings.tsx) guncelle:
-  - [ ] Mevcut: local store'dan JSON export (email, tier, credits, usage)
-  - [ ] Yeni: DB'den tum kullanici verisini cek ve export et:
-    - [ ] `GET /api/auth/export-data`
-    - [ ] User profil bilgileri
-    - [ ] Prompt history (tum kayitlar)
-    - [ ] Wallet + ledger history
-    - [ ] Image generations
-    - [ ] DNA vault
-    - [ ] Conversations + messages
-  - [ ] GDPR uyumlu: kullanici tum verisini indirebilmeli
-  - [ ] Format: JSON (mevcut) + opsiyonel CSV
+- [x] Mevcut `handleExportData` (Settings.tsx) guncelle:
+  - [x] Mevcut: local store'dan JSON export (email, tier, credits, usage)
+  - [x] Yeni: DB'den tum kullanici verisini cek ve export et:
+    - [x] `GET /api/auth/export-data`
+    - [x] User profil bilgileri
+    - [x] Prompt history (tum kayitlar)
+    - [x] Wallet + ledger history
+    - [x] Image generations
+    - [x] DNA vault
+    - [x] Conversations + messages
+  - [x] GDPR uyumlu: kullanici tum verisini indirebilmeli
+  - [x] Format: JSON (mevcut) + opsiyonel CSV
 
 #### 16.4.4 Hesap Silme (Account Deletion)
-- [ ] `DELETE /api/auth/account`:
-  - [ ] Sifre dogrulamasi gerektir
-  - [ ] Stripe aboneligi iptal et (aninda)
-  - [ ] 30 gun soft delete suresi (geri alinabilir)
-  - [ ] `UPDATE users SET deleted_at = NOW(), is_frozen = true`
-  - [ ] 30 gun sonra hard delete: tum iliskili veriler CASCADE silinir
-  - [ ] AuditLog: `action: 'user.delete_request'`
-  - [ ] Iptal email'i gonder: "Hesabiniz 30 gun icinde silinecek"
-  - [ ] Geri alma linki: "Hesabinizi geri almak icin tiklayin"
+- [x] `DELETE /api/auth/account`:
+  - [x] Sifre dogrulamasi gerektir
+  - [x] Stripe aboneligi iptal et (aninda)
+  - [x] 30 gun soft delete suresi (geri alinabilir)
+  - [x] `UPDATE users SET deleted_at = NOW(), is_frozen = true`
+  - [x] 30 gun sonra hard delete: tum iliskili veriler CASCADE silinir
+  - [x] AuditLog: `action: 'user.delete_request'`
+  - [x] Iptal email'i gonder: "Hesabiniz 30 gun icinde silinecek"
+  - [x] Geri alma linki: "Hesabinizi geri almak icin tiklayin"
 
 ---
 
@@ -5022,17 +5013,17 @@ await prisma.account.createMany({
 > **Prisma:** User, Wallet, Subscription, AuditLog, Session
 
 #### 16.5.1 Kullanici Listesi — PostgreSQL Gecisi
-- [ ] `admin_get_users` API endpoint yaz:
-  - [ ] `SELECT u.*, w.credits, s.plan, s.status FROM users u LEFT JOIN wallets w ON w.user_id = u.id LEFT JOIN subscriptions s ON s.user_id = u.id`
-  - [ ] Cursor-based veya offset pagination: `LIMIT 25 OFFSET $offset`
-  - [ ] Arama: `WHERE email ILIKE '%$term%' OR display_name ILIKE '%$term%'`
-  - [ ] Filtreler:
-    - [ ] Role: `WHERE role = $role` (free/pro/enterprise/admin/super_admin)
-    - [ ] Durum: `WHERE is_frozen = true/false`
-    - [ ] Plan: `WHERE s.plan = $plan` (starter/creator/studio_pro)
-    - [ ] Kayit tarihi: `WHERE created_at BETWEEN $start AND $end`
-  - [ ] Siralama: `ORDER BY created_at DESC` (default), `email ASC`, `login_count DESC`
-  - [ ] Response:
+- [x] `admin_get_users` API endpoint yaz:
+  - [x] `SELECT u.*, w.credits, s.plan, s.status FROM users u LEFT JOIN wallets w ON w.user_id = u.id LEFT JOIN subscriptions s ON s.user_id = u.id`
+  - [x] Cursor-based veya offset pagination: `LIMIT 25 OFFSET $offset`
+  - [x] Arama: `WHERE email ILIKE '%$term%' OR display_name ILIKE '%$term%'`
+  - [x] Filtreler:
+    - [x] Role: `WHERE role = $role` (free/pro/enterprise/admin/super_admin)
+    - [x] Durum: `WHERE is_frozen = true/false`
+    - [x] Plan: `WHERE s.plan = $plan` (starter/creator/studio_pro)
+    - [x] Kayit tarihi: `WHERE created_at BETWEEN $start AND $end`
+  - [x] Siralama: `ORDER BY created_at DESC` (default), `email ASC`, `login_count DESC`
+  - [x] Response:
     ```typescript
     {
       users: {
@@ -5054,64 +5045,64 @@ await prisma.account.createMany({
       pageSize: number;
     }
     ```
-- [ ] Frontend kullanici listesi tablosu:
-  - [ ] Mevcut `UserRecord` interface guncelle (subscription, credits ekle)
-  - [ ] Tablo sutunlari: Email, Ad, Rol, Plan, Kredi, Durum, Son Giris, Kayit Tarihi
-  - [ ] Arama cubugu (mevcut `searchTerm` — korunacak)
-  - [ ] Filtre dropdown'lari (role, plan, durum)
-  - [ ] Pagination kontrolleri (onceki/sonraki/sayfa numarasi)
+- [x] Frontend kullanici listesi tablosu:
+  - [x] Mevcut `UserRecord` interface guncelle (subscription, credits ekle)
+  - [x] Tablo sutunlari: Email, Ad, Rol, Plan, Kredi, Durum, Son Giris, Kayit Tarihi
+  - [x] Arama cubugu (mevcut `searchTerm` — korunacak)
+  - [x] Filtre dropdown'lari (role, plan, durum)
+  - [x] Pagination kontrolleri (onceki/sonraki/sayfa numarasi)
 
 #### 16.5.2 Kullanici Detay & Islemleri — PostgreSQL Gecisi
-- [ ] **Kullanici Detay Sayfasi** (yeni veya modal):
-  - [ ] Profil bilgileri: email, displayName, avatarUrl, role, locale, timezone
-  - [ ] Hesap durumu: isFrozen, isEmailVerified, loginCount, lastLoginAt, failedLoginCount
-  - [ ] Bagli hesaplar: Account tablosundaki provider'lar
-  - [ ] Abonelik: plan, status, currentPeriodEnd, creditsUsed/monthlyCredits
-  - [ ] Wallet: credits, lifetimeCredits
-  - [ ] Son aktivite: son 10 audit log kaydi
-  - [ ] Session listesi: aktif session'lar (IP, cihaz, tarih)
-- [ ] **Kullanici Dondurma/Acma**:
-  - [ ] `admin_freeze_user` API endpoint yaz:
-    - [ ] `UPDATE users SET is_frozen = $1 WHERE id = $2`
-    - [ ] Dondurulunca: tum aktif session'lari revoke et
-    - [ ] AuditLog: `action: 'admin.freeze_user'` veya `'admin.unfreeze_user'`
-    - [ ] Notification: kullaniciya "Hesabiniz donduruldu" bildirimi
-- [ ] **Kredi Yonetimi**:
-  - [ ] `admin_update_credits` API endpoint yaz:
-    - [ ] `UPDATE wallets SET credits = credits + $amount WHERE user_id = $1`
-    - [ ] `INSERT INTO ledger_entries` (type: 'adjustment', description: 'Admin kredi ayarlamasi')
-    - [ ] Negatif ayarlama: kredi dusurme (ama 0'in altina dusurme)
-    - [ ] AuditLog: `action: 'admin.update_credits'`, eski/yeni bakiye
-- [ ] **Rol Degistirme** (yeni):
-  - [ ] `PUT /api/admin/users/:id/role`
-  - [ ] `UPDATE users SET role = $1 WHERE id = $2`
-  - [ ] Rol degisikligi Subscription ile senkronize edilmeli
-  - [ ] AuditLog: `action: 'admin.change_role'`
-  - [ ] Sadece super_admin rol degistirebilir
-- [ ] **Impersonate (Kullanici Gibi Goruntule)**:
-  - [ ] `impersonate_user` API endpoint:
-    - [ ] 30dk gecerli gecici session olustur
-    - [ ] `ImpersonationBanner` bilesen'i goster (mevcut — korunacak)
-    - [ ] AuditLog: `action: 'admin.impersonate'`
-    - [ ] Impersonate sirasinda: yazma/silme islemleri YASAK (read-only)
+- [x] **Kullanici Detay Sayfasi** (yeni veya modal):
+  - [x] Profil bilgileri: email, displayName, avatarUrl, role, locale, timezone
+  - [x] Hesap durumu: isFrozen, isEmailVerified, loginCount, lastLoginAt, failedLoginCount
+  - [x] Bagli hesaplar: Account tablosundaki provider'lar
+  - [x] Abonelik: plan, status, currentPeriodEnd, creditsUsed/monthlyCredits
+  - [x] Wallet: credits, lifetimeCredits
+  - [x] Son aktivite: son 10 audit log kaydi
+  - [x] Session listesi: aktif session'lar (IP, cihaz, tarih)
+- [x] **Kullanici Dondurma/Acma**:
+  - [x] `admin_freeze_user` API endpoint yaz:
+    - [x] `UPDATE users SET is_frozen = $1 WHERE id = $2`
+    - [x] Dondurulunca: tum aktif session'lari revoke et
+    - [x] AuditLog: `action: 'admin.freeze_user'` veya `'admin.unfreeze_user'`
+    - [x] Notification: kullaniciya "Hesabiniz donduruldu" bildirimi
+- [x] **Kredi Yonetimi**:
+  - [x] `admin_update_credits` API endpoint yaz:
+    - [x] `UPDATE wallets SET credits = credits + $amount WHERE user_id = $1`
+    - [x] `INSERT INTO ledger_entries` (type: 'adjustment', description: 'Admin kredi ayarlamasi')
+    - [x] Negatif ayarlama: kredi dusurme (ama 0'in altina dusurme)
+    - [x] AuditLog: `action: 'admin.update_credits'`, eski/yeni bakiye
+- [x] **Rol Degistirme** (yeni):
+  - [x] `PUT /api/admin/users/:id/role`
+  - [x] `UPDATE users SET role = $1 WHERE id = $2`
+  - [x] Rol degisikligi Subscription ile senkronize edilmeli
+  - [x] AuditLog: `action: 'admin.change_role'`
+  - [x] Sadece super_admin rol degistirebilir
+- [x] **Impersonate (Kullanici Gibi Goruntule)**:
+  - [x] `impersonate_user` API endpoint:
+    - [x] 30dk gecerli gecici session olustur
+    - [x] `ImpersonationBanner` bilesen'i goster (mevcut — korunacak)
+    - [x] AuditLog: `action: 'admin.impersonate'`
+    - [x] Impersonate sirasinda: yazma/silme islemleri YASAK (read-only)
 
 #### 16.5.3 Admin Metrikleri — PostgreSQL Gecisi
-- [ ] `get_db_stats` API endpoint yaz:
-  - [ ] `SELECT relname, n_live_tup FROM pg_stat_user_tables` — tablo bazli kayit sayisi
-  - [ ] Response: `{ users: N, conversations: N, promptHistory: N, images: N, ... }`
-- [ ] `get_metrics` API endpoint yaz:
-  - [ ] Toplam kullanici sayisi (role bazli dagilim)
-  - [ ] Aktif abonelik sayisi (plan bazli dagilim)
-  - [ ] Gunluk/haftalik/aylik yeni kayit sayisi
-  - [ ] Toplam gelir (sum of ledger_entries where type = 'credit')
-  - [ ] En cok kullanilan studioType
-  - [ ] En cok kullanilan AI model
-  - [ ] Ortalama session suresi
-- [ ] Admin Dashboard UI:
-  - [ ] Mevcut metrik kartlari korunacak (activeUsers, systemLoad, apiCalls, dbStatus)
-  - [ ] Yeni: Plan dagilimi pasta grafigi
-  - [ ] Yeni: Gunluk kayit/giris trendi cizgi grafigi
-  - [ ] Yeni: Gelir trendi grafigi
+- [x] `get_db_stats` API endpoint yaz:
+  - [x] `SELECT relname, n_live_tup FROM pg_stat_user_tables` — tablo bazli kayit sayisi
+  - [x] Response: `{ users: N, conversations: N, promptHistory: N, images: N, ... }`
+- [x] `get_metrics` API endpoint yaz:
+  - [x] Toplam kullanici sayisi (role bazli dagilim)
+  - [x] Aktif abonelik sayisi (plan bazli dagilim)
+  - [x] Gunluk/haftalik/aylik yeni kayit sayisi
+  - [x] Toplam gelir (sum of ledger_entries where type = 'credit')
+  - [x] En cok kullanilan studioType
+  - [x] En cok kullanilan AI model
+  - [x] Ortalama session suresi
+- [x] Admin Dashboard UI:
+  - [x] Mevcut metrik kartlari korunacak (activeUsers, systemLoad, apiCalls, dbStatus)
+  - [x] Yeni: Plan dagilimi pasta grafigi
+  - [x] Yeni: Gunluk kayit/giris trendi cizgi grafigi
+  - [x] Yeni: Gelir trendi grafigi
 
 ---
 
@@ -5122,16 +5113,16 @@ await prisma.account.createMany({
 > **Prisma:** AuditLog, SecurityEvent, AppLog, TokenUsage
 
 #### 16.6.1 Security Logs (Guvenlik Loglari) — PostgreSQL Gecisi
-- [ ] `admin_logs` API endpoint yaz (kullanici kendi loglarini gorsun):
-  - [ ] Kullanici: `SELECT * FROM audit_logs WHERE user_id = $1 ORDER BY created_at DESC`
-  - [ ] Admin: `SELECT * FROM audit_logs ORDER BY created_at DESC` (tum kullanicilar)
-  - [ ] Cursor-based pagination: `LIMIT 50`
-  - [ ] Filtreler:
-    - [ ] `action` filtresi: login, logout, register, password_change, generation, billing vs.
-    - [ ] `level` filtresi: debug, info, warn, error, critical
-    - [ ] Tarih araligi
-    - [ ] IP adresi
-  - [ ] Response:
+- [x] `admin_logs` API endpoint yaz (kullanici kendi loglarini gorsun):
+  - [x] Kullanici: `SELECT * FROM audit_logs WHERE user_id = $1 ORDER BY created_at DESC`
+  - [x] Admin: `SELECT * FROM audit_logs ORDER BY created_at DESC` (tum kullanicilar)
+  - [x] Cursor-based pagination: `LIMIT 50`
+  - [x] Filtreler:
+    - [x] `action` filtresi: login, logout, register, password_change, generation, billing vs.
+    - [x] `level` filtresi: debug, info, warn, error, critical
+    - [x] Tarih araligi
+    - [x] IP adresi
+  - [x] Response:
     ```typescript
     {
       logs: {
@@ -5147,27 +5138,27 @@ await prisma.account.createMany({
       totalCount: number;
     }
     ```
-- [ ] Frontend security log tablosu guncelle:
-  - [ ] Mevcut `LogEntry` interface'i PostgreSQL response'a uyarla
-  - [ ] Mevcut `fetchLogs` fonksiyonunu pagination destekli yap
-  - [ ] Mevcut arama cubugu: `action ILIKE` ve `metadata` JSONB icinde arama
-  - [ ] Log detay modal'i: tiklayinca metadata JSONB'yi goster
-  - [ ] Cihaz/OS/browser bilgisi: `userAgent` parse (mevcut — korunacak)
-  - [ ] CSV / PDF export (mevcut PDF export korunacak — jsPDF)
+- [x] Frontend security log tablosu guncelle:
+  - [x] Mevcut `LogEntry` interface'i PostgreSQL response'a uyarla
+  - [x] Mevcut `fetchLogs` fonksiyonunu pagination destekli yap
+  - [x] Mevcut arama cubugu: `action ILIKE` ve `metadata` JSONB icinde arama
+  - [x] Log detay modal'i: tiklayinca metadata JSONB'yi goster
+  - [x] Cihaz/OS/browser bilgisi: `userAgent` parse (mevcut — korunacak)
+  - [x] CSV / PDF export (mevcut PDF export korunacak — jsPDF)
 
 #### 16.6.2 Token Usage Logs — PostgreSQL Gecisi
-- [ ] `get_token_usage_history` API endpoint yaz:
-  - [ ] `SELECT * FROM token_usage WHERE user_id = $1 ORDER BY created_at DESC`
-  - [ ] Cursor-based pagination
-  - [ ] Filtreler: `modelId`, `provider`, `studioType`, tarih araligi
-  - [ ] `isCached` filtresi (cache hit'leri ayir)
-  - [ ] Response: `{ items: TokenUsageRecord[], nextCursor, totalCount }`
-- [ ] `get_token_usage_summary` API endpoint yaz:
-  - [ ] `SELECT SUM(input_tokens), SUM(output_tokens), SUM(cost_usd), COUNT(*) FROM token_usage WHERE user_id = $1 AND created_at BETWEEN $start AND $end`
-  - [ ] Periyot bazli: daily, weekly, monthly, all
-  - [ ] Model bazli breakdown: `GROUP BY model_id`
-  - [ ] Studio bazli breakdown: `GROUP BY studio_type`
-  - [ ] Response:
+- [x] `get_token_usage_history` API endpoint yaz:
+  - [x] `SELECT * FROM token_usage WHERE user_id = $1 ORDER BY created_at DESC`
+  - [x] Cursor-based pagination
+  - [x] Filtreler: `modelId`, `provider`, `studioType`, tarih araligi
+  - [x] `isCached` filtresi (cache hit'leri ayir)
+  - [x] Response: `{ items: TokenUsageRecord[], nextCursor, totalCount }`
+- [x] `get_token_usage_summary` API endpoint yaz:
+  - [x] `SELECT SUM(input_tokens), SUM(output_tokens), SUM(cost_usd), COUNT(*) FROM token_usage WHERE user_id = $1 AND created_at BETWEEN $start AND $end`
+  - [x] Periyot bazli: daily, weekly, monthly, all
+  - [x] Model bazli breakdown: `GROUP BY model_id`
+  - [x] Studio bazli breakdown: `GROUP BY studio_type`
+  - [x] Response:
     ```typescript
     {
       totalInputTokens: number;
@@ -5180,27 +5171,27 @@ await prisma.account.createMany({
       byStudio: { studioType: string, count: number, cost: number }[];
     }
     ```
-- [ ] Frontend token usage tablosu guncelle:
-  - [ ] Mevcut `TokenUsageRecord` ve `TokenUsageSummary` interface'lerini guncelle
-  - [ ] Mevcut `tokenPeriod` (daily/monthly/all) secici korunacak
-  - [ ] Yeni: model bazli dagilim grafigi (bar chart)
-  - [ ] Yeni: studio bazli dagilim grafigi (pie chart)
-  - [ ] Yeni: gunluk kullanim trendi (line chart)
-  - [ ] Mevcut session-level token sayaci (`sessionInputTokens`, `sessionOutputTokens`) korunacak
+- [x] Frontend token usage tablosu guncelle:
+  - [x] Mevcut `TokenUsageRecord` ve `TokenUsageSummary` interface'lerini guncelle
+  - [x] Mevcut `tokenPeriod` (daily/monthly/all) secici korunacak
+  - [x] Yeni: model bazli dagilim grafigi (bar chart)
+  - [x] Yeni: studio bazli dagilim grafigi (pie chart)
+  - [x] Yeni: gunluk kullanim trendi (line chart)
+  - [x] Mevcut session-level token sayaci (`sessionInputTokens`, `sessionOutputTokens`) korunacak
 
 #### 16.6.3 Aktivite Ozeti (Dashboard) — Yeni
-- [ ] Logs sayfasina "Ozet" tab'i ekle (mevcut security + tokens'a ek):
-  - [ ] Son 24 saat aktivite ozeti:
-    - [ ] Toplam generation sayisi
-    - [ ] Harcanan kredi
-    - [ ] En cok kullanilan studio
-    - [ ] En cok kullanilan model
-  - [ ] Son 7 gun grafigi (gunluk generation sayisi + maliyet)
-  - [ ] Son giris bilgileri: IP, cihaz, zaman (SecurityEvent'ten)
-  - [ ] Aktif session'lar listesi: `SELECT * FROM sessions WHERE user_id = $1 AND status = 'active'`
-    - [ ] "Bu cihaz" isaretleme
-    - [ ] "Cikis Yap" butonu (uzaktan session sonlandirma)
-    - [ ] `UPDATE sessions SET status = 'revoked' WHERE id = $1`
+- [x] Logs sayfasina "Ozet" tab'i ekle (mevcut security + tokens'a ek):
+  - [x] Son 24 saat aktivite ozeti:
+    - [x] Toplam generation sayisi
+    - [x] Harcanan kredi
+    - [x] En cok kullanilan studio
+    - [x] En cok kullanilan model
+  - [x] Son 7 gun grafigi (gunluk generation sayisi + maliyet)
+  - [x] Son giris bilgileri: IP, cihaz, zaman (SecurityEvent'ten)
+  - [x] Aktif session'lar listesi: `SELECT * FROM sessions WHERE user_id = $1 AND status = 'active'`
+    - [x] "Bu cihaz" isaretleme
+    - [x] "Cikis Yap" butonu (uzaktan session sonlandirma)
+    - [x] `UPDATE sessions SET status = 'revoked' WHERE id = $1`
 
 ---
 
@@ -5230,9 +5221,9 @@ await prisma.account.createMany({
 └─────────────────────────────────────────────────┘
 ```
 
-- [ ] Frontend `src/lib/api.ts` — tum istekler HTTP fetch ile backend'e gidecek
-- [ ] API base URL: `VITE_API_URL || 'https://api.promtx.app'`
-- [ ] RESTful route isimlendirme (BOLUM 8.3'te tanimli)
+- [x] Frontend `src/lib/api.ts` — tum istekler HTTP fetch ile backend'e gidecek
+- [x] API base URL: `VITE_API_URL || 'https://api.promtx.app'`
+- [x] RESTful route isimlendirme (BOLUM 8.3'te tanimli)
 
 ### 17.2 API Dizin Yapisi
 
@@ -5322,9 +5313,9 @@ promtx-postgresql/
 │   └── health.ts                 # GET  /api/health (public — auth gereksiz)
 ```
 
-- [ ] `api/` dizin yapisini olustur
-- [ ] Her endpoint Vercel Serverless Function olarak calisacak
-- [ ] Dosya isimlendirme: Vercel file-based routing kurali (`api/auth/login.ts` -> `POST /api/auth/login`)
+- [x] `api/` dizin yapisini olustur
+- [x] Her endpoint Vercel Serverless Function olarak calisacak
+- [x] Dosya isimlendirme: Vercel file-based routing kurali (`api/auth/login.ts` -> `POST /api/auth/login`)
 
 ### 17.3 Paylasilabilir API Yardimcilari (`api/_lib/`)
 
@@ -5342,9 +5333,9 @@ export const prisma = globalForPrisma.prisma || new PrismaClient({
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 ```
 
-- [ ] Prisma Client singleton olustur (serverless cold start optimizasyonu)
-- [ ] Connection pooling: `DATABASE_URL` icinde `?connection_limit=5` (serverless icin dusuk)
-- [ ] Prisma Data Proxy veya PgBouncer dusun (cok sayida concurrent function icin)
+- [x] Prisma Client singleton olustur (serverless cold start optimizasyonu)
+- [x] Connection pooling: `DATABASE_URL` icinde `?connection_limit=5` (serverless icin dusuk)
+- [x] Prisma Data Proxy veya PgBouncer dusun (cok sayida concurrent function icin)
 
 #### 17.3.2 JWT Auth Middleware
 ```typescript
@@ -5381,12 +5372,12 @@ export function requireRole(...roles: string[]) {
 }
 ```
 
-- [ ] JWT dogrulama middleware yaz
-- [ ] `Authorization: Bearer <token>` header'dan token al
-- [ ] Token'i dogrula (jsonwebtoken veya jose)
-- [ ] Session aktiflik kontrolu (DB'den)
-- [ ] Role-based access control: `requireRole('admin', 'super_admin')`
-- [ ] Token expired ise: 401 + `{ code: 'TOKEN_EXPIRED' }` (frontend auto-refresh tetiklesin)
+- [x] JWT dogrulama middleware yaz
+- [x] `Authorization: Bearer <token>` header'dan token al
+- [x] Token'i dogrula (jsonwebtoken veya jose)
+- [x] Session aktiflik kontrolu (DB'den)
+- [x] Role-based access control: `requireRole('admin', 'super_admin')`
+- [x] Token expired ise: 401 + `{ code: 'TOKEN_EXPIRED' }` (frontend auto-refresh tetiklesin)
 
 #### 17.3.3 Standart API Response Formati
 ```typescript
@@ -5411,9 +5402,9 @@ export function error(message: string, code?: string) {
 }
 ```
 
-- [ ] Standart response formati: `{ status: 'success' | 'error', data?, error? }`
-- [ ] **KRITIK:** Mevcut `IpcResponse<T>` ile birebir ayni format — frontend hicbir degisiklik gerektirmez
-- [ ] `ApiError` class'i: HTTP status code + mesaj + opsiyonel code
+- [x] Standart response formati: `{ status: 'success' | 'error', data?, error? }`
+- [x] **KRITIK:** Mevcut `IpcResponse<T>` ile birebir ayni format — frontend hicbir degisiklik gerektirmez
+- [x] `ApiError` class'i: HTTP status code + mesaj + opsiyonel code
 
 #### 17.3.4 Request Validasyonu (Zod)
 ```typescript
@@ -5440,10 +5431,10 @@ export const feedbackSchema = z.object({
 // ... diger schema'lar
 ```
 
-- [ ] `bun add zod` (runtime validation)
-- [ ] Her endpoint icin zod schema tanimla
-- [ ] Request body'yi validate et, gecersizse 400 don
-- [ ] Zod hatalarini kullanici dostu mesajlara cevir
+- [x] `bun add zod` (runtime validation)
+- [x] Her endpoint icin zod schema tanimla
+- [x] Request body'yi validate et, gecersizse 400 don
+- [x] Zod hatalarini kullanici dostu mesajlara cevir
 
 #### 17.3.5 Rate Limiting (Redis Bazli)
 ```typescript
@@ -5457,13 +5448,13 @@ export async function rateLimit(key: string, limit: number, windowSeconds: numbe
 }
 ```
 
-- [ ] Redis bazli rate limiting
-- [ ] Endpoint bazli limitler:
-  - [ ] Auth endpoints: 10 istek / 15dk / IP
-  - [ ] Generation endpoints: 30 istek / dk / kullanici
-  - [ ] Gallery public: 100 istek / dk / IP
-  - [ ] Genel: 200 istek / dk / kullanici
-- [ ] Rate limit asildiysa: `429 Too Many Requests` + `Retry-After` header
+- [x] Redis bazli rate limiting
+- [x] Endpoint bazli limitler:
+  - [x] Auth endpoints: 10 istek / 15dk / IP
+  - [x] Generation endpoints: 30 istek / dk / kullanici
+  - [x] Gallery public: 100 istek / dk / IP
+  - [x] Genel: 200 istek / dk / kullanici
+- [x] Rate limit asildiysa: `429 Too Many Requests` + `Retry-After` header
 
 ### 17.4 Ornek API Endpoint Implementasyonu
 
@@ -5539,8 +5530,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 }
 ```
 
-- [ ] Login endpoint'i yaz (yukaridaki ornek)
-- [ ] Response formati: `{ status: 'success', data: { token, role, userId } }`
+- [x] Login endpoint'i yaz (yukaridaki ornek)
+- [x] Response formati: `{ status: 'success', data: { token, role, userId } }`
 
 #### Gallery Public Endpoint
 ```typescript
