@@ -41,7 +41,10 @@ import {
   handleWorkspaceRemoveMember 
 } from './routes/workspaces';
 import { 
-  handleHealthCheck, handleMetrics, handleEventsLog, handleFeedback 
+  handleHealthCheck, handleMetrics, handleEventsLog, handleFeedback,
+  handleAdminListFeedbacks, handleAdminUpdateFeedbackStatus,
+  handleAdminAddFeedbackNote, handleAdminDeleteFeedback,
+  handleAdminGetFeedbackStats
 } from './routes/system';
 
 
@@ -452,6 +455,31 @@ app.post('/api/events/log', async (c) => {
 
 app.post('/api/feedback', async (c) => {
   const res = await handleFeedback(c.req.raw, new Headers());
+  return new Response(res.body, res);
+});
+
+app.get('/api/admin/feedbacks', async (c) => {
+  const res = await handleAdminListFeedbacks(c.req.raw, new Headers());
+  return new Response(res.body, res);
+});
+
+app.put('/api/admin/feedbacks/status', async (c) => {
+  const res = await handleAdminUpdateFeedbackStatus(c.req.raw, new Headers());
+  return new Response(res.body, res);
+});
+
+app.put('/api/admin/feedbacks/note', async (c) => {
+  const res = await handleAdminAddFeedbackNote(c.req.raw, new Headers());
+  return new Response(res.body, res);
+});
+
+app.delete('/api/admin/feedbacks', async (c) => {
+  const res = await handleAdminDeleteFeedback(c.req.raw, new Headers());
+  return new Response(res.body, res);
+});
+
+app.get('/api/admin/feedbacks/stats', async (c) => {
+  const res = await handleAdminGetFeedbackStats(c.req.raw, new Headers());
   return new Response(res.body, res);
 });
 

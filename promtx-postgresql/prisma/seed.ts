@@ -938,6 +938,40 @@ async function main() {
   });
   console.log('Subscriptions seeded.');
 
+  // 19. Seed Feedback Data
+  console.log('Seeding feedback data...');
+  await prisma.feedback.deleteMany({});
+  await prisma.feedback.createMany({
+    data: [
+      {
+        userId: 'user-free-001',
+        type: 'bug',
+        message: 'Image Studio\'da 16:9 aspect ratio sectigimde cikan gorsel 1:1 oluyor. Chrome 124, Windows 11.',
+        status: 'reviewing',
+        debugContext: { studio: 'image', promptType: 'detailed', viewport: '1920x1080' },
+        createdAt: new Date('2026-04-20T14:30:00Z'),
+      },
+      {
+        userId: 'user-pro-001',
+        type: 'feature',
+        message: 'Video Studio icin daha fazla kamera acisi secenegi gelse harika olurdu.',
+        status: 'pending',
+        debugContext: { studio: 'video', viewport: '2560x1440' },
+        createdAt: new Date('2026-04-22T10:15:00Z'),
+      },
+      {
+        userId: 'user-des-001',
+        type: 'other',
+        message: 'Arayuz cok hizli ve kullanisli, tebrikler.',
+        status: 'resolved',
+        adminNote: 'Kullaniciya tesekkur maili atildi.',
+        debugContext: { studio: 'home', viewport: '1440x900' },
+        createdAt: new Date('2026-04-25T18:00:00Z'),
+      }
+    ] as any
+  });
+  console.log('Feedback data seeded.');
+
   console.log('Seeding complete.');
 
 }

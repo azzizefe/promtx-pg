@@ -3846,144 +3846,144 @@ jobs:
 ## BOLUM 12: YEDEKLEME VE MONITORING
 
 ### 12.1 Yedekleme
-- [ ] Gunluk `pg_dump` ile tam yedek
-- [ ] WAL archiving ile PITR (Point-in-Time Recovery)
-- [ ] S3'e yedek yukleme
-- [ ] 30 gun saklama politikasi
-- [ ] Haftalik geri yukleme testi
+- [x] Gunluk `pg_dump` ile tam yedek
+- [x] WAL archiving ile PITR (Point-in-Time Recovery)
+- [x] S3'e yedek yukleme
+- [x] 30 gun saklama politikasi
+- [x] Haftalik geri yukleme testi
 
 ### 12.2 Monitoring
-- [ ] `pg_stat_statements` ile yavas sorgu tespiti
-- [ ] Connection pool metrikleri
-- [ ] Redis hit/miss orani
-- [ ] Sentry ile hata takibi (mevcut — `@sentry/react`)
-- [ ] PostHog ile kullanici analitigi (mevcut — `posthog-js`)
-- [ ] Vercel Analytics (web deploy)
+- [x] `pg_stat_statements` ile yavas sorgu tespiti
+- [x] Connection pool metrikleri
+- [x] Redis hit/miss orani
+- [x] Sentry ile hata takibi (mevcut — `@sentry/react`)
+- [x] PostHog ile kullanici analitigi (mevcut — `posthog-js`)
+- [x] Vercel Analytics (web deploy)
 
 ---
 
 ## BOLUM 13: ILK CALISTIRMA KONTROL LISTESI
 
 ### Faz 1: Temel Altyapi (1-2 Gun)
-- [ ] 1. Docker Desktop kur
-- [ ] 2. Bun versiyonunu dogrula
-- [ ] 3. `docker-compose.yml` yaz
-- [ ] 4. PostgreSQL + Redis servislerini baslat
-- [ ] 5. Baglanti testi yap (`psql`, `redis-cli`)
+- [x] 1. Docker Desktop kur
+- [x] 2. Bun versiyonunu dogrula
+- [x] 3. `docker-compose.yml` yaz
+- [x] 4. PostgreSQL + Redis servislerini baslat
+- [x] 5. Baglanti testi yap (`psql`, `redis-cli`)
 
 ### Faz 2: Prisma + Schema (1-2 Gun)
-- [ ] 6. Prisma kur: `bun add -d prisma && bun add @prisma/client`
-- [ ] 7. `schema.prisma` yaz (tum modeller)
-- [ ] 8. `bunx prisma migrate dev --name init`
-- [ ] 9. `bunx prisma generate`
-- [ ] 10. `bunx prisma studio` ile tabloları kontrol et
+- [x] 6. Prisma kur: `bun add -d prisma && bun add @prisma/client`
+- [x] 7. `schema.prisma` yaz (tum modeller)
+- [x] 8. `bunx prisma migrate dev --name init`
+- [x] 9. `bunx prisma generate`
+- [x] 10. `bunx prisma studio` ile tabloları kontrol et
 
 ### Faz 3: Seed Data (1 Gun)
-- [ ] 11. `prisma/seed.ts` yaz
-- [ ] 12. `bunx prisma db seed` calistir
-- [ ] 13. Verileri gorsel kontrol et
+- [x] 11. `prisma/seed.ts` yaz
+- [x] 12. `bunx prisma db seed` calistir
+- [x] 13. Verileri gorsel kontrol et
 
 ### Faz 4: Google OAuth (1-2 Gun)
-- [ ] 14. Google Cloud Console'da OAuth ayarla
-- [ ] 15. Backend OAuth endpoint'lerini yaz
-- [ ] 16. Frontend login/register butonlarini ekle
-- [ ] 17. OAuth flow'u uc-uca test et
+- [x] 14. Google Cloud Console'da OAuth ayarla
+- [x] 15. Backend OAuth endpoint'lerini yaz
+- [x] 16. Frontend login/register butonlarini ekle
+- [x] 17. OAuth flow'u uc-uca test et
 
 ### Faz 5: Vercel Deploy (1 Gun)
-- [ ] 18. `vercel.json` olustur
-- [ ] 19. Vercel'de proje olustur ve env vars ekle
-- [ ] 20. Preview deploy test et
-- [ ] 21. Production deploy
+- [x] 18. `vercel.json` olustur
+- [x] 19. Vercel'de proje olustur ve env vars ekle
+- [x] 20. Preview deploy test et
+- [x] 21. Production deploy
 
 ### Faz 6: Sentinel + Guvenlik (1-2 Gun)
-- [ ] 22. Redis Sentinel yapilandir
-- [ ] 23. Rate limiting aktif et
-- [ ] 24. SSL sertifikalari ayarla
-- [ ] 25. Guvenlik kontrol listesini tamamla
+- [x] 22. Redis Sentinel yapilandir
+- [x] 23. Rate limiting aktif et
+- [x] 24. SSL sertifikalari ayarla
+- [x] 25. Guvenlik kontrol listesini tamamla
 
 ### Faz 7: Dogrulama (1 Gun)
-- [ ] 26. Register testi (email + Google)
-- [ ] 27. Login testi (email + Google)
-- [ ] 28. 2FA/TOTP setup ve dogrulama testi (`setup_2fa` + `verify_mfa`)
-- [ ] 29. Prompt olusturma testi — her 8 studio icin:
-  - [ ] Image Studio: `generate_prompt` + `generate_image`
-  - [ ] Video Studio: `generate_prompt` (video prompt)
-  - [ ] Cinema Studio: `generate_prompt` (script)
-  - [ ] Audio Studio: `generate_speech`
-  - [ ] Character Studio: DNA vault kaydet/yukle (`save_dna` + `get_dna_vault`)
-  - [ ] Fashion Studio: `generate_prompt` (fashion prompt)
-  - [ ] Marketing Studio: `generate_prompt` (marketing copy)
-  - [ ] Edit Studio: `outpaint_image` + `upscale_image`
-- [ ] 30. Kredi yukleme/harcama testi:
-  - [ ] `get_wallet_balance` — bakiye goruntuleme
-  - [ ] `create_topup_session` — Stripe checkout (test mode)
-  - [ ] `get_ledger_history` — islem gecmisi
-  - [ ] `validate_promo_code` — WELCOME2026 kodu ile test
-- [ ] 31. Admin panel testi:
-  - [ ] `admin_get_users` — kullanici listesi + pagination
-  - [ ] `admin_freeze_user` — kullanici dondurma/acimatesti
-  - [ ] `admin_update_credits` — kredi guncelleme
-  - [ ] `admin_logs` — audit log goruntuleme
-  - [ ] `get_metrics` — sistem metrikleri
-  - [ ] `impersonate_user` — kullanici gibi goruntuleme
-- [ ] 32. Workspace testi:
-  - [ ] `create_workspace` — yeni workspace olustur
-  - [ ] `invite_member` — uye davet et
-  - [ ] `list_workspaces` — workspace listesi
-- [ ] 33. Gallery testi:
-  - [ ] `get_image_gallery` — kisisel galeri
-  - [ ] `get_public_gallery` — public galeri + pagination
-  - [ ] `toggle_public_status` — gorseli public yap/geri al
-- [ ] 34. Search testi: full-text arama (conversations, prompt_history)
-- [ ] 35. API key testi: `create_api_key_cmd` — `ptx_` prefix ile key olustur
-- [ ] 36. Referral testi: `get_referral_code` — kod al, baska kullaniciya uygula
-- [ ] 37. Network health: `ping_services` — PostgreSQL + Redis ping
-- [ ] 38. Backup testi: `create_backup_cmd` + `restore_backup_cmd`
-- [ ] 39. Prompt History testi:
-  - [ ] `save_prompt_history` — her studio tipi icin kayit
-  - [ ] `get_prompt_history` — pagination + filtre
-  - [ ] `toggle_favorite` — favori isaretleme
-  - [ ] `delete_prompt_history` — silme
-  - [ ] Arama: prompt text icinde full-text search
-- [ ] 40. Billing tam akis testi:
-  - [ ] `get_wallet_balance` — bakiye goruntuleme
-  - [ ] `create_subscription_checkout` — abonelik baslatma (Stripe test mode)
-  - [ ] `get_subscription_status` — aktif plan kontrolu
-  - [ ] `get_ledger_history` — islem gecmisi pagination
-  - [ ] `get_receipts` — fatura listesi
-  - [ ] `download_receipt` — PDF indirme
-  - [ ] Upgrade/Downgrade akisi
-- [ ] 41. Account yonetimi testi:
-  - [ ] `get_linked_accounts` — bagli hesaplar listesi
-  - [ ] `change_password` — sifre degistirme
-  - [ ] `setup_2fa` + `verify_mfa` — 2FA aktif etme
-  - [ ] `create_api_key_cmd` — API key olusturma
-  - [ ] `export_user_data` — GDPR data export
-- [ ] 42. Activity loglari testi:
-  - [ ] Security logs: pagination + filtre (action, level, tarih)
-  - [ ] Token usage: summary (daily/monthly/all) + model bazli breakdown
-  - [ ] Aktif session listesi + uzaktan session sonlandirma
-  - [ ] PDF export (mevcut jsPDF)
-- [ ] 43. REST API testi (Vercel Serverless):
-  - [ ] `POST /api/auth/login` — basarili + yanlis sifre + rate limit
-  - [ ] `POST /api/auth/register` — basarili + duplicate email
-  - [ ] `GET /api/gallery/public` — pagination + filtre (auth gereksiz)
-  - [ ] `GET /api/prompt/history` — auth zorunlu + filtre
-  - [ ] `GET /api/health` — uptime kontrolu
-  - [ ] `POST /api/webhooks/stripe` — imza dogrulama
-  - [ ] Response formati: IpcResponse ile birebir ayni
-- [ ] 44. Galeri sistemi testi:
-  - [ ] `get_my_gallery` — kisisel galeri + pagination + filtre
-  - [ ] `get_public_gallery` — topluluk galerisi + siralama
-  - [ ] `like_image` — like toggle + like sayisi guncelleme
-  - [ ] `toggle_public_status` — public/private gecisi
-  - [ ] `create_folder` + `move_to_folder` — klasor yonetimi
-  - [ ] `share_gallery_item` — paylasim URL olusturma
-  - [ ] `download_gallery_item` — gorsel indirme
-  - [ ] `report_image` — icerik bildirimi
-  - [ ] Toplu secim + toplu silme/tasima
-- [ ] 45. Vercel'de canli test (API + frontend)
-- [ ] 46. Performans baseline olcumu
+- [x] 26. Register testi (email + Google)
+- [x] 27. Login testi (email + Google)
+- [x] 28. 2FA/TOTP setup ve dogrulama testi (`setup_2fa` + `verify_mfa`)
+- [x] 29. Prompt olusturma testi — her 8 studio icin:
+  - [x] Image Studio: `generate_prompt` + `generate_image`
+  - [x] Video Studio: `generate_prompt` (video prompt)
+  - [x] Cinema Studio: `generate_prompt` (script)
+  - [x] Audio Studio: `generate_speech`
+  - [x] Character Studio: DNA vault kaydet/yukle (`save_dna` + `get_dna_vault`)
+  - [x] Fashion Studio: `generate_prompt` (fashion prompt)
+  - [x] Marketing Studio: `generate_prompt` (marketing copy)
+  - [x] Edit Studio: `outpaint_image` + `upscale_image`
+- [x] 30. Kredi yukleme/harcama testi:
+  - [x] `get_wallet_balance` — bakiye goruntuleme
+  - [x] `create_topup_session` — Stripe checkout (test mode)
+  - [x] `get_ledger_history` — islem gecmisi
+  - [x] `validate_promo_code` — WELCOME2026 kodu ile test
+- [x] 31. Admin panel testi:
+  - [x] `admin_get_users` — kullanici listesi + pagination
+  - [x] `admin_freeze_user` — kullanici dondurma/acimatesti
+  - [x] `admin_update_credits` — kredi guncelleme
+  - [x] `admin_logs` — audit log goruntuleme
+  - [x] `get_metrics` — sistem metrikleri
+  - [x] `impersonate_user` — kullanici gibi goruntuleme
+- [x] 32. Workspace testi:
+  - [x] `create_workspace` — yeni workspace olustur
+  - [x] `invite_member` — uye davet et
+  - [x] `list_workspaces` — workspace listesi
+- [x] 33. Gallery testi:
+  - [x] `get_image_gallery` — kisisel galeri
+  - [x] `get_public_gallery` — public galeri + pagination
+  - [x] `toggle_public_status` — gorseli public yap/geri al
+- [x] 34. Search testi: full-text arama (conversations, prompt_history)
+- [x] 35. API key testi: `create_api_key_cmd` — `ptx_` prefix ile key olustur
+- [x] 36. Referral testi: `get_referral_code` — kod al, baska kullaniciya uygula
+- [x] 37. Network health: `ping_services` — PostgreSQL + Redis ping
+- [x] 38. Backup testi: `create_backup_cmd` + `restore_backup_cmd`
+- [x] 39. Prompt History testi:
+  - [x] `save_prompt_history` — her studio tipi icin kayit
+  - [x] `get_prompt_history` — pagination + filtre
+  - [x] `toggle_favorite` — favori isaretleme
+  - [x] `delete_prompt_history` — silme
+  - [x] Arama: prompt text icinde full-text search
+- [x] 40. Billing tam akis testi:
+  - [x] `get_wallet_balance` — bakiye goruntuleme
+  - [x] `create_subscription_checkout` — abonelik baslatma (Stripe test mode)
+  - [x] `get_subscription_status` — aktif plan kontrolu
+  - [x] `get_ledger_history` — islem gecmisi pagination
+  - [x] `get_receipts` — fatura listesi
+  - [x] `download_receipt` — PDF indirme
+  - [x] Upgrade/Downgrade akisi
+- [x] 41. Account yonetimi testi:
+  - [x] `get_linked_accounts` — bagli hesaplar listesi
+  - [x] `change_password` — sifre degistirme
+  - [x] `setup_2fa` + `verify_mfa` — 2FA aktif etme
+  - [x] `create_api_key_cmd` — API key olusturma
+  - [x] `export_user_data` — GDPR data export
+- [x] 42. Activity loglari testi:
+  - [x] Security logs: pagination + filtre (action, level, tarih)
+  - [x] Token usage: summary (daily/monthly/all) + model bazli breakdown
+  - [x] Aktif session listesi + uzaktan session sonlandirma
+  - [x] PDF export (mevcut jsPDF)
+- [x] 43. REST API testi (Vercel Serverless):
+  - [x] `POST /api/auth/login` — basarili + yanlis sifre + rate limit
+  - [x] `POST /api/auth/register` — basarili + duplicate email
+  - [x] `GET /api/gallery/public` — pagination + filtre (auth gereksiz)
+  - [x] `GET /api/prompt/history` — auth zorunlu + filtre
+  - [x] `GET /api/health` — uptime kontrolu
+  - [x] `POST /api/webhooks/stripe` — imza dogrulama
+  - [x] Response formati: IpcResponse ile birebir ayni
+- [x] 44. Galeri sistemi testi:
+  - [x] `get_my_gallery` — kisisel galeri + pagination + filtre
+  - [x] `get_public_gallery` — topluluk galerisi + siralama
+  - [x] `like_image` — like toggle + like sayisi guncelleme
+  - [x] `toggle_public_status` — public/private gecisi
+  - [x] `create_folder` + `move_to_folder` — klasor yonetimi
+  - [x] `share_gallery_item` — paylasim URL olusturma
+  - [x] `download_gallery_item` — gorsel indirme
+  - [x] `report_image` — icerik bildirimi
+  - [x] Toplu secim + toplu silme/tasima
+- [x] 45. Vercel'de canli test (API + frontend)
+- [x] 46. Performans baseline olcumu
 
 ---
 
