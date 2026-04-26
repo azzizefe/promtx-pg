@@ -410,11 +410,11 @@ enum TransactionReason {
 // NOT: WorkspaceRole orijinal projede Owner/Admin/Member/Viewer seklinde
 ```
 
-- [ ] Tum enum'lari schema.prisma'ya ekle
-- [ ] `bunx prisma format` ile dogrula
-- [ ] `UserRole` enum'u orijinal projedeki `Free, Pro, Enterprise, Admin, SuperAdmin` ile birebir eslesmeli
-- [ ] `TransactionReason` enum'u orijinal projedeki `Generation, TopUp, Refund, Subscription` ile eslesmeli
-- [ ] `WorkspaceRole` icin orijinal projedeki `Owner, Admin, Member, Viewer` kullanilmali (MemberRole degil)
+- [x] Tum enum'lari schema.prisma'ya ekle
+- [x] `bunx prisma format` ile dogrula
+- [x] `UserRole` enum'u orijinal projedeki `Free, Pro, Enterprise, Admin, SuperAdmin` ile birebir eslesmeli
+- [x] `TransactionReason` enum'u orijinal projedeki `Generation, TopUp, Refund, Subscription` ile eslesmeli
+- [x] `WorkspaceRole` icin orijinal projedeki `Owner, Admin, Member, Viewer` kullanilmali (MemberRole degil)
 
 ### 3.3 Prisma Schema — Core Modelleri
 

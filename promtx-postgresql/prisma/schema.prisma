@@ -8,3 +8,113 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum UserRole {
+  Free
+  Pro
+  Enterprise
+  Admin
+  SuperAdmin
+}
+
+enum SessionStatus {
+  active
+  expired
+  revoked
+  logged_out
+}
+
+enum StudioType {
+  image
+  video
+  cinema
+  audio
+  character
+  fashion
+  marketing
+  edit
+}
+
+enum AIProvider {
+  google
+  openai
+  anthropic
+  replicate
+  stability
+  midjourney
+  local
+}
+
+enum PaymentStatus {
+  pending
+  processing
+  completed
+  failed
+  refunded
+  disputed
+}
+
+enum LedgerType {
+  credit
+  debit
+  refund
+  adjustment
+  bonus
+  referral
+  subscription
+  topup
+}
+
+enum IAPPlatform {
+  stripe
+  apple
+  google
+  paypal
+}
+
+enum ImageStatus {
+  generating
+  completed
+  failed
+  deleted
+  flagged
+}
+
+enum LogLevel {
+  debug
+  info
+  warn
+  error
+  critical
+}
+
+enum WorkspaceRole {
+  Owner
+  Admin
+  Member
+  Viewer
+}
+
+enum NotificationType {
+  system
+  billing
+  security
+  workspace
+  generation
+  referral
+}
+
+enum AuthProvider {
+  email
+  google
+  apple
+  microsoft
+  github
+}
+
+enum TransactionReason {
+  Generation
+  TopUp
+  Refund
+  Subscription
+}
