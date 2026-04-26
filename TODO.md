@@ -38,29 +38,29 @@
 ### 0.3 Proje Dizin Yapisini Hazirla
 > **Tum yollar `promtx-postgresql/` kok dizinine goredir**
 
-- [ ] `docker/` dizini olustur
-- [ ] `docker/postgres/` dizini olustur
-- [ ] `docker/postgres/init/` dizini olustur (ilk calistirma SQL script'leri)
-- [ ] `docker/postgres/conf/` dizini olustur (postgresql.conf, pg_hba.conf)
-- [ ] `docker/postgres/backups/` dizini olustur
-- [ ] `docker/postgres/ssl/` dizini olustur
-- [ ] `docker/scripts/` dizini olustur
-- [ ] `server/` dizini olustur (Bun/TypeScript REST API backend)
-- [ ] `server/src/` dizini olustur
-- [ ] `server/src/routes/` dizini olustur
-- [ ] `server/src/middleware/` dizini olustur
-- [ ] `server/src/services/` dizini olustur
-- [ ] `prisma/` dizini olustur (Prisma schema + migrations)
-- [ ] `prisma/seed/` dizini olustur (seed data script'leri)
-- [ ] `src/` dizini olustur (React frontend — Vite)
-- [ ] `.gitignore` olustur:
-  - [ ] `docker/postgres/data/`
-  - [ ] `docker/postgres/backups/*.sql`
-  - [ ] `docker/postgres/ssl/*.key`
-  - [ ] `.env.docker`
-  - [ ] `.env.local`
-  - [ ] `node_modules/`
-  - [ ] `bun.lockb` (opsiyonel — takim karari)
+- [x] `docker/` dizini olustur
+- [x] `docker/postgres/` dizini olustur
+- [x] `docker/postgres/init/` dizini olustur (ilk calistirma SQL script'leri)
+- [x] `docker/postgres/conf/` dizini olustur (postgresql.conf, pg_hba.conf)
+- [x] `docker/postgres/backups/` dizini olustur
+- [x] `docker/postgres/ssl/` dizini olustur
+- [x] `docker/scripts/` dizini olustur
+- [x] `server/` dizini olustur (Bun/TypeScript REST API backend)
+- [x] `server/src/` dizini olustur
+- [x] `server/src/routes/` dizini olustur
+- [x] `server/src/middleware/` dizini olustur
+- [x] `server/src/services/` dizini olustur
+- [x] `prisma/` dizini olustur (Prisma schema + migrations)
+- [x] `prisma/seed/` dizini olustur (seed data script'leri)
+- [x] `src/` dizini olustur (React frontend — Vite)
+- [x] `.gitignore` olustur:
+  - [x] `docker/postgres/data/`
+  - [x] `docker/postgres/backups/*.sql`
+  - [x] `docker/postgres/ssl/*.key`
+  - [x] `.env.docker`
+  - [x] `.env.local`
+  - [x] `node_modules/`
+  - [x] `bun.lockb` (opsiyonel — takim karari)
 
 ### 0.4 Gelistirme Araclari
 - [ ] pgAdmin 4 kur (GUI veritabani yonetimi)

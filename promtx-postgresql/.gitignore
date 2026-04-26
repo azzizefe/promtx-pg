@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Project Specific
+docker/postgres/data/
+docker/postgres/backups/*.sql
+docker/postgres/ssl/*.key
+.env.docker
+.env.local
+bun.lockb
