@@ -5894,52 +5894,52 @@ model ImageReport {
 }
 ```
 
-- [ ] `ImageLike` modeli Prisma schema'ya ekle
-- [ ] `ImageReport` modeli Prisma schema'ya ekle
-- [ ] `User` modeline relation ekle: `imageLikes ImageLike[]`, `imageReports ImageReport[]`
-- [ ] `ImageGeneration` modeline relation ekle: `likes ImageLike[]`, `reports ImageReport[]`
-- [ ] `bunx prisma migrate dev --name add_gallery_models`
+- [x] `ImageLike` modeli Prisma schema'ya ekle
+- [x] `ImageReport` modeli Prisma schema'ya ekle
+- [x] `User` modeline relation ekle: `imageLikes ImageLike[]`, `imageReports ImageReport[]`
+- [x] `ImageGeneration` modeline relation ekle: `likes ImageLike[]`, `reports ImageReport[]`
+- [x] `bunx prisma migrate dev --name add_gallery_models`
 
 #### 18.3.3 Frontend — Topluluk Galerisi Tab'i
-- [ ] Topluluk tab'i icerigi:
-  - [ ] Siralama butonlari: "En Yeni" | "Populer" | "Trend" | "Rastgele"
-  - [ ] Model filtre chip'leri (DALL-E 3, Midjourney, Flux, Stable Diffusion, Luma...)
-  - [ ] Studio filtre chip'leri (Image, Video, Character, Fashion...)
-  - [ ] Arama cubugu
-  - [ ] Masonry grid layout (farkli boyutlarda gorseller)
-  - [ ] Infinite scroll (IntersectionObserver)
-- [ ] Topluluk gorsel karti:
-  - [ ] Thumbnail (gercek gorsel)
-  - [ ] Kullanici adi + avatar (ureticinin bilgisi)
-  - [ ] Like butonu + like sayisi (kalp icon)
-  - [ ] Prompt preview (hover'da tam goster)
-  - [ ] Model badge
-  - [ ] "Remix" butonu — prompt'u kendi studio'na kopyala
-  - [ ] "Bildir" butonu (uygunsuz icerik)
-- [ ] Topluluk gorsel detay modal'i:
-  - [ ] Tam boyut gorsel
-  - [ ] Prompt (kopyalanabilir)
-  - [ ] Uretici profil karti (displayName, avatarUrl)
-  - [ ] Like butonu
-  - [ ] "Remix" butonu
-  - [ ] Paylasim butonu (link kopyala, sosyal medya)
-  - [ ] "Bildir" butonu
-  - [ ] Benzer gorseller onerisi (ayni model/prompt keyword'leri ile)
+- [x] Topluluk tab'i icerigi:
+  - [x] Siralama butonlari: "En Yeni" | "Populer" | "Trend" | "Rastgele"
+  - [x] Model filtre chip'leri (DALL-E 3, Midjourney, Flux, Stable Diffusion, Luma...)
+  - [x] Studio filtre chip'leri (Image, Video, Character, Fashion...)
+  - [x] Arama cubugu
+  - [x] Masonry grid layout (farkli boyutlarda gorseller)
+  - [x] Infinite scroll (IntersectionObserver)
+- [x] Topluluk gorsel karti:
+  - [x] Thumbnail (gercek gorsel)
+  - [x] Kullanici adi + avatar (ureticinin bilgisi)
+  - [x] Like butonu + like sayisi (kalp icon)
+  - [x] Prompt preview (hover'da tam goster)
+  - [x] Model badge
+  - [x] "Remix" butonu — prompt'u kendi studio'na kopyala
+  - [x] "Bildir" butonu (uygunsuz icerik)
+- [x] Topluluk gorsel detay modal'i:
+  - [x] Tam boyut gorsel
+  - [x] Prompt (kopyalanabilir)
+  - [x] Uretici profil karti (displayName, avatarUrl)
+  - [x] Like butonu
+  - [x] "Remix" butonu
+  - [x] Paylasim butonu (link kopyala, sosyal medya)
+  - [x] "Bildir" butonu
+  - [x] Benzer gorseller onerisi (ayni model/prompt keyword'leri ile)
 
 ### 18.4 Galeri Depolama ve CDN
 
-- [ ] **S3 / Cloudflare R2 entegrasyonu:**
-  - [ ] Gorsel upload: orijinal + thumbnail (300px wide) olustur
-  - [ ] S3 bucket: `promtx-gallery` (veya R2)
-  - [ ] Key format: `users/{userId}/images/{imageId}.{ext}`
-  - [ ] Thumbnail key: `users/{userId}/thumbs/{imageId}.webp`
-  - [ ] CDN: Cloudflare veya Vercel Edge Network uzerinden serve et
-  - [ ] Signed URL: private gorseller icin gecici erisim linki (1 saat)
-- [ ] **Gorsel optimizasyonu:**
-  - [ ] Upload sirasinda WebP'ye cevir (boyut azaltma)
-  - [ ] Thumbnail olustur: 300px, 600px, 1200px (responsive)
-  - [ ] EXIF metadata strip et (privacy)
-  - [ ] Maks dosya boyutu: 20MB (upload limiti)
+- [x] **S3 / Cloudflare R2 entegrasyonu:**
+  - [x] Gorsel upload: orijinal + thumbnail (300px wide) olustur
+  - [x] S3 bucket: `promtx-gallery` (veya R2)
+  - [x] Key format: `users/{userId}/images/{imageId}.{ext}`
+  - [x] Thumbnail key: `users/{userId}/thumbs/{imageId}.webp`
+  - [x] CDN: Cloudflare veya Vercel Edge Network uzerinden serve et
+  - [x] Signed URL: private gorseller icin gecici erisim linki (1 saat)
+- [x] **Gorsel optimizasyonu:**
+  - [x] Upload sirasinda WebP'ye cevir (boyut azaltma)
+  - [x] Thumbnail olustur: 300px, 600px, 1200px (responsive)
+  - [x] EXIF metadata strip et (privacy)
+  - [x] Maks dosya boyutu: 20MB (upload limiti)
 - [ ] **Depolama limitleri (plan bazli):**
 
 | Plan | Depolama | Gorsel Basi Maks | Toplu Indirme |
@@ -5948,8 +5948,8 @@ model ImageReport {
 | Creator | 10 GB | 10 MB | 50 gorsel/ZIP |
 | Studio Pro | 50 GB | 20 MB | 200 gorsel/ZIP |
 
-- [ ] Limit asildiginda: "Depolama dolu" uyarisi + upgrade teklifi
-- [ ] Eski gorselleri otomatik silme YAPMA — kullanici kontrolunde
+- [x] Limit asildiginda: "Depolama dolu" uyarisi + upgrade teklifi
+- [x] Eski gorselleri otomatik silme YAPMA — kullanici kontrolunde
 
 ### 18.5 Galeri Seed Data
 
@@ -6032,11 +6032,11 @@ await prisma.imageLike.createMany({
 });
 ```
 
-- [ ] Galeri seed verisi olustur (en az 6 gorsel)
-- [ ] Farkli aspect ratio'lar, modeller, public/private
-- [ ] Klasor seed
-- [ ] Like seed
-- [ ] MOCK verileri kaldir: `MOCK_GALLERY_ITEMS` ve `MOCK_HISTORY` -> seed'den gelen gercek veri
+- [x] Galeri seed verisi olustur (en az 6 gorsel)
+- [x] Farkli aspect ratio'lar, modeller, public/private
+- [x] Klasor seed
+- [x] Like seed
+- [x] MOCK verileri kaldir: `MOCK_GALLERY_ITEMS` ve `MOCK_HISTORY` -> seed'den gelen gercek veri
 
 ### 18.6 Mevcut SQLite -> Prisma Eslestirme Tablosu Guncellemesi
 

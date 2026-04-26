@@ -979,6 +979,94 @@ async function main() {
       }
     ] as any
   });
+  // 20. Seed Gallery Data
+  console.log('Seeding gallery data...');
+  await prisma.imageLike.deleteMany({});
+  await prisma.folder.deleteMany({});
+  await prisma.imageGeneration.deleteMany({
+    where: {
+      id: { startsWith: 'seed-image-' }
+    }
+  });
+
+  // Admin Images
+  await prisma.imageGeneration.create({
+    data: {
+      id: 'seed-image-admin-1',
+      userId: 'system-admin-001',
+      prompt: 'Cyberpunk city skyline at night, neon lights reflecting on wet streets, cinematic 8k',
+      resultUrl: 'https://picsum.photos/seed/promtx1/1024/1024',
+      thumbnailUrl: 'https://picsum.photos/seed/promtx1/300/300',
+      modelId: 'dall-e-3',
+      provider: 'openai',
+      width: 1024, height: 1024,
+      aspectRatio: '1:1',
+      sizeBytes: 2048000,
+      status: 'completed',
+      isPublic: true,
+      likesCount: 42,
+      createdAt: new Date('2026-04-20'),
+    }
+  });
+
+  await prisma.imageGeneration.create({
+    data: {
+      id: 'seed-image-admin-2',
+      userId: 'system-admin-001',
+      prompt: 'Professional fashion model in Tokyo streets, golden hour, editorial photography',
+      resultUrl: 'https://picsum.photos/seed/promtx2/1024/1536',
+      thumbnailUrl: 'https://picsum.photos/seed/promtx2/300/450',
+      modelId: 'midjourney',
+      provider: 'replicate',
+      width: 1024, height: 1536,
+      aspectRatio: '2:3',
+      sizeBytes: 3145000,
+      status: 'completed',
+      isPublic: true,
+      likesCount: 128,
+      createdAt: new Date('2026-04-22'),
+    }
+  });
+
+  // Pro user image (private)
+  await prisma.imageGeneration.create({
+    data: {
+      id: 'seed-image-pro-1',
+      userId: 'user-pro-001',
+      prompt: 'Abstract liquid metal flowing in zero gravity, highly detailed render',
+      resultUrl: 'https://picsum.photos/seed/promtx3/1920/1080',
+      thumbnailUrl: 'https://picsum.photos/seed/promtx3/300/169',
+      modelId: 'flux',
+      provider: 'replicate',
+      width: 1920, height: 1080,
+      aspectRatio: '16:9',
+      sizeBytes: 4200000,
+      status: 'completed',
+      isPublic: false,
+      likesCount: 1,
+      createdAt: new Date('2026-04-23'),
+    }
+  });
+
+  // Folders
+  await prisma.folder.createMany({
+    data: [
+      { userId: 'system-admin-001', name: 'Marketing Kampanyasi', color: '#b44afd', icon: 'folder' },
+      { userId: 'system-admin-001', name: 'Kisisel Projeler', color: '#14b8a6', icon: 'folder' },
+      { userId: 'user-pro-001', name: 'Marka Gorselleri', color: '#f59e0b', icon: 'folder' },
+    ]
+  });
+
+  // Likes
+  await prisma.imageLike.createMany({
+    data: [
+      { userId: 'user-pro-001', imageGenerationId: 'seed-image-admin-1' },
+      { userId: 'user-free-001', imageGenerationId: 'seed-image-admin-1' },
+      { userId: 'user-free-001', imageGenerationId: 'seed-image-admin-2' },
+    ]
+  });
+
+  console.log('Gallery seed data created.');
   console.log('Feedback data seeded.');
 
   console.log('Seeding complete.');
