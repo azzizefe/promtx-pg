@@ -2871,65 +2871,65 @@ const iapProducts = [
 ## BOLUM 7: VERCEL DEPLOY ENTEGRASYONU
 
 ### 7.1 Vercel Proje Ayarlari
-- [ ] Vercel'de yeni proje olustur: "promtx"
-- [ ] GitHub repo'yu bagla
-- [ ] Framework preset: Vite
-- [ ] Build command: `bun run build`
-- [ ] Output directory: `dist`
-- [ ] Install command: `bun install`
-- [ ] Node.js version: 20.x (Bun fallback icin)
+- [x] Vercel'de yeni proje olustur: "promtx"
+- [x] GitHub repo'yu bagla
+- [x] Framework preset: Vite
+- [x] Build command: `bun run build`
+- [x] Output directory: `dist`
+- [x] Install command: `bun install`
+- [x] Node.js version: 20.x (Bun fallback icin)
 
 ### 7.2 Vercel Environment Variables
-- [ ] `DATABASE_URL` — Production PostgreSQL connection string
-- [ ] `REDIS_URL` — Production Redis connection string
-- [ ] **Google OAuth:**
-  - [ ] `GOOGLE_CLIENT_ID` — Google OAuth Client ID
-  - [ ] `GOOGLE_CLIENT_SECRET` — Google OAuth Client Secret
-  - [ ] `GOOGLE_REDIRECT_URI` — `https://promtx.vercel.app/auth/google/callback`
-- [ ] **Apple Sign-In:**
-  - [ ] `APPLE_CLIENT_ID` — Apple Service ID (`com.promtx.auth`)
-  - [ ] `APPLE_TEAM_ID` — Apple Developer Team ID
-  - [ ] `APPLE_KEY_ID` — Apple Sign-In Key ID
-  - [ ] `APPLE_PRIVATE_KEY` — Apple .p8 private key icerigi
-  - [ ] `APPLE_REDIRECT_URI` — `https://promtx.vercel.app/auth/apple/callback`
-- [ ] **Microsoft OAuth:**
-  - [ ] `MICROSOFT_CLIENT_ID` — Azure App Registration Client ID
-  - [ ] `MICROSOFT_CLIENT_SECRET` — Azure Client Secret
-  - [ ] `MICROSOFT_TENANT_ID` — `common` (multi-tenant)
-  - [ ] `MICROSOFT_REDIRECT_URI` — `https://promtx.vercel.app/auth/microsoft/callback`
-- [ ] **OAuth Ortak:**
-  - [ ] `OAUTH_TOKEN_ENCRYPTION_KEY` — Token sifreleme anahtari (AES-256)
-- [ ] `JWT_SECRET` — JWT signing secret
-- [ ] `NEXTAUTH_SECRET` — Auth secret
-- [ ] `STRIPE_SECRET_KEY` — Stripe API key
-- [ ] `STRIPE_WEBHOOK_SECRET` — Stripe webhook secret
-- [ ] `SENTRY_DSN` — Sentry error tracking
-- [ ] `POSTHOG_KEY` — PostHog analytics key
-- [ ] `VITE_API_URL` — Backend API URL
-- [ ] Environment'lara gore ayir: Production, Preview, Development
+- [x] `DATABASE_URL` — Production PostgreSQL connection string
+- [x] `REDIS_URL` — Production Redis connection string
+- [x] **Google OAuth:**
+  - [x] `GOOGLE_CLIENT_ID` — Google OAuth Client ID
+  - [x] `GOOGLE_CLIENT_SECRET` — Google OAuth Client Secret
+  - [x] `GOOGLE_REDIRECT_URI` — `https://promtx.vercel.app/auth/google/callback`
+- [x] **Apple Sign-In:**
+  - [x] `APPLE_CLIENT_ID` — Apple Service ID (`com.promtx.auth`)
+  - [x] `APPLE_TEAM_ID` — Apple Developer Team ID
+  - [x] `APPLE_KEY_ID` — Apple Sign-In Key ID
+  - [x] `APPLE_PRIVATE_KEY` — Apple .p8 private key icerigi
+  - [x] `APPLE_REDIRECT_URI` — `https://promtx.vercel.app/auth/apple/callback`
+- [x] **Microsoft OAuth:**
+  - [x] `MICROSOFT_CLIENT_ID` — Azure App Registration Client ID
+  - [x] `MICROSOFT_CLIENT_SECRET` — Azure Client Secret
+  - [x] `MICROSOFT_TENANT_ID` — `common` (multi-tenant)
+  - [x] `MICROSOFT_REDIRECT_URI` — `https://promtx.vercel.app/auth/microsoft/callback`
+- [x] **OAuth Ortak:**
+  - [x] `OAUTH_TOKEN_ENCRYPTION_KEY` — Token sifreleme anahtari (AES-256)
+- [x] `JWT_SECRET` — JWT signing secret
+- [x] `NEXTAUTH_SECRET` — Auth secret
+- [x] `STRIPE_SECRET_KEY` — Stripe API key
+- [x] `STRIPE_WEBHOOK_SECRET` — Stripe webhook secret
+- [x] `SENTRY_DSN` — Sentry error tracking
+- [x] `POSTHOG_KEY` — PostHog analytics key
+- [x] `VITE_API_URL` — Backend API URL
+- [x] Environment'lara gore ayir: Production, Preview, Development
 
 ### 7.3 Vercel Serverless Functions (API Routes)
-- [ ] `api/` dizini olustur (Vercel serverless functions)
-- [ ] `api/auth/google.ts` — Google OAuth redirect
-- [ ] `api/auth/google/callback.ts` — Google OAuth callback
-- [ ] `api/auth/apple.ts` — Apple Sign-In redirect
-- [ ] `api/auth/apple/callback.ts` — Apple Sign-In callback (POST — form_post)
-- [ ] `api/auth/microsoft.ts` — Microsoft OAuth redirect
-- [ ] `api/auth/microsoft/callback.ts` — Microsoft OAuth callback
-- [ ] `api/auth/link/[provider].ts` — Account linking (POST) / unlinking (DELETE)
-- [ ] `api/auth/providers.ts` — Bagli provider listesi (GET)
-- [ ] `api/auth/login.ts` — Email/password login
-- [ ] `api/auth/register.ts` — Email/password register
-- [ ] `api/auth/refresh.ts` — Token refresh
-- [ ] `api/health.ts` — Health check endpoint
-- [ ] Her function icinde Prisma Client kullan
-- [ ] Edge runtime dusun (cold start azaltma)
+- [x] `api/` dizini olustur (Vercel serverless functions)
+- [x] `api/auth/google.ts` — Google OAuth redirect
+- [x] `api/auth/google/callback.ts` — Google OAuth callback
+- [x] `api/auth/apple.ts` — Apple Sign-In redirect
+- [x] `api/auth/apple/callback.ts` — Apple Sign-In callback (POST — form_post)
+- [x] `api/auth/microsoft.ts` — Microsoft OAuth redirect
+- [x] `api/auth/microsoft/callback.ts` — Microsoft OAuth callback
+- [x] `api/auth/link/[provider].ts` — Account linking (POST) / unlinking (DELETE)
+- [x] `api/auth/providers.ts` — Bagli provider listesi (GET)
+- [x] `api/auth/login.ts` — Email/password login
+- [x] `api/auth/register.ts` — Email/password register
+- [x] `api/auth/refresh.ts` — Token refresh
+- [x] `api/health.ts` — Health check endpoint
+- [x] Her function icinde Prisma Client kullan
+- [x] Edge runtime dusun (cold start azaltma)
 
 ### 7.4 Vercel + PostgreSQL Baglantisi
-- [ ] Vercel Postgres (Neon) veya external Supabase/Railway PostgreSQL
-- [ ] Connection pooling: Prisma Data Proxy veya PgBouncer
-- [ ] `DATABASE_URL` icinde `?pgbouncer=true&connection_limit=10` parametresi
-- [ ] Serverless icin connection pooling stratejisi belgele
+- [x] Vercel Postgres (Neon) veya external Supabase/Railway PostgreSQL
+- [x] Connection pooling: Prisma Data Proxy veya PgBouncer
+- [x] `DATABASE_URL` icinde `?pgbouncer=true&connection_limit=10` parametresi
+- [x] Serverless icin connection pooling stratejisi belgele
 
 ### 7.5 Vercel Domain ve DNS
 - [ ] Custom domain: `promtx.ai` -> Vercel
