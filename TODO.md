@@ -3117,27 +3117,27 @@ const iapProducts = [
 | `/auth/:provider/callback` | **YENI** | OAuth callback handler (Google, Apple, Microsoft) |
 
 ### 9.3 API Katmani Guncellemesi
-- [ ] UUID formatinda ID'ler (mevcut TEXT ID -> UUID)
-- [ ] ISO 8601 with timezone tarihler (TIMESTAMPTZ)
-- [ ] Pagination response tipleri (cursor-based veya offset)
-- [ ] Full-text search endpoint'leri (PostgreSQL tsvector)
-- [ ] Multi-Provider OAuth API cagrilari (Google, Apple, Microsoft)
-- [ ] Account linking/unlinking API cagrilari
+- [x] UUID formatinda ID'ler (mevcut TEXT ID -> UUID)
+- [x] ISO 8601 with timezone tarihler (TIMESTAMPTZ)
+- [x] Pagination response tipleri (cursor-based veya offset)
+- [x] Full-text search endpoint'leri (PostgreSQL tsvector)
+- [x] Multi-Provider OAuth API cagrilari (Google, Apple, Microsoft)
+- [x] Account linking/unlinking API cagrilari
 
 ### 9.4 Auth Flow Bilesenler
-- [ ] Login sayfasi: Email/Password + Google + Apple + Microsoft OAuth
-- [ ] Register sayfasi: Email/Password + Google + Apple + Microsoft OAuth
-- [ ] Forgot password sayfasi
-- [ ] 2FA/TOTP setup sayfasi
-- [ ] 2FA dogrulama dialog
-- [ ] OAuth callback handler: `/auth/:provider/callback` (dinamik provider)
-- [ ] Auth state management (Zustand store guncelle — `src/lib/store.ts`)
-  - [ ] `linkedProviders: AuthProvider[]` — bagli provider listesi ekle
-  - [ ] `linkProvider(provider)` / `unlinkProvider(provider)` aksiyonlari
-- [ ] Protected route wrapper
-- [ ] Auto-refresh token logic
-- [ ] Impersonate mode indicator (admin icin)
-- [ ] Settings sayfasina "Bagli Hesaplar" bolumu (BOLUM 4.5.4)
+- [x] Login sayfasi: Email/Password + Google + Apple + Microsoft OAuth
+- [x] Register sayfasi: Email/Password + Google + Apple + Microsoft OAuth
+- [x] Forgot password sayfasi
+- [x] 2FA/TOTP setup sayfasi
+- [x] 2FA dogrulama dialog
+- [x] OAuth callback handler: `/auth/:provider/callback` (dinamik provider)
+- [x] Auth state management (Zustand store guncelle — `src/lib/store.ts`)
+  - [x] `linkedProviders: AuthProvider[]` — bagli provider listesi ekle
+  - [x] `linkProvider(provider)` / `unlinkProvider(provider)` aksiyonlari
+- [x] Protected route wrapper
+- [x] Auto-refresh token logic
+- [x] Impersonate mode indicator (admin icin)
+- [x] Settings sayfasina "Bagli Hesaplar" bolumu (BOLUM 4.5.4)
 
 ### 9.5 Yeni Bilesenler
 - [ ] `OAuthButtons` bilesen (Google + Apple + Microsoft — BOLUM 4.5.1)

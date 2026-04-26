@@ -1,122 +1,78 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React, { Suspense } from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { Toaster } from 'sonner';
+import { ProtectedRoute } from './components/ProtectedRoute';
+
+// Auth Pages
+import { Login } from './pages/auth/Login';
+import { Register } from './pages/auth/Register';
+import { OAuthCallback } from './pages/auth/OAuthCallback';
+import { ForgotPassword } from './pages/auth/ForgotPassword';
+import { ResetPassword } from './pages/auth/ResetPassword';
+import { Setup2FA } from './pages/auth/Setup2FA';
+
+// Lazy loaded main pages
+const Home = React.lazy(() => import('./pages/Home'));
+const Wizard = React.lazy(() => import('./pages/Wizard'));
+const Logs = React.lazy(() => import('./pages/Logs'));
+const DevTools = React.lazy(() => import('./pages/DevTools'));
+const Pricing = React.lazy(() => import('./pages/Pricing'));
+const Checkout = React.lazy(() => import('./pages/Checkout'));
+const Help = React.lazy(() => import('./pages/Help'));
+const Settings = React.lazy(() => import('./pages/Settings'));
+const Admin = React.lazy(() => import('./pages/Admin'));
+const Gallery = React.lazy(() => import('./pages/Gallery'));
+
+// Simple loading fallback
+const PageLoader = () => <div style={{ padding: '50px', textAlign: 'center' }}>Loading...</div>;
+
+// Global Layout to show basic navigation
+const Layout = ({ children }: { children: React.ReactNode }) => (
+  <div className="app-container" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', fontFamily: 'sans-serif' }}>
+    <header style={{ padding: '15px 20px', background: '#242424', color: 'white', display: 'flex', gap: '15px', alignItems: 'center' }}>
+      <h2 style={{ margin: 0, marginRight: 'auto' }}>Promtx</h2>
+      <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>Studio</Link>
+      <Link to="/gallery" style={{ color: 'white', textDecoration: 'none' }}>Gallery</Link>
+      <Link to="/pricing" style={{ color: 'white', textDecoration: 'none' }}>Pricing</Link>
+      <Link to="/settings" style={{ color: 'white', textDecoration: 'none' }}>Settings</Link>
+    </header>
+    <main style={{ flex: 1 }}>
+      <Suspense fallback={<PageLoader />}>
+        {children}
+      </Suspense>
+    </main>
+    <Toaster position="top-right" richColors />
+  </div>
+);
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        {/* Public Auth Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/auth/:provider/callback" element={<OAuthCallback />} />
+        
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="/wizard" element={<Layout><Wizard /></Layout>} />
+          <Route path="/logs" element={<Layout><Logs /></Layout>} />
+          <Route path="/dev" element={<Layout><DevTools /></Layout>} />
+          <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
+          <Route path="/checkout" element={<Layout><Checkout /></Layout>} />
+          <Route path="/help" element={<Layout><Help /></Layout>} />
+          <Route path="/settings" element={<Layout><Settings /></Layout>} />
+          <Route path="/admin" element={<Layout><Admin /></Layout>} />
+          <Route path="/gallery" element={<Layout><Gallery /></Layout>} />
+          <Route path="/setup-2fa" element={<Layout><Setup2FA /></Layout>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
