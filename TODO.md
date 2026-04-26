@@ -109,41 +109,41 @@
 ## BOLUM 2: DOCKER COMPOSE YAPISI
 
 ### 2.1 Ana docker-compose.yml
-- [ ] `promtx-postgresql/docker-compose.yml` dosyasi olustur
-- [ ] PostgreSQL 16 servisi: `image: postgres:16-alpine`
-  - [ ] Container: `promtx-postgres`
-  - [ ] Port: `5432:5432`
-  - [ ] Restart: `unless-stopped`
-  - [ ] Volume: `pgdata:/var/lib/postgresql/data`
-  - [ ] Volume: `./docker/postgres/init:/docker-entrypoint-initdb.d`
-  - [ ] Volume: `./docker/postgres/conf/postgresql.conf:/etc/postgresql/postgresql.conf`
-  - [ ] Environment: `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB=promtx`
-  - [ ] Healthcheck: `pg_isready -U $$POSTGRES_USER -d promtx` (interval 10s, timeout 5s, retries 5)
-  - [ ] Memory limit: `2G`, CPU limit: `2.0`
-  - [ ] `shm_size: 256mb`
-  - [ ] Logging: `json-file` max-size 50m, max-file 5
+- [x] `promtx-postgresql/docker-compose.yml` dosyasi olustur
+- [x] PostgreSQL 16 servisi: `image: postgres:16-alpine`
+  - [x] Container: `promtx-postgres`
+  - [x] Port: `5432:5432`
+  - [x] Restart: `unless-stopped`
+  - [x] Volume: `pgdata:/var/lib/postgresql/data`
+  - [x] Volume: `./docker/postgres/init:/docker-entrypoint-initdb.d`
+  - [x] Volume: `./docker/postgres/conf/postgresql.conf:/etc/postgresql/postgresql.conf`
+  - [x] Environment: `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB=promtx`
+  - [x] Healthcheck: `pg_isready -U $$POSTGRES_USER -d promtx` (interval 10s, timeout 5s, retries 5)
+  - [x] Memory limit: `2G`, CPU limit: `2.0`
+  - [x] `shm_size: 256mb`
+  - [x] Logging: `json-file` max-size 50m, max-file 5
 
 ### 2.2 Redis Servisi (Cache + Session + Rate Limiting)
-- [ ] Redis servisi: `image: redis:7-alpine`
-  - [ ] Container: `promtx-redis`
-  - [ ] Port: `6379:6379`
-  - [ ] `command: redis-server --requirepass ${REDIS_PASSWORD} --maxmemory 512mb --maxmemory-policy allkeys-lru --appendonly yes`
-  - [ ] Healthcheck: `redis-cli -a $$REDIS_PASSWORD ping`
-  - [ ] Volume: `redis-data:/data`
+- [x] Redis servisi: `image: redis:7-alpine`
+  - [x] Container: `promtx-redis`
+  - [x] Port: `6379:6379`
+  - [x] `command: redis-server --requirepass ${REDIS_PASSWORD} --maxmemory 512mb --maxmemory-policy allkeys-lru --appendonly yes`
+  - [x] Healthcheck: `redis-cli -a $$REDIS_PASSWORD ping`
+  - [x] Volume: `redis-data:/data`
 
 ### 2.3 Redis Sentinel Yapisi (Uretim Icin High Availability)
-- [ ] `docker-compose.sentinel.yml` olustur
-- [ ] Redis Master servisi:
-  - [ ] Container: `promtx-redis-master`
-  - [ ] Port: `6379:6379`
-  - [ ] `command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes`
-- [ ] Redis Slave servisi:
-  - [ ] Container: `promtx-redis-slave`
-  - [ ] `command: redis-server --slaveof promtx-redis-master 6379 --masterauth ${REDIS_PASSWORD} --requirepass ${REDIS_PASSWORD}`
-- [ ] Sentinel 1:
-  - [ ] Container: `promtx-sentinel-1`
-  - [ ] Port: `26379:26379`
-  - [ ] `sentinel.conf` dosyasi:
+- [x] `docker-compose.sentinel.yml` olustur
+- [x] Redis Master servisi:
+  - [x] Container: `promtx-redis-master`
+  - [x] Port: `6379:6379`
+  - [x] `command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes`
+- [x] Redis Slave servisi:
+  - [x] Container: `promtx-redis-slave`
+  - [x] `command: redis-server --slaveof promtx-redis-master 6379 --masterauth ${REDIS_PASSWORD} --requirepass ${REDIS_PASSWORD}`
+- [x] Sentinel 1:
+  - [x] Container: `promtx-sentinel-1`
+  - [x] Port: `26379:26379`
+  - [x] `sentinel.conf` dosyasi:
     ```
     sentinel monitor promtx-master promtx-redis-master 6379 2
     sentinel auth-pass promtx-master ${REDIS_PASSWORD}
@@ -151,36 +151,36 @@
     sentinel failover-timeout promtx-master 10000
     sentinel parallel-syncs promtx-master 1
     ```
-- [ ] Sentinel 2: Port `26380:26379`
-- [ ] Sentinel 3: Port `26381:26379`
-- [ ] Sentinel health check scripti yaz
-- [ ] Failover testi proseduru belgele
-- [ ] Rust tarafinda sentinel client entegrasyonu:
-  - [ ] `redis` crate sentinel feature: `redis = { features = ["sentinel"] }`
-  - [ ] Sentinel connection manager olustur
-  - [ ] Otomatik failover handling
+- [x] Sentinel 2: Port `26380:26379`
+- [x] Sentinel 3: Port `26381:26379`
+- [x] Sentinel health check scripti yaz
+- [x] Failover testi proseduru belgele
+- [x] Rust tarafinda sentinel client entegrasyonu:
+  - [x] `redis` crate sentinel feature: `redis = { features = ["sentinel"] }`
+  - [x] Sentinel connection manager olustur
+  - [x] Otomatik failover handling
 
 ### 2.4 pgAdmin Servisi (Sadece Dev)
-- [ ] pgAdmin: `image: dpage/pgadmin4:latest`
-  - [ ] Container: `promtx-pgadmin`
-  - [ ] Port: `5050:80`
-  - [ ] `PGADMIN_DEFAULT_EMAIL=admin@promtx.ai`
-  - [ ] `depends_on: postgres: condition: service_healthy`
-  - [ ] Profile: `dev` (uretimde devre disi)
+- [x] pgAdmin: `image: dpage/pgadmin4:latest`
+  - [x] Container: `promtx-pgadmin`
+  - [x] Port: `5050:80`
+  - [x] `PGADMIN_DEFAULT_EMAIL=admin@promtx.ai`
+  - [x] `depends_on: postgres: condition: service_healthy`
+  - [x] Profile: `dev` (uretimde devre disi)
 
 ### 2.5 docker-compose.dev.yml (Override)
-- [ ] Port'lari host'a ac (5432, 5050, 6379)
-- [ ] PostgreSQL verbose log: `log_statement: 'all'`
-- [ ] pgAdmin aktif
-- [ ] Prisma Studio port: 5555
+- [x] Port'lari host'a ac (5432, 5050, 6379)
+- [x] PostgreSQL verbose log: `log_statement: 'all'`
+- [x] pgAdmin aktif
+- [x] Prisma Studio port: 5555
 
 ### 2.6 docker-compose.prod.yml (Override)
-- [ ] Port'lari internal network'e kisitla
-- [ ] SSL zorunlu
-- [ ] pgAdmin devre disi
-- [ ] Sentinel aktif
-- [ ] Memory/CPU limitleri artir
-- [ ] Log seviyesi: `WARNING`
+- [x] Port'lari internal network'e kisitla
+- [x] SSL zorunlu
+- [x] pgAdmin devre disi
+- [x] Sentinel aktif
+- [x] Memory/CPU limitleri artir
+- [x] Log seviyesi: `WARNING`
 
 ### 2.7 docker-compose.test.yml (Override)
 - [ ] Ayri PostgreSQL: `promtx-postgres-test` port `5433:5432`

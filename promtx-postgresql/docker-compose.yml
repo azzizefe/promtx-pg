@@ -19,6 +19,11 @@ services:
       timeout: 5s
       retries: 5
     shm_size: 256mb
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
     logging:
       driver: "json-file"
       options:
