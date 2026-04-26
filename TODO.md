@@ -3022,65 +3022,65 @@ const iapProducts = [
 - [x] `POST /api/auth/reset-password` — sifre sifirlama
 
 #### Billing Route'lari (`server/src/routes/billing.ts`)
-- [ ] `GET /api/billing/wallet` — bakiye sorgulama
-- [ ] `POST /api/billing/topup` — Stripe checkout session
-- [ ] `POST /api/billing/payment-intent` — Stripe payment intent
-- [ ] `POST /api/webhooks/stripe` — Stripe webhook handler (idempotent)
-- [ ] `GET /api/billing/ledger` — pagination
-- [ ] `POST /api/billing/promo-code/validate` — promo kodu dogrulama
-- [ ] `POST /api/billing/iap/verify` — Apple/Google receipt dogrulama
-- [ ] `GET /api/billing/receipts/:id/download` — PDF generation
+- [x] `GET /api/billing/wallet` — bakiye sorgulama
+- [x] `POST /api/billing/topup` — Stripe checkout session
+- [x] `POST /api/billing/payment-intent` — Stripe payment intent
+- [x] `POST /api/webhooks/stripe` — Stripe webhook handler (idempotent)
+- [x] `GET /api/billing/ledger` — pagination
+- [x] `POST /api/billing/promo-code/validate` — promo kodu dogrulama
+- [x] `POST /api/billing/iap/verify` — Apple/Google receipt dogrulama
+- [x] `GET /api/billing/receipts/:id/download` — PDF generation
 
 #### Admin Route'lari (`server/src/routes/admin.ts`)
-- [ ] `GET /api/admin/users` — pagination, arama
-- [ ] `PUT /api/admin/users/:id/freeze` — hesap dondurma
-- [ ] `PUT /api/admin/users/:id/credits` — kredi guncelleme
-- [ ] `GET /api/admin/logs` — audit log pagination
-- [ ] `POST /api/admin/impersonate/:id` — admin impersonation
+- [x] `GET /api/admin/users` — pagination, arama
+- [x] `PUT /api/admin/users/:id/freeze` — hesap dondurma
+- [x] `PUT /api/admin/users/:id/credits` — kredi guncelleme
+- [x] `GET /api/admin/logs` — audit log pagination
+- [x] `POST /api/admin/impersonate/:id` — admin impersonation
 
 #### DNA Vault Route'lari (`server/src/routes/dna.ts`)
-- [ ] `POST /api/dna` — JSONB kaydetme, upsert
-- [ ] `GET /api/dna` — JSONB sorgulama
+- [x] `POST /api/dna` — JSONB kaydetme, upsert
+- [x] `GET /api/dna` — JSONB sorgulama
 
 #### Prompt Route'lari (`server/src/routes/prompts.ts`)
-- [ ] `POST /api/prompts/history` — kaydetme
-- [ ] `GET /api/prompts/history` — pagination, studio_type filtre
-- [ ] `POST /api/prompts/templates` — sablon kaydetme
-- [ ] `GET /api/prompts/templates` — studio_type + tags filtre
-- [ ] `DELETE /api/prompts/templates/:id` — soft delete
+- [x] `POST /api/prompts/history` — kaydetme
+- [x] `GET /api/prompts/history` — pagination, studio_type filtre
+- [x] `POST /api/prompts/templates` — sablon kaydetme
+- [x] `GET /api/prompts/templates` — studio_type + tags filtre
+- [x] `DELETE /api/prompts/templates/:id` — soft delete
 
 #### Image Route'lari (`server/src/routes/images.ts`)
-- [ ] `POST /api/images/generate` — gorsel olusturma
-- [ ] `POST /api/images/:id/variation` — varyasyon
-- [ ] `POST /api/images/:id/outpaint` — outpaint
-- [ ] `GET /api/images/gallery` — kisisel galeri
-- [ ] `GET /api/images/public` — herkese acik galeri
-- [ ] `PUT /api/images/:id/public` — gorunurluk degistirme
-- [ ] `POST /api/images/:id/share` — paylasim URL
-- [ ] `POST /api/images/:id/upscale` — upscale
+- [x] `POST /api/images/generate` — gorsel olusturma
+- [x] `POST /api/images/:id/variation` — varyasyon
+- [x] `POST /api/images/:id/outpaint` — outpaint
+- [x] `GET /api/images/gallery` — kisisel galeri
+- [x] `GET /api/images/public` — herkese acik galeri
+- [x] `PUT /api/images/:id/public` — gorunurluk degistirme
+- [x] `POST /api/images/:id/share` — paylasim URL
+- [x] `POST /api/images/:id/upscale` — upscale
 
 #### Workspace Route'lari (`server/src/routes/workspaces.ts`)
-- [ ] `POST /api/workspaces` — olusturma
-- [ ] `GET /api/workspaces` — listeleme
-- [ ] `POST /api/workspaces/:id/invite` — davet gonderme
-- [ ] `DELETE /api/workspaces/:id/members/:userId` — uye cikarma
+- [x] `POST /api/workspaces` — olusturma
+- [x] `GET /api/workspaces` — listeleme
+- [x] `POST /api/workspaces/:id/invite` — davet gonderme
+- [x] `DELETE /api/workspaces/:id/members/:userId` — uye cikarma
 
 #### System Route'lari (`server/src/routes/system.ts`)
-- [ ] `GET /api/health` — tum servislerin durumu (PG + Redis)
-- [ ] `GET /api/metrics` — pg_stat_statements + custom metrikler
-- [ ] `POST /api/events/log` — audit_logs INSERT
-- [ ] `POST /api/feedback` — feedbacks INSERT (sadece metin)
+- [x] `GET /api/health` — tum servislerin durumu (PG + Redis)
+- [x] `GET /api/metrics` — pg_stat_statements + custom metrikler
+- [x] `POST /api/events/log` — audit_logs INSERT
+- [x] `POST /api/feedback` — feedbacks INSERT (sadece metin)
 
 ### 8.4 Redis + Sentinel Client (ioredis)
-- [ ] `server/src/services/redis.ts` — Redis baglanti modulu (sentinel destekli)
-- [ ] `bun add ioredis`
-- [ ] Cache key stratejisi:
-  - [ ] `user:{id}:profile`
-  - [ ] `user:{id}:wallet`
-  - [ ] `session:{token}`
-  - [ ] `rate:{ip}:{endpoint}`
-- [ ] Cache invalidation: write-through + TTL
-- [ ] Sentinel failover handling
+- [x] `server/src/services/redis.ts` — Redis baglanti modulu (sentinel destekli)
+- [x] `bun add ioredis`
+- [x] Cache key stratejisi:
+  - [x] `user:{id}:profile`
+  - [x] `user:{id}:wallet`
+  - [x] `session:{token}`
+  - [x] `rate:{ip}:{endpoint}`
+- [x] Cache invalidation: write-through + TTL
+- [x] Sentinel failover handling
 
 ---
 
