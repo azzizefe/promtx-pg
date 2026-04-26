@@ -2315,7 +2315,7 @@ const promoCodes = [
   },
 ];
 ```
-- [ ] 5 promo code seed'i yaz
+- [x] 5 promo code seed'i yaz
 
 ### 5.6 Ornek Conversation ve Message Seed'leri
 
@@ -2383,8 +2383,8 @@ const sampleConversations = [
   },
 ];
 ```
-- [ ] 5 ornek konusma + mesajlar seed et (farkli studio type'lar)
-- [ ] Her konusmada en az 2 mesaj (user + assistant)
+- [x] 5 ornek konusma + mesajlar seed et (farkli studio type'lar)
+- [x] Her konusmada en az 2 mesaj (user + assistant)
 
 ### 5.7 DNA Vault Seed'leri
 

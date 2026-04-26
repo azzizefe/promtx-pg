@@ -279,6 +279,133 @@ async function main() {
   `);
   console.log('Model mappings seeded.');
 
+  // 9. Promo Codes
+  const promoCodes = [
+    { code: 'WELCOME2026', discountPercent: 20, maxUses: 1000, validUntil: new Date('2026-12-31'), isActive: true },
+    { code: 'PROMTXBETA', discountAmount: 5.00, maxUses: 500, validUntil: new Date('2026-06-30'), isActive: true },
+    { code: 'FREECREDITS50', discountAmount: 50.00, maxUses: 100, validUntil: new Date('2026-12-31'), isActive: true, metadata: { type: 'credit_bonus', note: 'Beta tester reward' } },
+    { code: 'INFLUENCER100', discountPercent: 100, maxUses: 10, validUntil: new Date('2026-12-31'), isActive: true, metadata: { type: 'influencer', note: 'Influencer partnership' } },
+    { code: 'STARTUP2026', discountPercent: 50, maxUses: 200, validUntil: new Date('2026-09-30'), isActive: true },
+  ];
+
+  for (const p of promoCodes) {
+    await prisma.promoCode.upsert({
+      where: { code: p.code },
+      update: {},
+      create: {
+        code: p.code,
+        discountPercent: p.discountPercent || null,
+        discountAmount: p.discountAmount || null,
+        maxUses: p.maxUses,
+        validUntil: p.validUntil,
+        isActive: p.isActive,
+        metadata: p.metadata || {},
+      }
+    });
+  }
+  console.log('Promo codes seeded.');
+
+  // 10. Example Conversations & Messages
+  // sample-conv-001
+  await prisma.conversation.upsert({
+    where: { id: 'sample-conv-001' },
+    update: {},
+    create: {
+      id: 'sample-conv-001',
+      title: 'System Integration Test',
+      userId: 'system-admin-001',
+      workspaceId: 'global-workspace-001',
+    }
+  });
+
+  await prisma.message.upsert({
+    where: { id: 'msg-001' },
+    update: {},
+    create: { id: 'msg-001', conversationId: 'sample-conv-001', role: 'system', content: 'You are a helpful AI assistant.' }
+  });
+
+  await prisma.message.upsert({
+    where: { id: 'msg-002' },
+    update: {},
+    create: { id: 'msg-002', conversationId: 'sample-conv-001', role: 'user', content: 'Run the database verification checklist.' }
+  });
+
+  const sampleConversations = [
+    {
+      title: 'Cinematic Portrait Session',
+      studioType: 'image',
+      userId: 'user-pro-001',
+      messages: [
+        { role: 'user', content: 'Create a cinematic portrait: young woman, neon-lit Tokyo alley, rain reflections, 85mm lens, f/1.4' },
+        { role: 'assistant', content: 'A cinematic portrait photograph of a young woman standing in a neon-lit Tokyo alleyway during rainfall. Shot on 85mm f/1.4 lens, shallow depth of field, rain droplets catching cyan and magenta neon reflections. Wet pavement reflecting light, volumetric mist, film grain texture, Blade Runner inspired color grading, 8K resolution.' },
+      ],
+    },
+    {
+      title: 'Product Launch Video Concept',
+      studioType: 'video',
+      userId: 'user-ent-001',
+      messages: [
+        { role: 'user', content: 'Create a 30-second product reveal video concept for a sleek AI device' },
+        { role: 'assistant', content: 'Opening shot: extreme close-up of glossy black surface, camera slowly pulls back revealing...' },
+      ],
+    },
+    {
+      title: 'Sci-Fi Character Design',
+      studioType: 'character',
+      userId: 'user-pro-001',
+      messages: [
+        { role: 'user', content: 'Design a cyberpunk bounty hunter character, female, age 25-35, athletic build' },
+        { role: 'assistant', content: 'Cyberpunk bounty hunter: athletic female, 28 years old, mixed ethnicity. Neon-violet cybernetic left eye, short asymmetric black hair with holographic streaks. Tactical matte-black bodysuit with orange accents...' },
+      ],
+    },
+    {
+      title: 'Summer Collection Lookbook',
+      studioType: 'fashion',
+      userId: 'user-des-001',
+      messages: [
+        { role: 'user', content: 'Generate a fashion lookbook concept: minimalist summer streetwear, Mediterranean setting' },
+        { role: 'assistant', content: 'Mediterranean Minimalist Summer Collection: Oversized linen shirt in sand beige, high-waisted wide-leg trousers in cream...' },
+      ],
+    },
+    {
+      title: 'Short Film Scene',
+      studioType: 'cinema',
+      userId: 'user-film-001',
+      messages: [
+        { role: 'user', content: 'Write a scene: detective enters abandoned warehouse, discovers a clue, cinematic noir style' },
+        { role: 'assistant', content: 'INT. ABANDONED WAREHOUSE - NIGHT\n\nShafts of moonlight cut through broken skylights. DETECTIVE KARA (40s, weathered) pushes open the rusted door...' },
+      ],
+    },
+  ];
+
+  for (let i = 0; i < sampleConversations.length; i++) {
+    const sc = sampleConversations[i];
+    // Delete first to be idempotent in creation
+    await prisma.conversation.deleteMany({ where: { id: `sample-conv-studio-${i}` } });
+
+    const conv = await prisma.conversation.create({
+      data: {
+        id: `sample-conv-studio-${i}`,
+        title: sc.title,
+        userId: sc.userId,
+        studioType: sc.studioType as any,
+      }
+    });
+
+    for (let j = 0; j < sc.messages.length; j++) {
+      const msg = sc.messages[j];
+      await prisma.message.create({
+        data: {
+          id: `sample-msg-studio-${i}-${j}`,
+          conversationId: conv.id,
+          role: msg.role,
+          content: msg.content,
+        }
+      });
+    }
+  }
+  console.log('Sample conversations and messages seeded.');
+
   console.log('Seeding complete.');
 
 }
