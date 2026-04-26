@@ -2114,9 +2114,9 @@ const testUsers = [
   },
 ];
 ```
-- [ ] 5 test kullanici seed'i yaz
-- [ ] Her biri icin wallet olustur
-- [ ] Her biri icin "Personal" workspace olustur
+- [x] 5 test kullanici seed'i yaz
+- [x] Her biri icin wallet olustur
+- [x] Her biri icin "Personal" workspace olustur
 
 ### 5.4 Prompt Template Seed'leri (Stüdyo Bazli)
 
@@ -2219,24 +2219,24 @@ const audioTemplates = [
 ```
 
 #### 5.4.4 Cinema Studio Template'leri
-- [ ] 5 cinema template seed'i yaz (script yazimi, sahne yonetimi vb.)
+- [x] 5 cinema template seed'i yaz (script yazimi, sahne yonetimi vb.)
 
 #### 5.4.5 Character/Persona Studio Template'leri
-- [ ] 5 karakter template seed'i yaz (OC, NPC, avatar vb.)
+- [x] 5 karakter template seed'i yaz (OC, NPC, avatar vb.)
 
 #### 5.4.6 Fashion Studio Template'leri
-- [ ] 5 moda template seed'i yaz (outfit, lookbook, runway vb.)
+- [x] 5 moda template seed'i yaz (outfit, lookbook, runway vb.)
 
 #### 5.4.7 Marketing Studio Template'leri
-- [ ] 5 pazarlama template seed'i yaz (reklam, sosyal medya, banner vb.)
+- [x] 5 pazarlama template seed'i yaz (reklam, sosyal medya, banner vb.)
 
 #### 5.4.8 Edit Studio Template'leri
-- [ ] 5 duzenleme template seed'i yaz (renk duzeltme, stil transferi vb.)
+- [x] 5 duzenleme template seed'i yaz (renk duzeltme, stil transferi vb.)
 
-- [ ] Toplam en az 40 sistem template'i seed et
-- [ ] Her template icin `isSystem: true`, `isPublic: true`
-- [ ] Her template icin uygun `tags` ve `category`
-- [ ] Her template icin `variables` JSON yapisini tanimla
+- [x] Toplam en az 40 sistem template'i seed et
+- [x] Her template icin `isSystem: true`, `isPublic: true`
+- [x] Her template icin uygun `tags` ve `category`
+- [x] Her template icin `variables` JSON yapisini tanimla
 
 ### 5.4.9 Pricing Matrix / Model Registry Seed'leri
 
