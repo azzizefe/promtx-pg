@@ -1198,7 +1198,7 @@ model Feedback {
 // Mevcut yapi: id INTEGER AUTOINCREMENT, action TEXT, level TEXT, timestamp DATETIME
 // Prisma'da AppLog modeli olarak zaten tanimlandi (3.7)
 ```
-- [ ] Mevcut `logs` tablosu ile yeni `app_logs` Prisma modeli eslesmeli
+- [x] Mevcut `logs` tablosu ile yeni `app_logs` Prisma modeli eslesmeli
 
 #### 3.8.4 conversations_fts (FTS5 Virtual Table)
 ```sql
