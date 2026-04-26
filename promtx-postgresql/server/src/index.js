@@ -3,7 +3,7 @@ import { cors } from 'hono/cors';
 import { cleanExpiredOAuthStates } from './services/oauthCleanup';
 import { handleGoogleAuth, handleGoogleCallback, handleAppleAuth, handleAppleCallback, handleAppleRevoke, handleMicrosoftAuth, handleMicrosoftCallback, handleOAuthInit, handleOAuthCallback, handleAccountLink, handleAccountUnlink, handleListProviders, handleAuthVerifyMfa, handleAuthSetup2fa, handleAuthReferralCode, handleAuthApiKeys, handleAuthVerifyToken, handleAuthLogout, handleAuthAvatar, handleAuthForgotPassword, handleAuthResetPassword } from './routes/auth';
 import { handleLlmGenerate, handleLlmGenerateParallel, handleLlmStream, handleLlmAbort, handleLlmUsageHistory, handleLlmUsageSummary } from './routes/llm';
-import { handleBillingWallet, handleBillingTopup, handleBillingPaymentIntent, handleBillingWebhooks, handleBillingLedger, handlePromoCodeValidate, handleIapVerify, handleReceiptDownload, handleBillingSubscriptionManage } from './routes/billing';
+import { handleBillingWallet, handleBillingTopup, handleBillingPaymentIntent, handleBillingWebhooks, handleBillingLedger, handlePromoCodeValidate, handleIapVerify, handleReceiptDownload, handleBillingSubscriptionManage, handleBillingSubscriptionCheckout, handleBillingSubscriptionStatus, handleBillingSubscriptionChange } from './routes/billing';
 import { handleAdminUsers, handleAdminFreezeUser, handleAdminUpdateCredits, handleAdminLogs, handleAdminImpersonate } from './routes/admin';
 import { handleDnaSave, handleDnaQuery } from './routes/dna';
 import { handlePromptHistorySave, handlePromptHistoryQuery, handlePromptTemplateSave, handlePromptTemplateQuery, handlePromptTemplateDelete } from './routes/prompts';
@@ -140,6 +140,18 @@ app.post('/api/billing/topup', async (c) => {
 });
 app.post('/api/billing/subscription/manage', async (c) => {
     const res = await handleBillingSubscriptionManage(c.req.raw, new Headers());
+    return new Response(res.body, res);
+});
+app.post('/api/billing/subscription/checkout', async (c) => {
+    const res = await handleBillingSubscriptionCheckout(c.req.raw, new Headers());
+    return new Response(res.body, res);
+});
+app.get('/api/billing/subscription/status', async (c) => {
+    const res = await handleBillingSubscriptionStatus(c.req.raw, new Headers());
+    return new Response(res.body, res);
+});
+app.post('/api/billing/subscription/change', async (c) => {
+    const res = await handleBillingSubscriptionChange(c.req.raw, new Headers());
     return new Response(res.body, res);
 });
 app.post('/api/billing/payment-intent', async (c) => {

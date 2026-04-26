@@ -16,7 +16,9 @@ import {
 import { 
   handleBillingWallet, handleBillingTopup, handleBillingPaymentIntent, 
   handleBillingWebhooks, handleBillingLedger, handlePromoCodeValidate, 
-  handleIapVerify, handleReceiptDownload, handleBillingSubscriptionManage 
+  handleIapVerify, handleReceiptDownload, handleBillingSubscriptionManage,
+  handleBillingSubscriptionCheckout, handleBillingSubscriptionStatus,
+  handleBillingSubscriptionChange
 } from './routes/billing';
 import { 
   handleAdminUsers, handleAdminFreezeUser, handleAdminUpdateCredits, 
@@ -203,6 +205,21 @@ app.post('/api/billing/topup', async (c) => {
 
 app.post('/api/billing/subscription/manage', async (c) => {
   const res = await handleBillingSubscriptionManage(c.req.raw, new Headers());
+  return new Response(res.body, res);
+});
+
+app.post('/api/billing/subscription/checkout', async (c) => {
+  const res = await handleBillingSubscriptionCheckout(c.req.raw, new Headers());
+  return new Response(res.body, res);
+});
+
+app.get('/api/billing/subscription/status', async (c) => {
+  const res = await handleBillingSubscriptionStatus(c.req.raw, new Headers());
+  return new Response(res.body, res);
+});
+
+app.post('/api/billing/subscription/change', async (c) => {
+  const res = await handleBillingSubscriptionChange(c.req.raw, new Headers());
   return new Response(res.body, res);
 });
 

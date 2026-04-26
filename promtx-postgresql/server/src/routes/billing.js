@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { createCustomerPortalSession, carryOverCredits } from '../services/billing';
+import { createCustomerPortalSession, carryOverCredits, createSubscriptionCheckout, changeSubscriptionPlan } from '../services/billing';
 const prisma = new PrismaClient();
 export async function handleBillingWallet(req, headers) {
     try {
@@ -107,5 +107,69 @@ export async function handleBillingSubscriptionManage(req, headers) {
             status: 500,
             headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) }
         });
+    }
+}
+export async function handleBillingSubscriptionCheckout(req, headers) {
+    try {
+        const body = await req.json();
+        let userId = body.userId || 'mock-user-id';
+        const priceId = body.priceId;
+        if (!priceId) {
+            return new Response(JSON.stringify({ error: 'priceId is required' }), { status: 400 });
+        }
+        const user = await prisma.user.findFirst();
+        if (user && userId === 'mock-user-id') {
+            userId = user.id;
+        }
+        const url = await createSubscriptionCheckout(userId, priceId);
+        return new Response(JSON.stringify({ url }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) }
+        });
+    }
+    catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+    }
+}
+export async function handleBillingSubscriptionStatus(req, headers) {
+    try {
+        let userId = 'mock-user-id';
+        const user = await prisma.user.findFirst();
+        if (user) {
+            userId = user.id;
+        }
+        const subscription = await prisma.subscription.findUnique({
+            where: { userId },
+        });
+        return new Response(JSON.stringify(subscription), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) }
+        });
+    }
+    catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+    }
+}
+export async function handleBillingSubscriptionChange(req, headers) {
+    try {
+        const body = await req.json();
+        let userId = body.userId || 'mock-user-id';
+        const newPlan = body.plan;
+        const newPriceId = body.priceId;
+        if (!newPlan || !newPriceId) {
+            return new Response(JSON.stringify({ error: 'plan and priceId are required' }), { status: 400 });
+        }
+        const user = await prisma.user.findFirst();
+        if (user && userId === 'mock-user-id') {
+            userId = user.id;
+        }
+        await changeSubscriptionPlan(userId, newPlan, newPriceId);
+        return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) }
+        });
+    }
+    catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), { status: 500 });
     }
 }

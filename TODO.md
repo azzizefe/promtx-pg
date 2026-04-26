@@ -3553,7 +3553,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 ### 9B.10 Frontend Abonelik Bilesen'leri
 
 #### Pricing Sayfasi Guncellemesi (`src/pages/Pricing.tsx`)
-- [ ] Mevcut TIERS yapisini koru ama genislet:
+- [x] Mevcut TIERS yapisini koru ama genislet:
   ```typescript
   const TIERS = [
     {
@@ -3586,12 +3586,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     },
   ];
   ```
-- [ ] Aylik/Yillik toggle switch ekle (yillik %17 indirim goster)
-- [ ] Mevcut plan highlight'i (kullanicinin aktif planini isaretle)
-- [ ] "Mevcut Plan" badge'i
-- [ ] Upgrade butonu -> `POST /api/billing/subscription/checkout` API cagrisi
-- [ ] Downgrade butonu -> onay dialog -> `change_subscription_plan`
-- [ ] Free tier icin "Basla" butonu (kayit sayfasina yonlendir)
+- [x] Aylik/Yillik toggle switch ekle (yillik %17 indirim goster)
+- [x] Mevcut plan highlight'i (kullanicinin aktif planini isaretle)
+- [x] "Mevcut Plan" badge'i
+- [x] Upgrade butonu -> `POST /api/billing/subscription/checkout` API cagrisi
+- [x] Downgrade butonu -> onay dialog -> `change_subscription_plan`
+- [x] Free tier icin "Basla" butonu (kayit sayfasina yonlendir)
 
 #### Subscription Status Bilesen'i (Settings sayfasi)
 ```typescript
