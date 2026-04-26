@@ -5574,19 +5574,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 }
 ```
 
-- [ ] Gallery public endpoint'i yaz (auth gereksiz)
-- [ ] Cursor-based pagination
-- [ ] Model + sort filtre
+- [x] Gallery public endpoint'i yaz (auth gereksiz)
+- [x] Cursor-based pagination
+- [x] Model + sort filtre
 
 ### 17.5 API Bagimliliklari
 
-- [ ] `bun add zod` — request validasyonu
-- [ ] `bun add jsonwebtoken` veya `bun add jose` — JWT islemleri
-- [ ] `bun add argon2` — sifre hash (Rust'taki ile uyumlu olmali!)
-- [ ] `bun add ioredis` — Redis client (rate limiting + cache)
-- [ ] `bun add @vercel/node` — Vercel types (dev dependency)
-- [ ] `bun add stripe` — Stripe SDK (webhook + checkout)
-- [ ] Prisma Client zaten kurulu (BOLUM 3)
+- [x] `bun add zod` — request validasyonu
+- [x] `bun add jsonwebtoken` veya `bun add jose` — JWT islemleri
+- [x] `bun add argon2` — sifre hash (Rust'taki ile uyumlu olmali!)
+- [x] `bun add ioredis` — Redis client (rate limiting + cache)
+- [x] `bun add @vercel/node` — Vercel types (dev dependency)
+- [x] `bun add stripe` — Stripe SDK (webhook + checkout)
+- [x] Prisma Client zaten kurulu (BOLUM 3)
 
 ### 17.6 API Guvenligi
 
