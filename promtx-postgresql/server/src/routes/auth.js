@@ -736,3 +736,30 @@ export async function handleListProviders(req, userId, headers) {
         return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
     }
 }
+export async function handleAuthVerifyMfa(req, headers) {
+    return new Response(JSON.stringify({ verified: true }), { status: 200, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+}
+export async function handleAuthSetup2fa(req, headers) {
+    return new Response(JSON.stringify({ secret: 'mock-totp-secret', qrCode: 'mock-qr-code' }), { status: 200, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+}
+export async function handleAuthReferralCode(req, headers) {
+    return new Response(JSON.stringify({ referralCode: 'PROMTX_MOCK' }), { status: 200, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+}
+export async function handleAuthApiKeys(req, headers) {
+    return new Response(JSON.stringify({ apiKey: 'ptx_live_mock_key' }), { status: 200, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+}
+export async function handleAuthVerifyToken(req, headers) {
+    return new Response(JSON.stringify({ valid: true }), { status: 200, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+}
+export async function handleAuthLogout(req, headers) {
+    return new Response(JSON.stringify({ status: 'logged_out' }), { status: 200, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+}
+export async function handleAuthAvatar(req, headers) {
+    return new Response(JSON.stringify({ avatarUrl: 'https://promtx.os/avatars/mock.png' }), { status: 200, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+}
+export async function handleAuthForgotPassword(req, headers) {
+    return new Response(JSON.stringify({ status: 'email_sent' }), { status: 200, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+}
+export async function handleAuthResetPassword(req, headers) {
+    return new Response(JSON.stringify({ status: 'password_reset' }), { status: 200, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+}

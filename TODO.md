@@ -2932,10 +2932,10 @@ const iapProducts = [
 - [x] Serverless icin connection pooling stratejisi belgele
 
 ### 7.5 Vercel Domain ve DNS
-- [ ] Custom domain: `promtx.ai` -> Vercel
-- [ ] `www.promtx.ai` redirect -> `promtx.ai`
-- [ ] SSL otomatik (Vercel managed)
-- [ ] Preview deployments: `*.promtx.vercel.app`
+- [x] Custom domain: `promtx.ai` -> Vercel
+- [x] `www.promtx.ai` redirect -> `promtx.ai`
+- [x] SSL otomatik (Vercel managed)
+- [x] Preview deployments: `*.promtx.vercel.app`
 
 ### 7.6 vercel.json Yapilandirmasi
 ```json
@@ -2959,10 +2959,10 @@ const iapProducts = [
   ]
 }
 ```
-- [ ] `vercel.json` dosyasi olustur
-- [ ] SPA routing icin rewrite kurali
-- [ ] API CORS headers
-- [ ] Cache headers (statik dosyalar icin)
+- [x] `vercel.json` dosyasi olustur
+- [x] SPA routing icin rewrite kurali
+- [x] API CORS headers
+- [x] Cache headers (statik dosyalar icin)
 
 ---
 
@@ -2973,17 +2973,17 @@ const iapProducts = [
 > **Dizin:** `promtx-postgresql/server/`
 
 ### 8.1 Backend Teknoloji Secimi
-- [ ] Bun HTTP server veya Hono/Elysia framework sec
-- [ ] `bun add hono` veya `bun add elysia` (tercih: Hono — hafif, Bun-uyumlu)
-- [ ] Prisma Client entegrasyonu: `import { PrismaClient } from '@prisma/client'`
-- [ ] `ioredis` paketi ile Redis + Sentinel destegi: `bun add ioredis`
-- [ ] Multi-Provider OAuth icin: Google, Apple, Microsoft endpoint'leri TypeScript'te yazilacak
+- [x] Bun HTTP server veya Hono/Elysia framework sec
+- [x] `bun add hono` veya `bun add elysia` (tercih: Hono — hafif, Bun-uyumlu)
+- [x] Prisma Client entegrasyonu: `import { PrismaClient } from '@prisma/client'`
+- [x] `ioredis` paketi ile Redis + Sentinel destegi: `bun add ioredis`
+- [x] Multi-Provider OAuth icin: Google, Apple, Microsoft endpoint'leri TypeScript'te yazilacak
 
 ### 8.2 Mimari
-- [ ] **Bun API Layer:** Veritabani islemleri (Prisma), Auth (Google + Apple + Microsoft OAuth), Stripe webhook'lari
-- [ ] **Vercel Serverless:** Web deploy icin API routes
-- [ ] Frontend -> Bun REST API -> PostgreSQL (Prisma)
-- [ ] `src/lib/api.ts` frontend'de HTTP fetch ile backend'e baglanacak
+- [x] **Bun API Layer:** Veritabani islemleri (Prisma), Auth (Google + Apple + Microsoft OAuth), Stripe webhook'lari
+- [x] **Vercel Serverless:** Web deploy icin API routes
+- [x] Frontend -> Bun REST API -> PostgreSQL (Prisma)
+- [x] `src/lib/api.ts` frontend'de HTTP fetch ile backend'e baglanacak
 
 ### 8.3 API Route'lari (Orijinal projedeki IPC komutlarinin karsiliklari)
 
@@ -2991,35 +2991,35 @@ const iapProducts = [
 > Asagidaki tum endpoint'ler `server/src/routes/` altinda TypeScript ile yazilacak
 
 #### LLM Route'lari (`server/src/routes/llm.ts`)
-- [ ] `POST /api/llm/generate` — prompt olusturma
-- [ ] `POST /api/llm/generate-parallel` — batch prompt
-- [ ] `POST /api/llm/stream` — SSE ile streaming
-- [ ] `POST /api/llm/abort` — islem iptal
-- [ ] `GET /api/llm/usage/history` — pagination
-- [ ] `GET /api/llm/usage/summary` — aggregate sorgular
+- [x] `POST /api/llm/generate` — prompt olusturma
+- [x] `POST /api/llm/generate-parallel` — batch prompt
+- [x] `POST /api/llm/stream` — SSE ile streaming
+- [x] `POST /api/llm/abort` — islem iptal
+- [x] `GET /api/llm/usage/history` — pagination
+- [x] `GET /api/llm/usage/summary` — aggregate sorgular
 
 #### Auth Route'lari (`server/src/routes/auth.ts`)
-- [ ] `POST /api/auth/register` — UUID, transaction (wallet + user atomik)
-- [ ] `POST /api/auth/login` — JWT olusturma
-- [ ] `GET /api/auth/google` — Google OAuth redirect
-- [ ] `GET /api/auth/google/callback` — Google OAuth callback
-- [ ] `GET /api/auth/apple` — Apple OAuth redirect
-- [ ] `POST /api/auth/apple/callback` — Apple OAuth callback (form_post)
-- [ ] `GET /api/auth/microsoft` — Microsoft OAuth redirect
-- [ ] `GET /api/auth/microsoft/callback` — Microsoft OAuth callback
-- [ ] `POST /api/auth/link-provider` — mevcut hesaba OAuth provider baglama
-- [ ] `DELETE /api/auth/unlink-provider` — provider baglantisini kaldirma
-- [ ] `GET /api/auth/providers` — bagli provider listesi
-- [ ] `POST /api/auth/verify-mfa` — TOTP dogrulama
-- [ ] `POST /api/auth/refresh` — refresh token rotation
-- [ ] `POST /api/auth/setup-2fa` — totp_secret kaydetme
-- [ ] `GET /api/auth/referral-code` — referral kodu
-- [ ] `POST /api/auth/api-keys` — API key olusturma
-- [ ] `POST /api/auth/verify-token` — JWT dogrulama
-- [ ] `POST /api/auth/logout` — session sonlandirma
-- [ ] `PUT /api/auth/avatar` — avatar yukleme
-- [ ] `POST /api/auth/forgot-password` — Resend email ile reset token
-- [ ] `POST /api/auth/reset-password` — sifre sifirlama
+- [x] `POST /api/auth/register` — UUID, transaction (wallet + user atomik)
+- [x] `POST /api/auth/login` — JWT olusturma
+- [x] `GET /api/auth/google` — Google OAuth redirect
+- [x] `GET /api/auth/google/callback` — Google OAuth callback
+- [x] `GET /api/auth/apple` — Apple OAuth redirect
+- [x] `POST /api/auth/apple/callback` — Apple OAuth callback (form_post)
+- [x] `GET /api/auth/microsoft` — Microsoft OAuth redirect
+- [x] `GET /api/auth/microsoft/callback` — Microsoft OAuth callback
+- [x] `POST /api/auth/link-provider` — mevcut hesaba OAuth provider baglama
+- [x] `DELETE /api/auth/unlink-provider` — provider baglantisini kaldirma
+- [x] `GET /api/auth/providers` — bagli provider listesi
+- [x] `POST /api/auth/verify-mfa` — TOTP dogrulama
+- [x] `POST /api/auth/refresh` — refresh token rotation
+- [x] `POST /api/auth/setup-2fa` — totp_secret kaydetme
+- [x] `GET /api/auth/referral-code` — referral kodu
+- [x] `POST /api/auth/api-keys` — API key olusturma
+- [x] `POST /api/auth/verify-token` — JWT dogrulama
+- [x] `POST /api/auth/logout` — session sonlandirma
+- [x] `PUT /api/auth/avatar` — avatar yukleme
+- [x] `POST /api/auth/forgot-password` — Resend email ile reset token
+- [x] `POST /api/auth/reset-password` — sifre sifirlama
 
 #### Billing Route'lari (`server/src/routes/billing.ts`)
 - [ ] `GET /api/billing/wallet` — bakiye sorgulama
