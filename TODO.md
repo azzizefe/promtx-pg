@@ -2267,10 +2267,10 @@ const legacyMappings = [
   { oldId: 'gemini-3flash',     newId: 'gemini-1.5-flash' },
 ];
 ```
-- [ ] Pricing matrix tablosu veya Prisma modeli olustur
-- [ ] Tum model fiyatlarini seed et (registry.rs ile birebir uyumlu)
-- [ ] Legacy model mapping tablosu seed et
-- [ ] Test ortaminda fiyat: $0.00 (mevcut seed.sql uyumlu)
+- [x] Pricing matrix tablosu veya Prisma modeli olustur
+- [x] Tum model fiyatlarini seed et (registry.rs ile birebir uyumlu)
+- [x] Legacy model mapping tablosu seed et
+- [x] Test ortaminda fiyat: $0.00 (mevcut seed.sql uyumlu)
 
 ### 5.5 Promo Code Seed'leri
 

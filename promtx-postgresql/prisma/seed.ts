@@ -245,6 +245,40 @@ async function main() {
   }
   console.log('40 system prompt templates seeded.');
 
+  // 8. Model Pricing & Legacy Mappings (Raw SQL due to client lock)
+  await prisma.$executeRawUnsafe(`
+    INSERT INTO pricing_matrix (model_id, provider, base_price_1m, output_price_1m, is_active)
+    VALUES
+      ('gpt-4o', 'openai', 5.0, 15.0, true),
+      ('gpt-3.5-turbo', 'openai', 0.5, 1.5, true),
+      ('gemini-1.5-flash', 'google', 0.075, 0.3, true),
+      ('gemini-1.5-pro', 'google', 3.5, 10.5, true),
+      ('gemini-2.0-flash', 'google', 0.1, 0.4, true),
+      ('deepseek-chat', 'local', 0.1, 0.2, true),
+      ('grok-1', 'local', 0.5, 1.5, true),
+      ('dall-e-3', 'openai', 40000.0, 80000.0, true)
+    ON CONFLICT (model_id) DO UPDATE SET
+      provider = EXCLUDED.provider,
+      base_price_1m = EXCLUDED.base_price_1m,
+      output_price_1m = EXCLUDED.output_price_1m,
+      is_active = EXCLUDED.is_active;
+  `);
+  console.log('Model pricing matrix seeded.');
+
+  await prisma.$executeRawUnsafe(`
+    INSERT INTO model_mappings (old_id, new_id)
+    VALUES
+      ('text-davinci-003', 'gpt-3.5-turbo'),
+      ('gpt-4', 'gpt-4o'),
+      ('gpt-4-turbo', 'gpt-4o'),
+      ('gemini-pro', 'gemini-1.5-pro'),
+      ('gemini-ultra', 'gemini-1.5-pro'),
+      ('gemini-3flash', 'gemini-1.5-flash')
+    ON CONFLICT (old_id) DO UPDATE SET
+      new_id = EXCLUDED.new_id;
+  `);
+  console.log('Model mappings seeded.');
+
   console.log('Seeding complete.');
 
 }

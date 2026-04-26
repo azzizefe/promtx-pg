@@ -864,3 +864,12 @@ model ImageReport {
   @@index([userId])
   @@map("image_reports")
 }
+
+model ModelMapping {
+  oldId     String   @id @map("old_id") @db.VarChar(100)
+  newId     String   @map("new_id") @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("model_mappings")
+}
+
