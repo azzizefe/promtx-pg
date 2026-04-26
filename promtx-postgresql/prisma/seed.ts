@@ -406,6 +406,426 @@ async function main() {
   }
   console.log('Sample conversations and messages seeded.');
 
+  // 11. DNA Vaults
+  const sampleDna = [
+    {
+      name: 'Photorealistic Portrait DNA',
+      description: 'Yuksek kaliteli fotorealist portre ayarlari',
+      studioType: 'image',
+      userId: 'user-pro-001',
+      dnaJson: {
+        gender: 'female',
+        age: '25-35',
+        ethnicity: 'Mediterranean',
+        hairColor: 'Brown',
+        hairStyle: 'Wavy',
+        eyeColor: 'Green',
+        bodyType: 'Athletic',
+        complexion: 'Olive',
+        expression: 'Confident',
+        style: 'photorealistic',
+        quality: 'ultra_high',
+        lighting: 'studio',
+        camera: { model: 'Canon EOS R5', lens: '85mm f/1.4', iso: 100 },
+        negativePrompts: ['cartoon', 'anime', 'illustration', 'low quality'],
+      },
+      isDefault: true,
+    },
+    {
+      name: 'Cyberpunk Character DNA',
+      description: 'Cyberpunk tarz karakter DNA profili',
+      studioType: 'character',
+      userId: 'user-pro-001',
+      dnaJson: {
+        gender: 'female',
+        age: '18-25',
+        ethnicity: 'East Asian',
+        hairColor: 'Neon',
+        hairStyle: 'Short',
+        eyeColor: 'Blue',
+        bodyType: 'Athletic',
+        complexion: 'Fair',
+        tattoo: 'Circuit patterns on arms',
+        piercing: 'Cybernetic ear implants',
+        makeup: 'Holographic lip gloss, neon eyeliner',
+        visualStyle: 'cyberpunk',
+        aesthetic: 'neon-noir',
+        personality: 'Rebellious',
+        archetype: 'Hacker',
+      },
+      isDefault: false,
+    },
+    {
+      name: 'High Fashion Model DNA',
+      description: 'Moda studiosu icin model profili',
+      studioType: 'fashion',
+      userId: 'user-des-001',
+      dnaJson: {
+        gender: 'female',
+        age: '18-25',
+        ethnicity: 'Nordic',
+        hairColor: 'Blonde',
+        hairStyle: 'Straight',
+        eyeColor: 'Blue',
+        bodyType: 'Thin',
+        complexion: 'Porcelain',
+        expression: 'Stoic',
+        clothingStyle: 'Avant-garde',
+        fabric: 'Silk, Leather',
+        footwear: 'Stiletto heels',
+        nails: 'Minimalist French tips',
+        makeup: 'Editorial bold lips',
+      },
+      isDefault: false,
+    },
+    {
+      name: 'Anime Art DNA',
+      description: 'Anime tarz cizim ayarlari',
+      studioType: 'image',
+      userId: 'user-free-001',
+      dnaJson: {
+        style: 'anime',
+        quality: 'high',
+        lineWeight: 'medium',
+        colorPalette: 'vibrant',
+        influence: ['Studio Ghibli', 'Makoto Shinkai'],
+        eyeColor: 'Violet',
+        hairColor: 'Pink',
+        hairStyle: 'Long',
+      },
+      isDefault: false,
+    },
+    {
+      name: 'Cinematic Video DNA',
+      description: 'Film kalitesinde video ayarlari',
+      studioType: 'cinema',
+      userId: 'user-film-001',
+      dnaJson: {
+        aspectRatio: '2.39:1',
+        colorGrading: 'teal_orange',
+        frameRate: 24,
+        grain: 'subtle',
+        lens: 'anamorphic',
+      },
+      isDefault: false,
+    },
+  ];
+
+  for (const d of sampleDna) {
+    await prisma.dnaVault.upsert({
+      where: {
+        userId_name: {
+          userId: d.userId,
+          name: d.name,
+        }
+      },
+      update: {},
+      create: {
+        userId: d.userId,
+        name: d.name,
+        description: d.description,
+        studioType: d.studioType as any,
+        dnaJson: d.dnaJson,
+        isDefault: d.isDefault,
+      }
+    });
+  }
+  console.log('DNA vaults seeded.');
+
+  // 12. Notifications
+  const testUserIds = ['user-free-001', 'user-pro-001', 'user-ent-001', 'user-des-001', 'user-film-001'];
+  const sampleNotifications = [
+    { type: 'system', title: 'Promtx\'e Hosgeldiniz!', body: 'AI destekli prompt muhendisligi platformuna hosgeldiniz. Baslamak icin bir studio secin.', data: { action: 'navigate', target: '/studio' } },
+    { type: 'billing', title: 'Hosgeldin Kredisi', body: 'Hesabiniza 500 kredi hosgeldin bonusu eklendi.', data: { credits: 500 } },
+    { type: 'generation', title: 'Ilk Gorseli Olusturun', body: 'Image Studio ile ilk AI gorselinizi olusturmaya hazir misiniz?', data: { action: 'navigate', target: '/studio/image' } },
+  ];
+
+  for (const userId of testUserIds) {
+    for (let i = 0; i < sampleNotifications.length; i++) {
+      const n = sampleNotifications[i];
+      await prisma.notification.upsert({
+        where: { id: `sample-notif-${userId}-${i}` },
+        update: {},
+        create: {
+          id: `sample-notif-${userId}-${i}`,
+          userId,
+          type: n.type as any,
+          title: n.title,
+          body: n.body,
+          data: n.data,
+        }
+      });
+    }
+  }
+  console.log('Notifications seeded.');
+
+  // 13. Referrals
+  const sampleReferrals = [
+    { referrerId: 'user-pro-001', referredId: 'user-free-001', code: 'PRO123', credits: 100, status: 'completed' },
+    { referrerId: 'user-ent-001', referredId: 'user-des-001', code: 'ENT999', credits: 500, status: 'pending' },
+    { referrerId: 'user-ent-001', referredId: 'user-film-001', code: 'ENT999', credits: 500, status: 'completed' },
+  ];
+
+  for (const r of sampleReferrals) {
+    await prisma.referral.upsert({
+      where: { referrerId_referredId: { referrerId: r.referrerId, referredId: r.referredId } },
+      update: {},
+      create: {
+        referrerId: r.referrerId,
+        referredId: r.referredId,
+        referralCode: r.code,
+        rewardCredits: r.credits,
+        status: r.status,
+        completedAt: r.status === 'completed' ? new Date() : null,
+      }
+    });
+  }
+  console.log('Referrals seeded.');
+
+  // 14. OAuth Provider Configs
+  const oauthProviders = [
+    {
+      provider: 'google',
+      clientId: process.env.GOOGLE_CLIENT_ID || 'SEED_PLACEHOLDER_GOOGLE_CLIENT_ID',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'SEED_PLACEHOLDER',
+      scopes: ['openid', 'email', 'profile'],
+      isActive: true,
+      metadata: {
+        authorizationUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
+        tokenUrl: 'https://oauth2.googleapis.com/token',
+        userInfoUrl: 'https://www.googleapis.com/oauth2/v3/userinfo',
+        jwksUrl: 'https://www.googleapis.com/oauth2/v3/certs',
+        supportsPKCE: true,
+        supportsRefreshToken: true,
+      },
+    },
+    {
+      provider: 'apple',
+      clientId: process.env.APPLE_CLIENT_ID || 'com.promtx.auth',
+      clientSecret: 'DYNAMIC_JWT',
+      teamId: process.env.APPLE_TEAM_ID || 'SEED_PLACEHOLDER',
+      keyId: process.env.APPLE_KEY_ID || 'SEED_PLACEHOLDER',
+      privateKey: process.env.APPLE_PRIVATE_KEY || null,
+      scopes: ['name', 'email'],
+      isActive: true,
+      metadata: {
+        authorizationUrl: 'https://appleid.apple.com/auth/authorize',
+        tokenUrl: 'https://appleid.apple.com/auth/token',
+        jwksUrl: 'https://appleid.apple.com/auth/keys',
+        revokeUrl: 'https://appleid.apple.com/auth/revoke',
+        responseMode: 'form_post',
+        usesNonce: true,
+        supportsRefreshToken: false,
+        firstLoginOnlyUserInfo: true,
+      },
+    },
+    {
+      provider: 'microsoft',
+      clientId: process.env.MICROSOFT_CLIENT_ID || 'SEED_PLACEHOLDER_MICROSOFT_CLIENT_ID',
+      clientSecret: process.env.MICROSOFT_CLIENT_SECRET || 'SEED_PLACEHOLDER',
+      tenantId: process.env.MICROSOFT_TENANT_ID || 'common',
+      scopes: ['openid', 'email', 'profile', 'User.Read'],
+      isActive: true,
+      metadata: {
+        authorizationUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+        tokenUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
+        jwksUrl: 'https://login.microsoftonline.com/common/discovery/v2.0/keys',
+        graphUrl: 'https://graph.microsoft.com/v1.0/me',
+        graphPhotoUrl: 'https://graph.microsoft.com/v1.0/me/photo/$value',
+        supportsPKCE: true,
+        supportsRefreshToken: true,
+        multiTenant: true,
+      },
+    },
+  ];
+
+  for (const config of oauthProviders) {
+    await prisma.oAuthProviderConfig.upsert({
+      where: { provider: config.provider as any },
+      update: {
+        scopes: config.scopes,
+        isActive: config.isActive,
+        metadata: config.metadata,
+      },
+      create: {
+        provider: config.provider as any,
+        clientId: config.clientId,
+        clientSecret: config.clientSecret,
+        teamId: config.teamId || null,
+        keyId: config.keyId || null,
+        privateKey: config.privateKey || null,
+        tenantId: config.tenantId || null,
+        scopes: config.scopes,
+        isActive: config.isActive,
+        metadata: config.metadata,
+      },
+    });
+  }
+  console.log('OAuth provider configs seeded.');
+
+  // 15. Test OAuth Accounts
+  // Pro user -> Google
+  await prisma.account.upsert({
+    where: { provider_providerAccountId: { provider: 'google', providerAccountId: 'google-test-uid-001' } },
+    update: {},
+    create: {
+      userId: 'user-pro-001',
+      provider: 'google',
+      providerAccountId: 'google-test-uid-001',
+      accessToken: 'mock-google-access-token-pro',
+      refreshToken: 'mock-google-refresh-token-pro',
+      expiresAt: new Date(Date.now() + 3600 * 1000),
+      tokenType: 'Bearer',
+      scope: 'openid email profile',
+      providerEmail: 'procreator@gmail.com',
+      providerName: 'Pro Creator',
+      providerAvatar: 'https://lh3.googleusercontent.com/a/mock-pro-avatar',
+      metadata: { hd: null, email_verified: true },
+    },
+  });
+
+  // Enterprise user -> Microsoft
+  await prisma.account.upsert({
+    where: { provider_providerAccountId: { provider: 'microsoft', providerAccountId: 'microsoft-test-oid-001' } },
+    update: {},
+    create: {
+      userId: 'user-ent-001',
+      provider: 'microsoft',
+      providerAccountId: 'microsoft-test-oid-001',
+      accessToken: 'mock-ms-access-token-ent',
+      refreshToken: 'mock-ms-refresh-token-ent',
+      expiresAt: new Date(Date.now() + 3600 * 1000),
+      tokenType: 'Bearer',
+      scope: 'openid email profile User.Read',
+      providerEmail: 'enterprise@contoso.com',
+      providerName: 'Enterprise Studio',
+      metadata: {
+        tenant_id: 'contoso-tenant-id',
+        job_title: 'Creative Director',
+        office_location: 'Istanbul',
+      },
+    },
+  });
+
+  // Designer user -> Apple
+  await prisma.account.upsert({
+    where: { provider_providerAccountId: { provider: 'apple', providerAccountId: 'apple-test-sub-001' } },
+    update: {},
+    create: {
+      userId: 'user-des-001',
+      provider: 'apple',
+      providerAccountId: 'apple-test-sub-001',
+      idToken: 'mock-apple-id-token-designer',
+      providerEmail: 'abc123@privaterelay.appleid.com',
+      providerName: 'Fashion Designer',
+      metadata: {
+        is_private_email: true,
+        real_user_status: 2,
+        nonce_supported: true,
+      },
+    },
+  });
+
+  // Filmmaker user -> Google & Apple
+  await prisma.account.upsert({
+    where: { provider_providerAccountId: { provider: 'google', providerAccountId: 'google-test-uid-002' } },
+    update: {},
+    create: {
+      userId: 'user-film-001',
+      provider: 'google',
+      providerAccountId: 'google-test-uid-002',
+      accessToken: 'mock-google-access-token-film',
+      providerEmail: 'filmmaker@gmail.com',
+      providerName: 'Indie Filmmaker',
+      metadata: { email_verified: true },
+    },
+  });
+
+  await prisma.account.upsert({
+    where: { provider_providerAccountId: { provider: 'apple', providerAccountId: 'apple-test-sub-002' } },
+    update: {},
+    create: {
+      userId: 'user-film-001',
+      provider: 'apple',
+      providerAccountId: 'apple-test-sub-002',
+      idToken: 'mock-apple-id-token-film',
+      providerEmail: 'def456@privaterelay.appleid.com',
+      providerName: 'Indie Filmmaker',
+      metadata: { is_private_email: true, real_user_status: 2 },
+    },
+  });
+
+  // Admin user -> Google, Apple, Microsoft
+  const adminProviders = [
+    { provider: 'google', providerAccountId: 'google-admin-uid', providerEmail: 'admin@gmail.com' },
+    { provider: 'apple', providerAccountId: 'apple-admin-sub', providerEmail: 'admin-relay@privaterelay.appleid.com' },
+    { provider: 'microsoft', providerAccountId: 'ms-admin-oid', providerEmail: 'admin@promtx.onmicrosoft.com' },
+  ];
+
+  for (const p of adminProviders) {
+    await prisma.account.upsert({
+      where: { provider_providerAccountId: { provider: p.provider as any, providerAccountId: p.providerAccountId } },
+      update: {},
+      create: {
+        userId: 'system-admin-001',
+        provider: p.provider as any,
+        providerAccountId: p.providerAccountId,
+        providerEmail: p.providerEmail,
+        providerName: 'Promtx Admin',
+        metadata: { is_test_account: true },
+      },
+    });
+  }
+  console.log('Test OAuth accounts linked.');
+
+  // 16. Token Usage Seeds
+  const realModels = [
+    { modelId: 'gemini-1.5-flash', provider: 'google' },
+    { modelId: 'gemini-1.5-pro',   provider: 'google' },
+    { modelId: 'gpt-4o',           provider: 'openai' },
+    { modelId: 'gpt-3.5-turbo',    provider: 'openai' },
+    { modelId: 'deepseek-chat',    provider: 'local' },
+    { modelId: 'grok-1',           provider: 'local' },
+    { modelId: 'dall-e-3',         provider: 'openai' },
+  ];
+
+  const randomUsers = ['user-free-001', 'user-pro-001', 'user-ent-001', 'user-des-001', 'user-film-001'];
+  const randomStudios = ['image', 'video', 'cinema', 'audio', 'character', 'fashion', 'marketing', 'edit'];
+
+  // Clear existing usage to prevent endless bloat
+  await prisma.tokenUsage.deleteMany({ where: { id: { startsWith: 'sample-usage-' } } });
+
+  for (let i = 0; i < 100; i++) {
+    const model = realModels[Math.floor(Math.random() * realModels.length)];
+    const userId = randomUsers[Math.floor(Math.random() * randomUsers.length)];
+    const studioType = randomStudios[Math.floor(Math.random() * randomStudios.length)];
+
+    const inputTokens = Math.floor(Math.random() * 4900) + 100;
+    const outputTokens = Math.floor(Math.random() * 2950) + 50;
+    const costUsd = (Math.random() * 0.499) + 0.001;
+    const latencyMs = Math.floor(Math.random() * 4800) + 200;
+
+    const randomDaysAgo = Math.floor(Math.random() * 30);
+    const createdAt = new Date();
+    createdAt.setDate(createdAt.getDate() - randomDaysAgo);
+
+    await prisma.tokenUsage.create({
+      data: {
+        id: `sample-usage-${i}`,
+        userId,
+        modelId: model.modelId,
+        provider: model.provider as any,
+        studioType: studioType as any,
+        inputTokens,
+        outputTokens,
+        costUsd,
+        latencyMs,
+        createdAt,
+      }
+    });
+  }
+  console.log('100 sample token usage analytics seeded.');
+
   console.log('Seeding complete.');
 
 }

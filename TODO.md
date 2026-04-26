@@ -2493,7 +2493,7 @@ const sampleDna = [
   },
 ];
 ```
-- [ ] 5 ornek DNA vault seed'i yaz
+- [x] 5 ornek DNA vault seed'i yaz
 
 ### 5.8 Notification Seed'leri
 
@@ -2519,11 +2519,11 @@ const sampleNotifications = [
   },
 ];
 ```
-- [ ] Her test kullaniciya 3 bildirim seed et
+- [x] Her test kullaniciya 3 bildirim seed et
 
 ### 5.9 Referral Seed'leri
-- [ ] Test kullanicilar arasi 2-3 referral kaydı olustur
-- [ ] Farkli status'lerde: pending, completed
+- [x] Test kullanicilar arasi 2-3 referral kaydı olustur
+- [x] Farkli status'lerde: pending, completed
 
 ### 5.9B OAuth Provider Config Seed'leri
 
@@ -2613,11 +2613,11 @@ for (const config of oauthProviders) {
 }
 ```
 
-- [ ] 3 OAuth provider config seed'i yaz (Google, Apple, Microsoft)
-- [ ] `.env`'den client ID/secret oku, yoksa placeholder
-- [ ] Provider metadata icinde tum endpoint URL'leri sakla
-- [ ] Idempotent: `upsert` ile tekrar calisinca hata vermemeli
-- [ ] Test ortaminda `isActive: false` yapilabilir
+- [x] 3 OAuth provider config seed'i yaz (Google, Apple, Microsoft)
+- [x] `.env`'den client ID/secret oku, yoksa placeholder
+- [x] Provider metadata icinde tum endpoint URL'leri sakla
+- [x] Idempotent: `upsert` ile tekrar calisinca hata vermemeli
+- [x] Test ortaminda `isActive: false` yapilabilir
 
 ### 5.9C OAuth Account Seed'leri (Test Kullanicilari)
 
@@ -2770,14 +2770,14 @@ for (const p of adminProviders) {
 }
 ```
 
-- [ ] Pro kullaniciya Google account baglantisi ekle
-- [ ] Enterprise kullaniciya Microsoft account baglantisi ekle (kurum hesabi simulasyonu)
-- [ ] Designer kullaniciya Apple account baglantisi ekle (private relay email)
-- [ ] Filmmaker kullaniciya hem Google hem Apple baglantisi ekle (multi-provider test)
-- [ ] Admin kullaniciya tum provider'lari bagla (3 provider — tam test)
-- [ ] Free kullanici hicbir provider baglantisi olmadan kalsin (sadece email/password — edge case test)
-- [ ] Tum mock token'lar `mock-` prefix ile (gercek token sanilmasin)
-- [ ] Idempotent: `upsert` ile tekrar calisinca hata vermemeli
+- [x] Pro kullaniciya Google account baglantisi ekle
+- [x] Enterprise kullaniciya Microsoft account baglantisi ekle (kurum hesabi simulasyonu)
+- [x] Designer kullaniciya Apple account baglantisi ekle (private relay email)
+- [x] Filmmaker kullaniciya hem Google hem Apple baglantisi ekle (multi-provider test)
+- [x] Admin kullaniciya tum provider'lari bagla (3 provider — tam test)
+- [x] Free kullanici hicbir provider baglantisi olmadan kalsin (sadece email/password — edge case test)
+- [x] Tum mock token'lar `mock-` prefix ile (gercek token sanilmasin)
+- [x] Idempotent: `upsert` ile tekrar calisinca hata vermemeli
 
 ### 5.10 Token Usage Seed'leri (Analytics)
 
@@ -2814,10 +2814,10 @@ for (let i = 0; i < 100; i++) {
   });
 }
 ```
-- [ ] 100 token usage kaydı seed et (analytics dashboard icin)
-- [ ] Gercek model ID'leri kullan (registry.rs ile birebir uyumlu)
-- [ ] 8 studio type'in tumu temsil edilmeli
-- [ ] Son 30 gun icine yayilmis tarihler
+- [x] 100 token usage kaydı seed et (analytics dashboard icin)
+- [x] Gercek model ID'leri kullan (registry.rs ile birebir uyumlu)
+- [x] 8 studio type'in tumu temsil edilmeli
+- [x] Son 30 gun icine yayilmis tarihler
 
 ### 5.10.1 IAP Product ID Seed'leri
 
