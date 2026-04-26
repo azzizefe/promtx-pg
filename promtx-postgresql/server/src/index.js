@@ -3,7 +3,7 @@ import { cors } from 'hono/cors';
 import { cleanExpiredOAuthStates } from './services/oauthCleanup';
 import { handleGoogleAuth, handleGoogleCallback, handleAppleAuth, handleAppleCallback, handleAppleRevoke, handleMicrosoftAuth, handleMicrosoftCallback, handleOAuthInit, handleOAuthCallback, handleAccountLink, handleAccountUnlink, handleListProviders, handleAuthVerifyMfa, handleAuthSetup2fa, handleAuthReferralCode, handleAuthApiKeys, handleAuthVerifyToken, handleAuthLogout, handleAuthAvatar, handleAuthForgotPassword, handleAuthResetPassword } from './routes/auth';
 import { handleLlmGenerate, handleLlmGenerateParallel, handleLlmStream, handleLlmAbort, handleLlmUsageHistory, handleLlmUsageSummary } from './routes/llm';
-import { handleBillingWallet, handleBillingTopup, handleBillingPaymentIntent, handleBillingWebhooks, handleBillingLedger, handlePromoCodeValidate, handleIapVerify, handleReceiptDownload } from './routes/billing';
+import { handleBillingWallet, handleBillingTopup, handleBillingPaymentIntent, handleBillingWebhooks, handleBillingLedger, handlePromoCodeValidate, handleIapVerify, handleReceiptDownload, handleBillingSubscriptionManage } from './routes/billing';
 import { handleAdminUsers, handleAdminFreezeUser, handleAdminUpdateCredits, handleAdminLogs, handleAdminImpersonate } from './routes/admin';
 import { handleDnaSave, handleDnaQuery } from './routes/dna';
 import { handlePromptHistorySave, handlePromptHistoryQuery, handlePromptTemplateSave, handlePromptTemplateQuery, handlePromptTemplateDelete } from './routes/prompts';
@@ -136,6 +136,10 @@ app.get('/api/billing/wallet', async (c) => {
 });
 app.post('/api/billing/topup', async (c) => {
     const res = await handleBillingTopup(c.req.raw, new Headers());
+    return new Response(res.body, res);
+});
+app.post('/api/billing/subscription/manage', async (c) => {
+    const res = await handleBillingSubscriptionManage(c.req.raw, new Headers());
     return new Response(res.body, res);
 });
 app.post('/api/billing/payment-intent', async (c) => {

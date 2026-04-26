@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { createCustomerPortalSession } from '../services/billing';
 
 const prisma = new PrismaClient();
 
@@ -69,4 +70,33 @@ export async function handleReceiptDownload(req: Request, headers: Headers) {
       } 
     }
   );
+}
+
+export async function handleBillingSubscriptionManage(req: Request, headers: Headers) {
+  try {
+    let userId = 'mock-user-id';
+    try {
+      const body = await req.clone().json();
+      if (body.userId) userId = body.userId;
+    } catch (e) {
+      // No body or not JSON
+    }
+
+    const user = await prisma.user.findFirst();
+    if (user && userId === 'mock-user-id') {
+      userId = user.id;
+    }
+
+    const portalUrl = await createCustomerPortalSession(userId);
+    
+    return new Response(JSON.stringify({ url: portalUrl }), { 
+      status: 200, 
+      headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) } 
+    });
+  } catch (e: any) {
+    return new Response(JSON.stringify({ error: e.message }), { 
+      status: 500,
+      headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) }
+    });
+  }
 }

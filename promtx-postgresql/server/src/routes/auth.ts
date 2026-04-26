@@ -3,6 +3,7 @@ import * as jose from 'jose';
 import { getAppleClientSecret } from '../services/appleAuth';
 import { OAuthService } from '../services/oauthService';
 import { generateCodeVerifier, generateCodeChallenge } from '../lib/auth/pkce';
+import { getOrCreateCustomer } from '../services/billing';
 
 const prisma = new PrismaClient();
 const oauthService = new OAuthService();
@@ -162,6 +163,9 @@ export async function handleGoogleCallback(req: Request, headers: Headers) {
       isEmailVerified: true,
     }
   });
+
+  // Sync/Create Stripe Customer and Subscription
+  await getOrCreateCustomer(user.id, user.email);
 
   // UPSERT Account
   const expiresAt = tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000) : null;

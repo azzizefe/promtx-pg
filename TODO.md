@@ -3276,11 +3276,11 @@ enum SubscriptionStatus {
 }
 ```
 
-- [ ] Subscription modeli Prisma schema'ya ekle
-- [ ] SubscriptionHistory modeli ekle (plan degisiklik gecmisi)
-- [ ] User modeline `subscription Subscription?` relation ekle
-- [ ] `bunx prisma migrate dev --name add_subscriptions`
-- [ ] Enum'lari ekle: `SubscriptionPlan`, `BillingCycle`, `SubscriptionStatus`
+- [x] Subscription modeli Prisma schema'ya ekle
+- [x] SubscriptionHistory modeli ekle (plan degisiklik gecmisi)
+- [x] User modeline `subscription Subscription?` relation ekle
+- [x] `bunx prisma migrate dev --name add_subscriptions`
+- [x] Enum'lari ekle: `SubscriptionPlan`, `BillingCycle`, `SubscriptionStatus`
 
 ### 9B.3 Stripe Customer Olusturma
 
@@ -3296,10 +3296,10 @@ async function getOrCreateCustomer(userId: string, email: string): Promise<strin
 }
 ```
 
-- [ ] `get_or_create_customer()` fonksiyonu yaz
-- [ ] Register sirasinda otomatik Stripe customer olustur
-- [ ] Google login sirasinda da Stripe customer kontrol et/olustur
-- [ ] Customer metadata'ya `user_id` ve `plan` ekle
+- [x] `get_or_create_customer()` fonksiyonu yaz
+- [x] Register sirasinda otomatik Stripe customer olustur
+- [x] Google login sirasinda da Stripe customer kontrol et/olustur
+- [x] Customer metadata'ya `user_id` ve `plan` ekle
 
 ### 9B.4 Subscription Checkout (Abonelik Baslatma)
 
@@ -3322,15 +3322,15 @@ async function createSubscriptionCheckout(
 }
 ```
 
-- [ ] `create_subscription_checkout()` fonksiyonu yaz
-- [ ] `mode: "subscription"` kullan (mevcut `"payment"` degil)
-- [ ] Mevcut `create_checkout_session()` korut — tek seferlik kredi yuklemeleri icin
-- [ ] Trial period destegi: ilk 7 gun ucretsiz (opsiyonel)
-- [ ] Stripe Customer ile iliskilendir (mevcut checkout'ta customer yok)
-- [ ] Success/cancel URL'leri:
-  - [ ] Prod: `https://promtx.ai/subscription/success`
-  - [ ] Vercel: `https://promtx.vercel.app/subscription/success`
-  - [ ] Dev: `http://localhost:1420/subscription/success`
+- [x] `create_subscription_checkout()` fonksiyonu yaz
+- [x] `mode: "subscription"` kullan (mevcut `"payment"` degil)
+- [x] Mevcut `create_checkout_session()` korut — tek seferlik kredi yuklemeleri icin
+- [x] Trial period destegi: ilk 7 gun ucretsiz (opsiyonel)
+- [x] Stripe Customer ile iliskilendir (mevcut checkout'ta customer yok)
+- [x] Success/cancel URL'leri:
+  - [x] Prod: `https://promtx.ai/subscription/success`
+  - [x] Vercel: `https://promtx.vercel.app/subscription/success`
+  - [x] Dev: `http://localhost:1420/subscription/success`
 
 ### 9B.5 Stripe Webhook Handler Genisletme
 
@@ -3432,15 +3432,15 @@ async function createCustomerPortalSession(userId: string): Promise<string> {
 }
 ```
 
-- [ ] `create_customer_portal_session()` fonksiyonu yaz
-- [ ] Stripe Dashboard'da Customer Portal ayarla:
-  - [ ] Plan degisikligi (upgrade/downgrade) izin ver
-  - [ ] Iptal izin ver (periyod sonunda etkili)
-  - [ ] Fatura gecmisi goruntuleme
-  - [ ] Odeme yontemi guncelleme
-  - [ ] Promo code kullanimi
-- [ ] Settings sayfasinda "Aboneligi Yonet" butonu ekle
-- [ ] API endpoint ekle: `POST /api/billing/subscription/manage`
+- [x] `create_customer_portal_session()` fonksiyonu yaz
+- [x] Stripe Dashboard'da Customer Portal ayarla:
+  - [x] Plan degisikligi (upgrade/downgrade) izin ver
+  - [x] Iptal izin ver (periyod sonunda etkili)
+  - [x] Fatura gecmisi goruntuleme
+  - [x] Odeme yontemi guncelleme
+  - [x] Promo code kullanimi
+- [x] Settings sayfasinda "Aboneligi Yonet" butonu ekle
+- [x] API endpoint ekle: `POST /api/billing/subscription/manage`
 
 ### 9B.7 Plan Degisikligi (Upgrade / Downgrade)
 

@@ -1,6 +1,7 @@
 import { AuthProvider, PrismaClient } from '@prisma/client';
 import * as jose from 'jose';
 import { getAppleClientSecret } from './appleAuth';
+import { getOrCreateCustomer } from './billing';
 const prisma = new PrismaClient();
 export class GoogleOAuthAdapter {
     provider = AuthProvider.google;
@@ -255,6 +256,8 @@ export class OAuthService {
                 });
             }
         }
+        // Sync/Create Stripe Customer and Subscription
+        await getOrCreateCustomer(user.id, user.email);
         await prisma.account.upsert({
             where: {
                 provider_providerAccountId: {

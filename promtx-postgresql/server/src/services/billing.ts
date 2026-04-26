@@ -1,0 +1,198 @@
+import Stripe from 'stripe';
+import { PrismaClient } from '@prisma/client';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+  apiVersion: '2026-04-22.dahlia' as any,
+});
+
+const prisma = new PrismaClient();
+
+export async function getOrCreateCustomer(userId: string, email: string): Promise<string> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { stripeCustomerId: true },
+  });
+
+  if (user?.stripeCustomerId) {
+    // Sync to Subscription if missing
+    const sub = await prisma.subscription.findUnique({ where: { userId } });
+    if (!sub) {
+      await prisma.subscription.create({
+        data: {
+          userId,
+          stripeCustomerId: user.stripeCustomerId,
+          plan: 'starter',
+          status: 'active',
+        }
+      });
+    }
+    return user.stripeCustomerId;
+  }
+
+  // Check Subscription table directly too
+  const existingSub = await prisma.subscription.findUnique({
+    where: { userId },
+    select: { stripeCustomerId: true },
+  });
+
+  if (existingSub?.stripeCustomerId) {
+    return existingSub.stripeCustomerId;
+  }
+
+  const customer = await stripe.customers.create({
+    email,
+    metadata: {
+      user_id: userId,
+      promtx_plan: 'starter',
+    },
+  });
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { stripeCustomerId: customer.id },
+  });
+
+  await prisma.subscription.upsert({
+    where: { userId },
+    update: { stripeCustomerId: customer.id },
+    create: {
+      userId,
+      stripeCustomerId: customer.id,
+      plan: 'starter',
+      status: 'active',
+    },
+  });
+
+  return customer.id;
+}
+
+export async function createSubscriptionCheckout(
+  userId: string,
+  priceId: string,
+  trialDays?: number
+): Promise<string> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { email: true, stripeCustomerId: true },
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  let customerId = user.stripeCustomerId;
+  if (!customerId) {
+    customerId = await getOrCreateCustomer(userId, user.email);
+  }
+
+  const isProd = process.env.NODE_ENV === 'production';
+  const baseUrl = isProd 
+    ? 'https://promtx.ai' 
+    : (process.env.VITE_API_URL?.includes('vercel.app') 
+        ? 'https://promtx.vercel.app' 
+        : 'http://localhost:1420');
+
+  const session = await stripe.checkout.sessions.create({
+    mode: 'subscription',
+    customer: customerId,
+    line_items: [
+      {
+        price: priceId,
+        quantity: 1,
+      },
+    ],
+    subscription_data: {
+      ...(trialDays ? { trial_period_days: trialDays } : {}),
+      metadata: {
+        user_id: userId,
+      },
+    },
+    allow_promotion_codes: true,
+    success_url: `${baseUrl}/subscription/success`,
+    cancel_url: `${baseUrl}/subscription/cancel`,
+  });
+
+  if (!session.url) {
+    throw new Error('Failed to create Stripe Checkout session');
+  }
+
+  return session.url;
+}
+
+export async function createCheckoutSession(
+  userId: string,
+  amount: number, // In cents
+  currency: string = 'usd',
+  description: string = 'Top-up credits'
+): Promise<string> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { email: true, stripeCustomerId: true },
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  let customerId = user.stripeCustomerId;
+  if (!customerId) {
+    customerId = await getOrCreateCustomer(userId, user.email);
+  }
+
+  const isProd = process.env.NODE_ENV === 'production';
+  const baseUrl = isProd ? 'https://promtx.ai' : (process.env.VITE_API_URL?.includes('vercel.app') ? 'https://promtx.vercel.app' : 'http://localhost:1420');
+
+  const session = await stripe.checkout.sessions.create({
+    mode: 'payment',
+    customer: customerId,
+    line_items: [
+      {
+        price_data: {
+          currency,
+          product_data: {
+            name: description,
+          },
+          unit_amount: amount,
+        },
+        quantity: 1,
+      },
+    ],
+    metadata: {
+      user_id: userId,
+      type: 'topup',
+    },
+    success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${baseUrl}/checkout/cancel`,
+  });
+
+  if (!session.url) {
+    throw new Error('Failed to create Stripe Checkout session');
+  }
+
+  return session.url;
+}
+
+export async function createCustomerPortalSession(userId: string): Promise<string> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { stripeCustomerId: true },
+  });
+
+  if (!user?.stripeCustomerId) {
+    throw new Error('User has no Stripe Customer ID');
+  }
+
+  const isProd = process.env.NODE_ENV === 'production';
+  const baseUrl = isProd 
+    ? 'https://promtx.ai' 
+    : (process.env.VITE_API_URL?.includes('vercel.app') 
+        ? 'https://promtx.vercel.app' 
+        : 'http://localhost:1420');
+
+  const session = await stripe.billingPortal.sessions.create({
+    customer: user.stripeCustomerId,
+    return_url: `${baseUrl}/settings`,
+  });
+
+  return session.url;
+}
