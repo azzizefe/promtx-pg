@@ -2007,23 +2007,23 @@ OAUTH_STATE_TTL=300
 OAUTH_TOKEN_ENCRYPTION_KEY=  # 32 byte AES key (base64)
 ```
 
-- [ ] `.env.docker`'a tum OAuth degiskenlerini ekle
-- [ ] `.env.docker.example`'a aciklamali bos degiskenleri ekle
-- [ ] Production ortaminda tum secret'lar Vercel Environment Variables veya Vault'ta saklanmali
+- [x] `.env.docker`'a tum OAuth degiskenlerini ekle
+- [x] `.env.docker.example`'a aciklamali bos degiskenleri ekle
+- [x] Production ortaminda tum secret'lar Vercel Environment Variables veya Vault'ta saklanmali
 
 ---
 
 ## BOLUM 5: SEED DATA (PROMTX'E OZEL)
 
 ### 5.1 Seed Script Altyapisi
-- [ ] `prisma/seed.ts` dosyasi olustur (TypeScript, bun ile calisacak)
-- [ ] `package.json`'a seed ayari ekle:
+- [x] `prisma/seed.ts` dosyasi olustur (TypeScript, bun ile calisacak)
+- [x] `package.json`'a seed ayari ekle:
   ```json
   "prisma": { "seed": "bun prisma/seed.ts" }
   ```
-- [ ] Seed script icinde Prisma Client kullan
-- [ ] Idempotent seed: tekrar calisinca hata vermemeli (`upsert` kullan)
-- [ ] `bunx prisma db seed` ile calistir
+- [x] Seed script icinde Prisma Client kullan
+- [x] Idempotent seed: tekrar calisinca hata vermemeli (`upsert` kullan)
+- [x] `bunx prisma db seed` ile calistir
 
 ### 5.2 Admin Kullanici Seed
 
@@ -2072,11 +2072,11 @@ const superAdmin = await prisma.user.upsert({
   },
 });
 ```
-- [ ] Admin kullanici seed'i yaz (`admin@promtx.os` — mevcut seed ile uyumlu)
-- [ ] SuperAdmin kullanici seed'i yaz (`superadmin@promtx.os`)
-- [ ] Admin icin wallet olustur (10000 kredi)
-- [ ] Admin icin default workspace olustur: `id='global-workspace-001'`, `name='Promtx Global'` (mevcut seed ile uyumlu)
-- [ ] SuperAdmin icin ayri workspace: "Promtx Operations"
+- [x] Admin kullanici seed'i yaz (`admin@promtx.os` — mevcut seed ile uyumlu)
+- [x] SuperAdmin kullanici seed'i yaz (`superadmin@promtx.os`)
+- [x] Admin icin wallet olustur (10000 kredi)
+- [x] Admin icin default workspace olustur: `id='global-workspace-001'`, `name='Promtx Global'` (mevcut seed ile uyumlu)
+- [x] SuperAdmin icin ayri workspace: "Promtx Operations"
 
 ### 5.3 Test Kullanicilari Seed
 
