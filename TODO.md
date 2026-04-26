@@ -5757,85 +5757,85 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   - [x] Toplu indir (ZIP)
 
 #### 18.2.2 Frontend — Galerim Sayfasi Guncellemesi
-- [ ] **MOCK verileri kaldir:** `MOCK_HISTORY` dizisini sil, DB'den gelen veriyle degistir
-- [ ] **Sidebar genislet** (mevcut All/Favorites + yeni):
-  - [ ] "Tumu" — tum icerik (mevcut)
-  - [ ] "Favoriler" — `is_favorite = true` (mevcut)
-  - [ ] "Gorseller" — `type = 'image'` (yeni)
-  - [ ] "Videolar" — `type = 'video'` (yeni)
-  - [ ] "Sesler" — Audio Studio ciktilari (yeni)
-  - [ ] "Klasorler" — kullanici klasorleri (yeni):
-    - [ ] Klasor listesi (DB'den)
-    - [ ] "Yeni Klasor" butonu + klasor olusturma dialog
-    - [ ] Klasore surukle-birak (drag & drop)
-    - [ ] Klasor silme (icindekiler "Tumu"ye tasinir)
-  - [ ] Her kategori yaninda sayi badge'i
-- [ ] **Storage bar guncelle** (mevcut — DB'den gercek veri):
-  - [ ] `storageUsed / storageLimit` oranini goster
-  - [ ] Plan bazli limit:
-    - [ ] Starter: 1 GB
-    - [ ] Creator: 10 GB
-    - [ ] Studio Pro: 50 GB
-  - [ ] Limit yaklasiyorsa uyari goster
-- [ ] **Grid/List gorunum** (mevcut — iyilestir):
-  - [ ] Grid: gorsel thumbnail + prompt preview (mevcut)
-  - [ ] List: gorsel kucuk thumbnail + prompt + model + tarih + boyut (mevcut)
-  - [ ] Yeni: Masonry layout (farkli boyutlardaki gorseller icin)
-  - [ ] Lazy loading: `IntersectionObserver` ile gorunur olunca yukle
-  - [ ] Skeleton loading state (mevcut `Skeleton` component kullan)
-- [ ] **Gorsel karti iyilestir** (mevcut — genislet):
-  - [ ] Thumbnail: gercek gorsel goster (mevcut placeholder yerine)
-  - [ ] Hover aksiyonlari: favori, indir, paylas, sil (mevcut)
-  - [ ] Yeni: "Public Yap" toggle (gorseli topluluk galerisine ac)
-  - [ ] Yeni: "Klasore Tasi" butonu
-  - [ ] Yeni: like sayisi goster (public ise)
-  - [ ] Yeni: boyut bilgisi (1024x1024, 512KB)
-  - [ ] Yeni: model badge (DALL-E 3, Midjourney, Flux vs.)
-  - [ ] Yeni: aspect ratio badge (1:1, 16:9, 4:3)
-- [ ] **Detay Modal'i** (yeni — gorsel kartina tiklaninca):
-  - [ ] Tam boyut gorsel goruntuleme (lightbox)
-  - [ ] Prompt metni (kopyalanabilir)
-  - [ ] Negative prompt (varsa)
-  - [ ] Uretim parametreleri: model, provider, seed, steps, cfg_scale
-  - [ ] Boyut: width x height, dosya boyutu
-  - [ ] Tarih: olusturulma tarihi
-  - [ ] Aksiyonlar: indir, paylas, favori, public toggle, sil, "Remix" (ayni parametrelerle yeniden uret)
-  - [ ] Variation'lar: parent/child gorsel iliskisi (outpaint, upscale vs.)
-  - [ ] Mevcut `ImageComparison` bilesen'i ile karsilastirma (2 gorsel yan yana)
-  - [ ] Mevcut `AnnotationCanvas` ile gorsel uzerine not ekleme
-- [ ] **Toplu secim modu** (yeni):
-  - [ ] Checkbox ile birden fazla gorsel sec
-  - [ ] Secili gorseller icin bulk action bar goster (altta veya ustte)
-  - [ ] "X gorsel secildi" sayaci
-  - [ ] Aksiyonlar: toplu sil, toplu tasi, toplu indir, toplu public/private
-- [ ] **Arama iyilestir** (mevcut — genislet):
-  - [ ] Mevcut text arama korunacak
-  - [ ] Yeni: studio tipi filtre chip'leri (Image, Video, Cinema, Audio...)
-  - [ ] Yeni: model filtre dropdown
-  - [ ] Yeni: tarih araligi secici
-  - [ ] Yeni: boyut filtre (kucuk/orta/buyuk)
-  - [ ] Yeni: aspect ratio filtre
+- [x] **MOCK verileri kaldir:** `MOCK_HISTORY` dizisini sil, DB'den gelen veriyle degistir
+- [x] **Sidebar genislet** (mevcut All/Favorites + yeni):
+  - [x] "Tumu" — tum icerik (mevcut)
+  - [x] "Favoriler" — `is_favorite = true` (mevcut)
+  - [x] "Gorseller" — `type = 'image'` (yeni)
+  - [x] "Videolar" — `type = 'video'` (yeni)
+  - [x] "Sesler" — Audio Studio ciktilari (yeni)
+  - [x] "Klasorler" — kullanici klasorleri (yeni):
+    - [x] Klasor listesi (DB'den)
+    - [x] "Yeni Klasor" butonu + klasor olusturma dialog
+    - [x] Klasore surukle-birak (drag & drop)
+    - [x] Klasor silme (icindekiler "Tumu"ye tasinir)
+  - [x] Her kategori yaninda sayi badge'i
+- [x] **Storage bar guncelle** (mevcut — DB'den gercek veri):
+  - [x] `storageUsed / storageLimit` oranini goster
+  - [x] Plan bazli limit:
+    - [x] Starter: 1 GB
+    - [x] Creator: 10 GB
+    - [x] Studio Pro: 50 GB
+  - [x] Limit yaklasiyorsa uyari goster
+- [x] **Grid/List gorunum** (mevcut — iyilestir):
+  - [x] Grid: gorsel thumbnail + prompt preview (mevcut)
+  - [x] List: gorsel kucuk thumbnail + prompt + model + tarih + boyut (mevcut)
+  - [x] Yeni: Masonry layout (farkli boyutlardaki gorseller icin)
+  - [x] Lazy loading: `IntersectionObserver` ile gorunur olunca yukle
+  - [x] Skeleton loading state (mevcut `Skeleton` component kullan)
+- [x] **Gorsel karti iyilestir** (mevcut — genislet):
+  - [x] Thumbnail: gercek gorsel goster (mevcut placeholder yerine)
+  - [x] Hover aksiyonlari: favori, indir, paylas, sil (mevcut)
+  - [x] Yeni: "Public Yap" toggle (gorseli topluluk galerisine ac)
+  - [x] Yeni: "Klasore Tasi" butonu
+  - [x] Yeni: like sayisi goster (public ise)
+  - [x] Yeni: boyut bilgisi (1024x1024, 512KB)
+  - [x] Yeni: model badge (DALL-E 3, Midjourney, Flux vs.)
+  - [x] Yeni: aspect ratio badge (1:1, 16:9, 4:3)
+- [x] **Detay Modal'i** (yeni — gorsel kartina tiklaninca):
+  - [x] Tam boyut gorsel goruntuleme (lightbox)
+  - [x] Prompt metni (kopyalanabilir)
+  - [x] Negative prompt (varsa)
+  - [x] Uretim parametreleri: model, provider, seed, steps, cfg_scale
+  - [x] Boyut: width x height, dosya boyutu
+  - [x] Tarih: olusturulma tarihi
+  - [x] Aksiyonlar: indir, paylas, favori, public toggle, sil, "Remix" (ayni parametrelerle yeniden uret)
+  - [x] Variation'lar: parent/child gorsel iliskisi (outpaint, upscale vs.)
+  - [x] Mevcut `ImageComparison` bilesen'i ile karsilastirma (2 gorsel yan yana)
+  - [x] Mevcut `AnnotationCanvas` ile gorsel uzerine not ekleme
+- [x] **Toplu secim modu** (yeni):
+  - [x] Checkbox ile birden fazla gorsel sec
+  - [x] Secili gorseller icin bulk action bar goster (altta veya ustte)
+  - [x] "X gorsel secildi" sayaci
+  - [x] Aksiyonlar: toplu sil, toplu tasi, toplu indir, toplu public/private
+- [x] **Arama iyilestir** (mevcut — genislet):
+  - [x] Mevcut text arama korunacak
+  - [x] Yeni: studio tipi filtre chip'leri (Image, Video, Cinema, Audio...)
+  - [x] Yeni: model filtre dropdown
+  - [x] Yeni: tarih araligi secici
+  - [x] Yeni: boyut filtre (kucuk/orta/buyuk)
+  - [x] Yeni: aspect ratio filtre
 
 ### 18.3 Topluluk Galerisi (Public Gallery) — PostgreSQL Gecisi
 
 > **API:** `GET /api/images/public` — `WHERE is_public = true`
 
 #### 18.3.1 Backend (REST API)
-- [ ] `get_public_gallery` API guncelle:
-  - [ ] `SELECT ig.*, u.display_name, u.avatar_url FROM image_generations ig JOIN users u ON u.id = ig.user_id WHERE ig.is_public = true AND ig.status = 'completed' AND ig.is_nsfw = false`
-  - [ ] NSFW filtreleme: `is_nsfw = false` (default) veya `is_nsfw` iceren (kullanici tercihi)
-  - [ ] Cursor-based pagination
-  - [ ] Siralama modlari:
-    - [ ] "En Yeni" — `ORDER BY created_at DESC`
-    - [ ] "Populer" — `ORDER BY likes_count DESC`
-    - [ ] "Trend" — son 7 gunde en cok begeni alan
-    - [ ] "Rastgele" — `ORDER BY RANDOM() LIMIT 24`
-  - [ ] Model filtre: `WHERE model_id = $model`
-  - [ ] Studio tipi filtre: `WHERE studio_type = $type`
-  - [ ] Arama: `WHERE prompt ILIKE '%$term%'`
-  - [ ] Auth gereksiz (public endpoint)
-- [ ] `like_image` API (yeni):
-  - [ ] Like sistemi: `image_likes` tablosu (yeni Prisma model):
+- [x] `get_public_gallery` API guncelle:
+  - [x] `SELECT ig.*, u.display_name, u.avatar_url FROM image_generations ig JOIN users u ON u.id = ig.user_id WHERE ig.is_public = true AND ig.status = 'completed' AND ig.is_nsfw = false`
+  - [x] NSFW filtreleme: `is_nsfw = false` (default) veya `is_nsfw` iceren (kullanici tercihi)
+  - [x] Cursor-based pagination
+  - [x] Siralama modlari:
+    - [x] "En Yeni" — `ORDER BY created_at DESC`
+    - [x] "Populer" — `ORDER BY likes_count DESC`
+    - [x] "Trend" — son 7 gunde en cok begeni alan
+    - [x] "Rastgele" — `ORDER BY RANDOM() LIMIT 24`
+  - [x] Model filtre: `WHERE model_id = $model`
+  - [x] Studio tipi filtre: `WHERE studio_type = $type`
+  - [x] Arama: `WHERE prompt ILIKE '%$term%'`
+  - [x] Auth gereksiz (public endpoint)
+- [x] `like_image` API (yeni):
+  - [x] Like sistemi: `image_likes` tablosu (yeni Prisma model):
     ```prisma
     model ImageLike {
       userId    String   @map("user_id")
@@ -5849,19 +5849,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       @@map("image_likes")
     }
     ```
-  - [ ] Like toggle: `INSERT ... ON CONFLICT DO DELETE` (PostgreSQL upsert trick)
-  - [ ] `image_generations.likes_count` trigger ile veya uygulama seviyesinde guncelle
-  - [ ] Auth zorunlu (giris yapmamis kullanicilar like atamazlar)
-  - [ ] Rate limiting: kullanici basina 100 like / saat
-- [ ] `toggle_public_status` API (mevcut — korunacak):
-  - [ ] `UPDATE image_generations SET is_public = NOT is_public WHERE id = $1 AND user_id = $2`
-  - [ ] Public yapilinca: NSFW kontrol (opsiyonel — moderasyon)
-  - [ ] Public'ten cikarilinca: like'lar korunur ama gorsel gizlenir
-- [ ] `report_image` API (yeni):
-  - [ ] Uygunsuz icerik bildirimi
-  - [ ] `INSERT INTO image_reports (image_id, reporter_id, reason, status)` (yeni tablo)
-  - [ ] Admin panelinde bildirim listesi ve moderasyon
-  - [ ] 3+ bildirim alan gorsel otomatik gizlensin
+  - [x] Like toggle: `INSERT ... ON CONFLICT DO DELETE` (PostgreSQL upsert trick)
+  - [x] `image_generations.likes_count` trigger ile veya uygulama seviyesinde guncelle
+  - [x] Auth zorunlu (giris yapmamis kullanicilar like atamazlar)
+  - [x] Rate limiting: kullanici basina 100 like / saat
+- [x] `toggle_public_status` API (mevcut — korunacak):
+  - [x] `UPDATE image_generations SET is_public = NOT is_public WHERE id = $1 AND user_id = $2`
+  - [x] Public yapilinca: NSFW kontrol (opsiyonel — moderasyon)
+  - [x] Public'ten cikarilinca: like'lar korunur ama gorsel gizlenir
+- [x] `report_image` API (yeni):
+  - [x] Uygunsuz icerik bildirimi
+  - [x] `INSERT INTO image_reports (image_id, reporter_id, reason, status)` (yeni tablo)
+  - [x] Admin panelinde bildirim listesi ve moderasyon
+  - [x] 3+ bildirim alan gorsel otomatik gizlensin
 
 #### 18.3.2 Prisma Modeli Eklemeleri
 ```prisma

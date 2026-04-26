@@ -3,9 +3,9 @@ import { useSearchParams } from 'react-router-dom';
 import { fetchApi } from '../lib/api';
 import { toast } from 'sonner';
 import { 
-  Folder, Heart, Image, Video, AudioLines, 
-  FolderPlus, Search, SlidersHorizontal, Grid, 
-  Lock, Globe, Trash2, Download 
+  Folder, Heart, Image, Video, 
+  FolderPlus, Search, Grid, 
+  Lock, Globe, Download 
 } from 'lucide-react';
 
 interface GalleryItem {
@@ -52,6 +52,7 @@ export default function Gallery() {
 
       const res = await fetchApi(`${url}?${params.toString()}`);
       setItems(res.items || []);
+      setFolders([]);
     } catch (err: any) {
       toast.error('Galeri yüklenirken hata oluştu');
     } finally {

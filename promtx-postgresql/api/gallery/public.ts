@@ -19,16 +19,73 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const cursor = req.query.cursor as string | undefined;
     const limit = Math.min(parseInt(req.query.limit as string) || 24, 100);
     const model = req.query.model as string | undefined;
+    const studio = req.query.studio as string | undefined;
+    const search = req.query.search as string | undefined;
     const sort = (req.query.sort as string) || 'newest';
+    const includeNsfw = req.query.nsfw === 'true';
 
-    const where: any = { isPublic: true, status: 'completed' };
+    // Basic constraints
+    const where: any = { 
+      isPublic: true, 
+      status: 'completed',
+      isNsfw: includeNsfw ? undefined : false 
+    };
+
     if (model) where.modelId = model;
-    if (cursor) where.createdAt = { lt: new Date(cursor) };
+    if (search) where.prompt = { contains: search, mode: 'insensitive' };
+    if (cursor) {
+      if (sort === 'newest') where.createdAt = { lt: new Date(cursor) };
+      // For complex sorts, simple date cursors are harder, keeping basic for stability
+    }
+
+    // Fetch logic based on sort
+    let orderBy: any = { createdAt: 'desc' };
+    if (sort === 'popular') {
+      orderBy = { likesCount: 'desc' };
+    } else if (sort === 'trend') {
+      // Trend: created within last 7 days sorted by likes
+      where.createdAt = {
+        ...where.createdAt,
+        gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+      };
+      orderBy = { likesCount: 'desc' };
+    }
+
+    // Random sort fallback
+    if (sort === 'random') {
+      const totalCount = await prisma.imageGeneration.count({ where });
+      const skip = Math.max(0, Math.floor(Math.random() * Math.max(1, totalCount - limit)));
+      
+      const items = await prisma.imageGeneration.findMany({
+        where,
+        skip,
+        take: limit,
+        select: {
+          id: true,
+          prompt: true,
+          resultUrl: true,
+          thumbnailUrl: true,
+          modelId: true,
+          provider: true,
+          width: true,
+          height: true,
+          aspectRatio: true,
+          likesCount: true,
+          createdAt: true,
+          user: { select: { displayName: true, avatarUrl: true } },
+        },
+      });
+
+      return res.status(200).json(success({
+        items,
+        nextCursor: null,
+      }));
+    }
 
     const items = await prisma.imageGeneration.findMany({
       where,
-      orderBy: sort === 'popular' ? { likesCount: 'desc' } : { createdAt: 'desc' },
-      take: limit + 1, // +1 to check if there are more
+      orderBy,
+      take: limit + 1,
       select: {
         id: true,
         prompt: true,
