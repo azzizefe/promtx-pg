@@ -1186,11 +1186,11 @@ model Feedback {
 }
 ```
 
-- [ ] Feedback modeli Prisma schema'ya ekle
-- [ ] User modeline `feedbacks Feedback[]` relation ekle
-- [ ] `bunx prisma migrate dev --name add_feedback`
-- [ ] **KURAL:** `message` alani SADECE duz metin kabul eder — dosya, PDF, resim, link eklenemez
-- [ ] Admin panelinde feedback listesi ve yonetimi
+- [x] Feedback modeli Prisma schema'ya ekle
+- [x] User modeline `feedbacks Feedback[]` relation ekle
+- [x] `bunx prisma migrate dev --name add_feedback`
+- [x] **KURAL:** `message` alani SADECE duz metin kabul eder — dosya, PDF, resim, link eklenemez
+- [x] Admin panelinde feedback listesi ve yonetimi
 
 #### 3.8.3 logs Tablosu (Orijinal projede migration'da var)
 ```prisma
