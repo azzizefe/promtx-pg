@@ -2833,28 +2833,28 @@ const iapProducts = [
   { productId: 'com.promtx.credits.1000',  platform: 'stripe', amount: 34.99, currency: 'USD' },
 ];
 ```
-- [ ] IAP product ID'lerini seed et (Stripe, Apple, Google Play platformlari)
+- [x] IAP product ID'lerini seed et (Stripe, Apple, Google Play platformlari)
 
 ### 5.11 Seed Calistirma
-- [ ] `bunx prisma db seed` ile tum seed'leri calistir
-- [ ] Seed sonrasi kayit sayilarini dogrula
-- [ ] `bunx prisma studio` ile verileri gorsel kontrol et
-- [ ] Seed'in idempotent oldugunu dogrula (tekrar calisinca hata vermemeli)
+- [x] `bunx prisma db seed` ile tum seed'leri calistir
+- [x] Seed sonrasi kayit sayilarini dogrula
+- [x] `bunx prisma studio` ile verileri gorsel kontrol et
+- [x] Seed'in idempotent oldugunu dogrula (tekrar calisinca hata vermemeli)
 
 ---
 
 ## BOLUM 6: POSTGRESQL YAPILANDIRMA
 
 ### 6.1 postgresql.conf
-- [ ] `docker/postgres/conf/postgresql.conf` olustur
-- [ ] Baglanti: `max_connections = 200`, `password_encryption = scram-sha-256`
-- [ ] Bellek: `shared_buffers = 512MB`, `effective_cache_size = 1536MB`, `work_mem = 16MB`
-- [ ] WAL: `wal_level = replica`, `max_wal_size = 2GB`, `min_wal_size = 512MB`
-- [ ] Sorgu: `random_page_cost = 1.1` (SSD), `effective_io_concurrency = 200`
-- [ ] Log: `log_min_duration_statement = 500`, `log_connections = on`, `log_timezone = 'Europe/Istanbul'`
-- [ ] Autovacuum: `autovacuum = on`, `autovacuum_max_workers = 4`
-- [ ] Paralel: `max_parallel_workers = 8`, `max_parallel_workers_per_gather = 4`
-- [ ] Locale: `timezone = 'Europe/Istanbul'`
+- [x] `docker/postgres/conf/postgresql.conf` olustur
+- [x] Baglanti: `max_connections = 200`, `password_encryption = scram-sha-256`
+- [x] Bellek: `shared_buffers = 512MB`, `effective_cache_size = 1536MB`, `work_mem = 16MB`
+- [x] WAL: `wal_level = replica`, `max_wal_size = 2GB`, `min_wal_size = 512MB`
+- [x] Sorgu: `random_page_cost = 1.1` (SSD), `effective_io_concurrency = 200`
+- [x] Log: `log_min_duration_statement = 500`, `log_connections = on`, `log_timezone = 'Europe/Istanbul'`
+- [x] Autovacuum: `autovacuum = on`, `autovacuum_max_workers = 4`
+- [x] Paralel: `max_parallel_workers = 8`, `max_parallel_workers_per_gather = 4`
+- [x] Locale: `timezone = 'Europe/Istanbul'`
 
 ### 6.2 pg_hba.conf
 - [ ] `docker/postgres/conf/pg_hba.conf` olustur

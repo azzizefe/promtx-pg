@@ -873,3 +873,15 @@ model ModelMapping {
   @@map("model_mappings")
 }
 
+model IapProduct {
+  id        String      @id @default(uuid())
+  productId String      @unique @map("product_id") @db.VarChar(255)
+  platform  IAPPlatform
+  amount    Decimal     @db.Decimal(15, 4)
+  currency  String      @db.VarChar(3)
+  createdAt DateTime    @default(now()) @map("created_at")
+
+  @@map("iap_products")
+}
+
+

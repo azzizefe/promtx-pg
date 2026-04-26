@@ -826,6 +826,23 @@ async function main() {
   }
   console.log('100 sample token usage analytics seeded.');
 
+  // 17. IAP Products (Raw SQL)
+  await prisma.$executeRawUnsafe(`
+    INSERT INTO iap_products (id, product_id, platform, amount, currency)
+    VALUES
+      ('iap-pro-monthly', 'com.promtx.pro.monthly', 'stripe', 9.99, 'USD'),
+      ('iap-pro-yearly', 'com.promtx.pro.yearly', 'stripe', 99.99, 'USD'),
+      ('iap-ent-monthly', 'com.promtx.ent.monthly', 'stripe', 49.99, 'USD'),
+      ('iap-credits-100', 'com.promtx.credits.100', 'stripe', 4.99, 'USD'),
+      ('iap-credits-500', 'com.promtx.credits.500', 'stripe', 19.99, 'USD'),
+      ('iap-credits-1000', 'com.promtx.credits.1000', 'stripe', 34.99, 'USD')
+    ON CONFLICT (product_id) DO UPDATE SET
+      platform = EXCLUDED.platform,
+      amount = EXCLUDED.amount,
+      currency = EXCLUDED.currency;
+  `);
+  console.log('IAP Products seeded.');
+
   console.log('Seeding complete.');
 
 }
