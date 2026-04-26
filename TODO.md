@@ -2857,14 +2857,14 @@ const iapProducts = [
 - [x] Locale: `timezone = 'Europe/Istanbul'`
 
 ### 6.2 pg_hba.conf
-- [ ] `docker/postgres/conf/pg_hba.conf` olustur
-- [ ] Dev: `host all all 0.0.0.0/0 scram-sha-256`
-- [ ] Prod: sadece Docker network + SSL zorunlu
+- [x] `docker/postgres/conf/pg_hba.conf` olustur
+- [x] Dev: `host all all 0.0.0.0/0 scram-sha-256`
+- [x] Prod: sadece Docker network + SSL zorunlu
 
 ### 6.3 Extensions
-- [ ] `docker/postgres/init/01_extensions.sql` olustur
-- [ ] `uuid-ossp`, `pgcrypto`, `pg_trgm`, `pg_stat_statements`
-- [ ] (Prisma kendi migration'larini yonetir, ama extension'lar init script'te olmali)
+- [x] `docker/postgres/init/01_extensions.sql` olustur
+- [x] `uuid-ossp`, `pgcrypto`, `pg_trgm`, `pg_stat_statements`
+- [x] (Prisma kendi migration'larini yonetir, ama extension'lar init script'te olmali)
 
 ---
 
