@@ -3541,14 +3541,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 ```
 
-- [ ] `api/webhooks/stripe.ts` Vercel serverless function olustur
-- [ ] Raw body parsing (Stripe imza dogrulamasi icin gerekli)
-- [ ] Idempotency: StripeEvent tablosunda tekrar kontrol
-- [ ] Error handling: basarisiz event'leri `retryCount` ile takip et
-- [ ] Stripe Dashboard'da webhook endpoint URL'leri ekle:
-  - [ ] Dev (local): `stripe listen --forward-to localhost:3001/api/webhooks/stripe` (Stripe CLI)
-  - [ ] Prod (Vercel): `https://promtx.ai/api/webhooks/stripe`
-  - [ ] Preview: `https://promtx.vercel.app/api/webhooks/stripe`
+- [x] `api/webhooks/stripe.ts` Vercel serverless function olustur
+- [x] Raw body parsing (Stripe imza dogrulamasi icin gerekli)
+- [x] Idempotency: StripeEvent tablosunda tekrar kontrol
+- [x] Error handling: basarisiz event'leri `retryCount` ile takip et
+- [x] Stripe Dashboard'da webhook endpoint URL'leri ekle:
+  - [x] Dev (local): `stripe listen --forward-to localhost:3001/api/webhooks/stripe` (Stripe CLI)
+  - [x] Prod (Vercel): `https://promtx.ai/api/webhooks/stripe`
+  - [x] Preview: `https://promtx.vercel.app/api/webhooks/stripe`
 
 ### 9B.10 Frontend Abonelik Bilesen'leri
 
