@@ -97,12 +97,12 @@
 | Grafana | 3000 | Prod | Dashboard |
 | postgres_exporter | 9187 | Prod | PG metrikleri |
 
-- [ ] `scripts/kill-port.js` scriptini guncelle — tum portlari kontrol etsin
-- [ ] `docker-compose.yml` icinde port mapping'leri yukaridaki tabloya gore ayarla
-- [ ] `.env.local` icine `VITE_API_PORT=3001` ekle
-- [ ] `.env.local` icine `DATABASE_PORT=5432` ekle
-- [ ] `.env.local` icine `REDIS_PORT=6379` ekle
-- [ ] Port cakisma kontrolu icin `docker/scripts/check-ports.sh` yaz
+- [x] `scripts/kill-port.js` scriptini guncelle — tum portlari kontrol etsin
+- [x] `docker-compose.yml` icinde port mapping'leri yukaridaki tabloya gore ayarla
+- [x] `.env.local` icine `VITE_API_PORT=3001` ekle
+- [x] `.env.local` icine `DATABASE_PORT=5432` ekle
+- [x] `.env.local` icine `REDIS_PORT=6379` ekle
+- [x] Port cakisma kontrolu icin `docker/scripts/check-ports.sh` yaz
 
 ---
 
