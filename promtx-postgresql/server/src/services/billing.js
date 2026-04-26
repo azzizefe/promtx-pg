@@ -159,3 +159,101 @@ export async function createCustomerPortalSession(userId) {
     });
     return session.url;
 }
+export async function changeSubscriptionPlan(userId, newPlan, newPriceId) {
+    const subscription = await prisma.subscription.findUnique({
+        where: { userId },
+    });
+    if (!subscription || !subscription.stripeSubscriptionId) {
+        throw new Error('No active subscription found for user');
+    }
+    const stripeSub = await stripe.subscriptions.retrieve(subscription.stripeSubscriptionId);
+    const subscriptionItemId = stripeSub.items.data[0].id;
+    const planHierarchy = { starter: 0, creator: 1, studio_pro: 2 };
+    const currentPlan = subscription.plan;
+    const currentLevel = planHierarchy[currentPlan];
+    const newLevel = planHierarchy[newPlan];
+    if (newLevel > currentLevel) {
+        await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
+            items: [{ id: subscriptionItemId, price: newPriceId }],
+            proration_behavior: 'create_prorations',
+        });
+    }
+    else if (newLevel < currentLevel) {
+        if (newPlan === 'starter') {
+            await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
+                cancel_at_period_end: true,
+            });
+        }
+        else {
+            try {
+                const schedule = await stripe.subscriptionSchedules.create({
+                    from_subscription: subscription.stripeSubscriptionId,
+                });
+                const retrievedSchedule = await stripe.subscriptionSchedules.retrieve(schedule.id);
+                const currentPhase = retrievedSchedule.phases[0];
+                const currentPriceId = typeof currentPhase.items[0].price === 'string'
+                    ? currentPhase.items[0].price
+                    : currentPhase.items[0].price.id;
+                await stripe.subscriptionSchedules.update(schedule.id, {
+                    phases: [
+                        {
+                            items: [{ price: currentPriceId, quantity: 1 }],
+                            start_date: currentPhase.start_date,
+                            end_date: currentPhase.end_date,
+                        },
+                        {
+                            items: [{ price: newPriceId, quantity: 1 }],
+                            iterations: 1,
+                        },
+                    ],
+                });
+            }
+            catch (e) {
+                await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
+                    items: [{ id: subscriptionItemId, price: newPriceId }],
+                    proration_behavior: 'none',
+                });
+            }
+        }
+    }
+    if (newPlan === 'starter') {
+        await prisma.subscription.update({
+            where: { userId },
+            data: {
+                cancelAtPeriodEnd: true,
+            }
+        });
+    }
+    else if (newLevel > currentLevel) {
+        await prisma.subscription.update({
+            where: { userId },
+            data: {
+                plan: newPlan,
+                stripePriceId: newPriceId,
+            }
+        });
+        await prisma.user.update({
+            where: { id: userId },
+            data: { role: newPlan === 'studio_pro' ? 'Enterprise' : 'Pro' }
+        });
+    }
+    await prisma.subscriptionHistory.create({
+        data: {
+            userId,
+            fromPlan: currentPlan,
+            toPlan: newPlan,
+            fromPrice: subscription.stripePriceId,
+            toPrice: newPriceId,
+            reason: newLevel > currentLevel ? 'upgrade' : 'downgrade',
+        }
+    });
+    await prisma.auditLog.create({
+        data: {
+            userId,
+            action: 'subscription_change',
+            resourceType: 'subscription',
+            resourceId: subscription.id,
+            metadata: { fromPlan: currentPlan, toPlan: newPlan },
+        }
+    });
+}

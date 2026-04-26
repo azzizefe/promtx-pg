@@ -3462,11 +3462,11 @@ async function changeSubscriptionPlan(
 }
 ```
 
-- [ ] Upgrade: Creator -> Studio Pro (aninda, prorate)
-- [ ] Downgrade: Studio Pro -> Creator (periyod sonunda etkili)
-- [ ] Downgrade: Creator -> Starter (iptal + periyod sonunda Free)
-- [ ] Upgrade sirasinda mevcut kredi hakki korunmali
-- [ ] Downgrade sirasinda fazla kredi kesilmemeli (mevcut bakiye kalir)
+- [x] Upgrade: Creator -> Studio Pro (aninda, prorate)
+- [x] Downgrade: Studio Pro -> Creator (periyod sonunda etkili)
+- [x] Downgrade: Creator -> Starter (iptal + periyod sonunda Free)
+- [x] Upgrade sirasinda mevcut kredi hakki korunmali
+- [x] Downgrade sirasinda fazla kredi kesilmemeli (mevcut bakiye kalir)
 
 ### 9B.8 Kredi Yonetimi (Abonelik Bazli)
 
