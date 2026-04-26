@@ -5940,7 +5940,7 @@ model ImageReport {
   - [x] Thumbnail olustur: 300px, 600px, 1200px (responsive)
   - [x] EXIF metadata strip et (privacy)
   - [x] Maks dosya boyutu: 20MB (upload limiti)
-- [ ] **Depolama limitleri (plan bazli):**
+- [x] **Depolama limitleri (plan bazli):**
 
 | Plan | Depolama | Gorsel Basi Maks | Toplu Indirme |
 |------|---------|------------------|---------------|
