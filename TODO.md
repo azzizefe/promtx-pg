@@ -3831,15 +3831,15 @@ jobs:
       - run: bun run test
       - run: bun run lint
 ```
-- [ ] Test pipeline'i olustur (bun + prisma + postgres service)
-- [ ] Build pipeline'i olustur
-- [ ] Vercel preview deploy (PR'larda otomatik)
+- [x] Test pipeline'i olustur (bun + prisma + postgres service)
+- [x] Build pipeline'i olustur
+- [x] Vercel preview deploy (PR'larda otomatik)
 
 ### 11.2 GitHub Actions — Build & Deploy
-- [ ] `bun run build` ile production build
-- [ ] Vercel CLI ile deploy: `bunx vercel --prod`
-- [ ] Deploy oncesi `bunx prisma migrate deploy`
-- [ ] Deploy sonrasi healthcheck
+- [x] `bun run build` ile production build
+- [x] Vercel CLI ile deploy: `bunx vercel --prod`
+- [x] Deploy oncesi `bunx prisma migrate deploy`
+- [x] Deploy sonrasi healthcheck
 
 ---
 
