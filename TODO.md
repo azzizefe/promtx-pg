@@ -3605,18 +3605,18 @@ interface SubscriptionStatusProps {
   creditsUsed: number;
 }
 ```
-- [ ] Settings sayfasinda abonelik durumu karti
-- [ ] Mevcut plan, sonraki yenileme tarihi, kredi kullanimi
-- [ ] "Aboneligi Yonet" butonu -> Stripe Customer Portal
-- [ ] "Plani Degistir" butonu -> Pricing sayfasi
-- [ ] `cancelAtPeriodEnd` ise: "Aboneliginiz X tarihinde sona erecek" uyarisi
-- [ ] Kredi kullanim cubugu (5000/5000 gibi progress bar)
+- [x] Settings sayfasinda abonelik durumu karti
+- [x] Mevcut plan, sonraki yenileme tarihi, kredi kullanimi
+- [x] "Aboneligi Yonet" butonu -> Stripe Customer Portal
+- [x] "Plani Degistir" butonu -> Pricing sayfasi
+- [x] `cancelAtPeriodEnd` ise: "Aboneliginiz X tarihinde sona erecek" uyarisi
+- [x] Kredi kullanim cubugu (5000/5000 gibi progress bar)
 
 #### Kredi Yetersiz Dialog'u
-- [ ] Prompt generation sirasinda kredi yetersizse goster
-- [ ] "Ek Kredi Satin Al" butonu (mevcut tek seferlik checkout)
-- [ ] "Planini Yukselt" butonu (Pricing sayfasina yonlendir)
-- [ ] Kalan kredi miktarini goster
+- [x] Prompt generation sirasinda kredi yetersizse goster
+- [x] "Ek Kredi Satin Al" butonu (mevcut tek seferlik checkout)
+- [x] "Planini Yukselt" butonu (Pricing sayfasina yonlendir)
+- [x] Kalan kredi miktarini goster
 
 #### Checkout Bilesen'leri
 - [ ] `/checkout/subscription/success` sayfasi — abonelik basarili
