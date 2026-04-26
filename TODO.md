@@ -1559,7 +1559,7 @@ export function generateAppleClientSecret(): string {
 #### 4.2.4 Apple Token Revocation (GDPR/App Store Zorunluluk)
 > **ZORUNLU:** App Store Review Guidelines 4.0 — kullanici hesap silme isteginde Apple token revoke edilmeli
 
-- [ ] `POST /api/auth/apple/revoke` endpoint'i:
+- [x] `POST /api/auth/apple/revoke` endpoint'i:
   ```
   POST https://appleid.apple.com/auth/revoke
   client_id=com.promtx.auth
@@ -1567,40 +1567,40 @@ export function generateAppleClientSecret(): string {
   token={refresh_token_or_access_token}
   token_type_hint=refresh_token
   ```
-- [ ] Kullanici hesap silme akisina Apple token revocation ekle
-- [ ] Revocation basarisiz olursa retry mekanizmasi (queue ile)
+- [x] Kullanici hesap silme akisina Apple token revocation ekle
+- [x] Revocation basarisiz olursa retry mekanizmasi (queue ile)
 
 ### 4.3 Microsoft (Azure AD) OAuth Entegrasyonu
 
 #### 4.3.1 Azure Portal Ayarlari
-- [ ] Azure Portal'da App Registration olustur:
-  - [ ] Azure Active Directory > App registrations > New registration
-  - [ ] App Name: "Promtx"
-  - [ ] Supported account types: **"Accounts in any organizational directory and personal Microsoft accounts"**
+- [x] Azure Portal'da App Registration olustur:
+  - [x] Azure Active Directory > App registrations > New registration
+  - [x] App Name: "Promtx"
+  - [x] Supported account types: **"Accounts in any organizational directory and personal Microsoft accounts"**
     (Multi-tenant + Personal — Hotmail, Outlook.com, Xbox, Skype dahil)
-  - [ ] Redirect URIs (Web):
-    - [ ] `http://localhost:1420/auth/microsoft/callback` (dev)
-    - [ ] `http://localhost:3001/api/auth/microsoft/callback` (API dev)
-    - [ ] `https://promtx.ai/auth/microsoft/callback` (production)
-    - [ ] `https://promtx.vercel.app/auth/microsoft/callback` (Vercel preview)
-- [ ] Client Secret olustur:
-  - [ ] Certificates & secrets > New client secret
-  - [ ] Aciklama: "Promtx OAuth Production"
-  - [ ] Sure: 24 ay (yenileme takvimi olustur!)
-  - [ ] Secret value'yu hemen kopyala (sadece olusturulurken gorunur)
-- [ ] API Permissions ekle:
-  - [ ] `openid` (varsayilan)
-  - [ ] `email`
-  - [ ] `profile`
-  - [ ] `User.Read` (Microsoft Graph — kullanici bilgisi)
-  - [ ] "Grant admin consent" (tenant admin ise)
-- [ ] Application (client) ID'yi not al
-- [ ] Directory (tenant) ID — `common` kullanilacak (multi-tenant)
-- [ ] `.env.docker`'a ekle:
-  - [ ] `MICROSOFT_CLIENT_ID=` (Application ID)
-  - [ ] `MICROSOFT_CLIENT_SECRET=` (Client Secret value)
-  - [ ] `MICROSOFT_TENANT_ID=common` (multi-tenant — kisisel + kurum hesaplari)
-  - [ ] `MICROSOFT_REDIRECT_URI=https://promtx.ai/auth/microsoft/callback`
+  - [x] Redirect URIs (Web):
+    - [x] `http://localhost:1420/auth/microsoft/callback` (dev)
+    - [x] `http://localhost:3001/api/auth/microsoft/callback` (API dev)
+    - [x] `https://promtx.ai/auth/microsoft/callback` (production)
+    - [x] `https://promtx.vercel.app/auth/microsoft/callback` (Vercel preview)
+- [x] Client Secret olustur:
+  - [x] Certificates & secrets > New client secret
+  - [x] Aciklama: "Promtx OAuth Production"
+  - [x] Sure: 24 ay (yenileme takvimi olustur!)
+  - [x] Secret value'yu hemen kopyala (sadece olusturulurken gorunur)
+- [x] API Permissions ekle:
+  - [x] `openid` (varsayilan)
+  - [x] `email`
+  - [x] `profile`
+  - [x] `User.Read` (Microsoft Graph — kullanici bilgisi)
+  - [x] "Grant admin consent" (tenant admin ise)
+- [x] Application (client) ID'yi not al
+- [x] Directory (tenant) ID — `common` kullanilacak (multi-tenant)
+- [x] `.env.docker`'a ekle:
+  - [x] `MICROSOFT_CLIENT_ID=` (Application ID)
+  - [x] `MICROSOFT_CLIENT_SECRET=` (Client Secret value)
+  - [x] `MICROSOFT_TENANT_ID=common` (multi-tenant — kisisel + kurum hesaplari)
+  - [x] `MICROSOFT_REDIRECT_URI=https://promtx.ai/auth/microsoft/callback`
 
 #### 4.3.2 Backend Microsoft OAuth Flow
 > **Microsoft OIDC Endpoint'leri (v2.0):**

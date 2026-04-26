@@ -449,3 +449,45 @@ export async function handleAppleCallback(req: Request, headers: Headers) {
     headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' }
   });
 }
+
+export async function handleAppleRevoke(req: Request, headers: Headers) {
+  const formData = await req.formData().catch(() => new URLSearchParams());
+  const token = formData.get('token') as string;
+
+  if (!token) {
+    return new Response(JSON.stringify({ error: 'Missing token to revoke' }), {
+      status: 400,
+      headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' }
+    });
+  }
+
+  const clientSecret = getAppleClientSecret();
+  const revokeResponse = await fetch('https://appleid.apple.com/auth/revoke', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: process.env.APPLE_CLIENT_ID || 'com.promtx.auth',
+      client_secret: clientSecret,
+      token: token,
+      token_type_hint: 'refresh_token',
+    })
+  });
+
+  if (!revokeResponse.ok) {
+    const errorDetails = await revokeResponse.text();
+    console.error('[Apple Revoke] Failed to revoke token', errorDetails);
+    
+    return new Response(JSON.stringify({ 
+      error: 'Failed to revoke token with Apple', 
+      details: errorDetails 
+    }), {
+      status: 500,
+      headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' }
+    });
+  }
+
+  return new Response(JSON.stringify({ message: 'Token revoked successfully' }), {
+    status: 200,
+    headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' }
+  });
+}
