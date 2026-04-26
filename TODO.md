@@ -3087,13 +3087,13 @@ const iapProducts = [
 ## BOLUM 9: FRONTEND DEGISIKLIKLERI
 
 ### 9.1 Bun Script'leri Dogrulama
-- [ ] `bun run dev` — Vite dev server (port 1420)
-- [ ] `bun run build` — Production build
-- [ ] `bun run preview` — Preview (port 4173)
-- [ ] `bun run test` — Vitest
-- [ ] `bun run lint` — TypeScript check
-- [ ] `bun run e2e` — Playwright
-- [ ] Tum script'lerin `bun` ile sorunsuz calistigini dogrula
+- [x] `bun run dev` — Vite dev server (port 1420)
+- [x] `bun run build` — Production build
+- [x] `bun run preview` — Preview (port 4173)
+- [x] `bun run test` — Vitest
+- [x] `bun run lint` — TypeScript check
+- [x] `bun run e2e` — Playwright
+- [x] Tum script'lerin `bun` ile sorunsuz calistigini dogrula
 
 ### 9.2 Mevcut Route'lar ve Guncellenmesi Gerekenler
 
