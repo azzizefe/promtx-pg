@@ -3722,12 +3722,12 @@ await prisma.subscriptionHistory.createMany({
 });
 ```
 
-- [ ] Her test kullanici icin subscription seed et
-- [ ] Admin: Studio Pro (aktif)
-- [ ] Pro user: Creator yillik (aktif)
-- [ ] Free user: Starter (Stripe customer var, abonelik yok)
-- [ ] Designer: Creator (cancel_at_period_end = true)
-- [ ] SubscriptionHistory ornekleri (upgrade + downgrade)
+- [x] Her test kullanici icin subscription seed et
+- [x] Admin: Studio Pro (aktif)
+- [x] Pro user: Creator yillik (aktif)
+- [x] Free user: Starter (Stripe customer var, abonelik yok)
+- [x] Designer: Creator (cancel_at_period_end = true)
+- [x] SubscriptionHistory ornekleri (upgrade + downgrade)
 
 ### 9B.12 Stripe Test Modu Kontrol Listesi
 

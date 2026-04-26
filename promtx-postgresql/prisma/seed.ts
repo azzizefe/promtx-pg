@@ -843,6 +843,101 @@ async function main() {
   `);
   console.log('IAP Products seeded.');
 
+  // 18. Seed Subscriptions for Test Users
+  console.log('Seeding subscriptions for test users...');
+  
+  // Admin: Studio Pro (active)
+  await prisma.subscription.upsert({
+    where: { userId: adminUser.id },
+    update: {},
+    create: {
+      userId: adminUser.id,
+      stripeCustomerId: 'cus_admin_test_001',
+      stripeSubscriptionId: 'sub_admin_test_001',
+      stripePriceId: 'price_studio_pro_monthly',
+      plan: 'studio_pro',
+      billingCycle: 'monthly',
+      status: 'active',
+      currentPeriodStart: new Date('2026-04-01'),
+      currentPeriodEnd: new Date('2026-05-01'),
+      monthlyCredits: 15000,
+      creditsUsedThisPeriod: 1500,
+    }
+  });
+
+  // Pro user: Creator yearly (active)
+  await prisma.subscription.upsert({
+    where: { userId: 'user-pro-001' },
+    update: {},
+    create: {
+      userId: 'user-pro-001',
+      stripeCustomerId: 'cus_pro_test_001',
+      stripeSubscriptionId: 'sub_pro_test_001',
+      stripePriceId: 'price_creator_yearly',
+      plan: 'creator',
+      billingCycle: 'yearly',
+      status: 'active',
+      currentPeriodStart: new Date('2026-01-01'),
+      currentPeriodEnd: new Date('2027-01-01'),
+      monthlyCredits: 5000,
+      creditsUsedThisPeriod: 200,
+    }
+  });
+
+  // Free user: Starter (has Stripe customer, no subscription)
+  await prisma.subscription.upsert({
+    where: { userId: 'user-free-001' },
+    update: {},
+    create: {
+      userId: 'user-free-001',
+      stripeCustomerId: 'cus_free_test_001',
+      plan: 'starter',
+      status: 'active',
+      monthlyCredits: 100,
+      creditsUsedThisPeriod: 50,
+    }
+  });
+
+  // Designer: Creator (cancel_at_period_end = true)
+  await prisma.subscription.upsert({
+    where: { userId: 'user-des-001' },
+    update: {},
+    create: {
+      userId: 'user-des-001',
+      stripeCustomerId: 'cus_des_test_001',
+      stripeSubscriptionId: 'sub_des_test_001',
+      stripePriceId: 'price_creator_monthly',
+      plan: 'creator',
+      billingCycle: 'monthly',
+      status: 'active',
+      currentPeriodStart: new Date('2026-04-01'),
+      currentPeriodEnd: new Date('2026-05-01'),
+      cancelAtPeriodEnd: true,
+      monthlyCredits: 5000,
+      creditsUsedThisPeriod: 4000,
+    }
+  });
+
+  // SubscriptionHistory examples (upgrade + downgrade)
+  await prisma.subscriptionHistory.deleteMany({});
+  await prisma.subscriptionHistory.createMany({
+    data: [
+      {
+        userId: 'user-pro-001',
+        fromPlan: 'starter',
+        toPlan: 'creator',
+        createdAt: new Date('2026-01-01'),
+      },
+      {
+        userId: 'user-des-001',
+        fromPlan: 'studio_pro',
+        toPlan: 'creator',
+        createdAt: new Date('2026-03-15'),
+      }
+    ]
+  });
+  console.log('Subscriptions seeded.');
+
   console.log('Seeding complete.');
 
 }
