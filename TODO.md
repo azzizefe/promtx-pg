@@ -3619,9 +3619,9 @@ interface SubscriptionStatusProps {
 - [x] Kalan kredi miktarini goster
 
 #### Checkout Bilesen'leri
-- [ ] `/checkout/subscription/success` sayfasi — abonelik basarili
-- [ ] `/checkout/subscription/cancel` sayfasi — iptal edildi
-- [ ] Mevcut `/checkout` sayfasi korunacak (tek seferlik kredi yuklemeleri icin)
+- [x] `/checkout/subscription/success` sayfasi — abonelik basarili
+- [x] `/checkout/subscription/cancel` sayfasi — iptal edildi
+- [x] Mevcut `/checkout` sayfasi korunacak (tek seferlik kredi yuklemeleri icin)
 
 ### 9B.11 Abonelik Seed Data
 

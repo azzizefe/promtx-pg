@@ -19,6 +19,8 @@ const Logs = React.lazy(() => import('./pages/Logs'));
 const DevTools = React.lazy(() => import('./pages/DevTools'));
 const Pricing = React.lazy(() => import('./pages/Pricing'));
 const Checkout = React.lazy(() => import('./pages/Checkout'));
+const SubscriptionSuccess = React.lazy(() => import('./pages/SubscriptionSuccess'));
+const SubscriptionCancel = React.lazy(() => import('./pages/SubscriptionCancel'));
 const Help = React.lazy(() => import('./pages/Help'));
 const Settings = React.lazy(() => import('./pages/Settings'));
 const Admin = React.lazy(() => import('./pages/Admin'));
@@ -66,6 +68,8 @@ function App() {
           <Route path="/dev" element={<Layout><DevTools /></Layout>} />
           <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
           <Route path="/checkout" element={<Layout><Checkout /></Layout>} />
+          <Route path="/checkout/subscription/success" element={<Layout><SubscriptionSuccess /></Layout>} />
+          <Route path="/checkout/subscription/cancel" element={<Layout><SubscriptionCancel /></Layout>} />
           <Route path="/help" element={<Layout><Help /></Layout>} />
           <Route path="/settings" element={<Layout><Settings /></Layout>} />
           <Route path="/admin" element={<Layout><Admin /></Layout>} />

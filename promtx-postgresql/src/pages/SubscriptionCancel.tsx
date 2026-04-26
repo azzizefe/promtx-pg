@@ -1,0 +1,87 @@
+import React from 'react';
+
+export default function SubscriptionCancel() {
+  return (
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <div style={styles.iconContainer}>
+          <span style={styles.icon}>❌</span>
+        </div>
+        <h1 style={styles.title}>Checkout Cancelled</h1>
+        <p style={styles.subtitle}>
+          The checkout process was cancelled. You have not been charged. You can upgrade your plan at any time.
+        </p>
+        
+        <button 
+          onClick={() => window.location.href = '/pricing'} 
+          style={styles.button}
+        >
+          Back to Pricing
+        </button>
+      </div>
+    </div>
+  );
+}
+
+const styles: { [key: string]: React.CSSProperties } = {
+  container: {
+    padding: '100px 20px',
+    minHeight: 'calc(100vh - 70px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)',
+    fontFamily: "'Inter', sans-serif",
+  },
+  card: {
+    background: 'rgba(255, 255, 255, 0.03)',
+    borderRadius: '24px',
+    padding: '50px 40px',
+    border: '1px solid rgba(255, 255, 255, 0.05)',
+    backdropFilter: 'blur(20px)',
+    textAlign: 'center',
+    maxWidth: '500px',
+    width: '100%',
+    color: '#fff',
+    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+  },
+  iconContainer: {
+    width: '80px',
+    height: '80px',
+    borderRadius: '50%',
+    background: 'rgba(239, 68, 68, 0.1)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: '0 auto 30px',
+    border: '1px solid rgba(239, 68, 68, 0.2)',
+  },
+  icon: {
+    fontSize: '40px',
+  },
+  title: {
+    fontSize: '2rem',
+    fontWeight: '800',
+    marginBottom: '15px',
+    background: 'linear-gradient(90deg, #f87171 0%, #f87171 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+  },
+  subtitle: {
+    fontSize: '1.1rem',
+    color: '#cbd5e1',
+    lineHeight: '1.6',
+    marginBottom: '40px',
+  },
+  button: {
+    padding: '14px 30px',
+    borderRadius: '12px',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    background: 'transparent',
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: '1rem',
+    cursor: 'pointer',
+    transition: 'background 0.2s',
+  }
+};
