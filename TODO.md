@@ -1944,13 +1944,13 @@ export default function OAuthCallback() {
 }
 ```
 
-- [ ] `/auth/:provider/callback` route olustur (React Router)
-- [ ] URL'den `code`, `state`, `error` parametrelerini oku
-- [ ] Apple icin: POST body'den de oku (form_post response mode)
-- [ ] Backend'e callback bilgilerini gonder
-- [ ] Basari: Token'i store'a kaydet, ana sayfaya yonlendir
-- [ ] Hata: Hata mesaji goster, login'e yonlendir butonu
-- [ ] Loading animasyonu (provider logosu ile)
+- [x] `/auth/:provider/callback` route olustur (React Router)
+- [x] URL'den `code`, `state`, `error` parametrelerini oku
+- [x] Apple icin: POST body'den de oku (form_post response mode)
+- [x] Backend'e callback bilgilerini gonder
+- [x] Basari: Token'i store'a kaydet, ana sayfaya yonlendir
+- [x] Hata: Hata mesaji goster, login'e yonlendir butonu
+- [x] Loading animasyonu (provider logosu ile)
 
 #### 4.5.4 Hesap Ayarlari — Bagli Hesaplar
 
