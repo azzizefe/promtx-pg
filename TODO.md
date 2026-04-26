@@ -183,81 +183,81 @@
 - [x] Log seviyesi: `WARNING`
 
 ### 2.7 docker-compose.test.yml (Override)
-- [ ] Ayri PostgreSQL: `promtx-postgres-test` port `5433:5432`
-- [ ] Database: `promtx_test`
-- [ ] `tmpfs: /var/lib/postgresql/data` (hizli test)
-- [ ] `POSTGRES_HOST_AUTH_METHOD=trust`
+- [x] Ayri PostgreSQL: `promtx-postgres-test` port `5433:5432`
+- [x] Database: `promtx_test`
+- [x] `tmpfs: /var/lib/postgresql/data` (hizli test)
+- [x] `POSTGRES_HOST_AUTH_METHOD=trust`
 
 ### 2.8 .env.docker Dosyasi
-- [ ] `POSTGRES_USER=promtx_admin`
-- [ ] `POSTGRES_PASSWORD=` (32+ karakter rastgele)
-- [ ] `POSTGRES_DB=promtx`
-- [ ] `POSTGRES_HOST=promtx-postgres`
-- [ ] `POSTGRES_PORT=5432`
-- [ ] `DATABASE_URL=postgresql://promtx_admin:PASSWORD@promtx-postgres:5432/promtx?sslmode=prefer`
-- [ ] `REDIS_PASSWORD=` (32+ karakter rastgele)
-- [ ] `REDIS_URL=redis://:PASSWORD@promtx-redis:6379/0`
-- [ ] `REDIS_SENTINEL_URLS=promtx-sentinel-1:26379,promtx-sentinel-2:26380,promtx-sentinel-3:26381`
-- [ ] `REDIS_SENTINEL_MASTER=promtx-master`
-- [ ] **Google OAuth:**
-  - [ ] `GOOGLE_CLIENT_ID=`
-  - [ ] `GOOGLE_CLIENT_SECRET=`
-  - [ ] `GOOGLE_REDIRECT_URI=http://localhost:1420/auth/google/callback`
-- [ ] **Apple Sign-In:**
-  - [ ] `APPLE_CLIENT_ID=com.promtx.auth`
-  - [ ] `APPLE_TEAM_ID=`
-  - [ ] `APPLE_KEY_ID=`
-  - [ ] `APPLE_PRIVATE_KEY=` (.p8 dosya icerigi, PEM formati)
-  - [ ] `APPLE_REDIRECT_URI=http://localhost:1420/auth/apple/callback`
-- [ ] **Microsoft OAuth:**
-  - [ ] `MICROSOFT_CLIENT_ID=`
-  - [ ] `MICROSOFT_CLIENT_SECRET=`
-  - [ ] `MICROSOFT_TENANT_ID=common`
-  - [ ] `MICROSOFT_REDIRECT_URI=http://localhost:1420/auth/microsoft/callback`
-- [ ] **OAuth Ortak:**
-  - [ ] `OAUTH_STATE_TTL=300` (saniye)
-  - [ ] `OAUTH_TOKEN_ENCRYPTION_KEY=` (32 byte AES key, base64)
-- [ ] `JWT_SECRET=` (64+ karakter)
-- [ ] `NEXTAUTH_SECRET=` (Vercel deploy icin)
-- [ ] **Mevcut .env.example degiskenleri de dahil edilmeli:**
-  - [ ] `VITE_VAULT_KEY=` (32+ karakter, client-side sifreleme)
-  - [ ] `GEMINI_API_KEY=` (Google Gemini AI modeli)
-  - [ ] `STRIPE_SECRET_KEY=` (backend only)
-  - [ ] `VITE_STRIPE_PUBLISHABLE_KEY=` (frontend icin guvenli)
-  - [ ] `STRIPE_WEBHOOK_SECRET=` (webhook dogrulama)
-  - [ ] `RESEND_API_KEY=` (email servisi — hosgeldin email, password reset)
-  - [ ] `VITE_API_URL=https://api.promtx.ai` (backend URL)
-  - [ ] `VITE_SENTRY_DSN=` (hata takibi)
-  - [ ] `VITE_POSTHOG_KEY=` (analytics)
-  - [ ] `VITE_POSTHOG_HOST=https://eu.i.posthog.com`
-  - [ ] `TAURI_SIGNING_PRIVATE_KEY=` (desktop app signing)
-  - [ ] `TAURI_SIGNING_PASSWORD=`
-- [ ] `.env.docker.example` olustur (hassas degerler bos)
-- [ ] `.gitignore`'a `.env.docker` ekle
+- [x] `POSTGRES_USER=promtx_admin`
+- [x] `POSTGRES_PASSWORD=` (32+ karakter rastgele)
+- [x] `POSTGRES_DB=promtx`
+- [x] `POSTGRES_HOST=promtx-postgres`
+- [x] `POSTGRES_PORT=5432`
+- [x] `DATABASE_URL=postgresql://promtx_admin:PASSWORD@promtx-postgres:5432/promtx?sslmode=prefer`
+- [x] `REDIS_PASSWORD=` (32+ karakter rastgele)
+- [x] `REDIS_URL=redis://:PASSWORD@promtx-redis:6379/0`
+- [x] `REDIS_SENTINEL_URLS=promtx-sentinel-1:26379,promtx-sentinel-2:26380,promtx-sentinel-3:26381`
+- [x] `REDIS_SENTINEL_MASTER=promtx-master`
+- [x] **Google OAuth:**
+  - [x] `GOOGLE_CLIENT_ID=`
+  - [x] `GOOGLE_CLIENT_SECRET=`
+  - [x] `GOOGLE_REDIRECT_URI=http://localhost:1420/auth/google/callback`
+- [x] **Apple Sign-In:**
+  - [x] `APPLE_CLIENT_ID=com.promtx.auth`
+  - [x] `APPLE_TEAM_ID=`
+  - [x] `APPLE_KEY_ID=`
+  - [x] `APPLE_PRIVATE_KEY=` (.p8 dosya icerigi, PEM formati)
+  - [x] `APPLE_REDIRECT_URI=http://localhost:1420/auth/apple/callback`
+- [x] **Microsoft OAuth:**
+  - [x] `MICROSOFT_CLIENT_ID=`
+  - [x] `MICROSOFT_CLIENT_SECRET=`
+  - [x] `MICROSOFT_TENANT_ID=common`
+  - [x] `MICROSOFT_REDIRECT_URI=http://localhost:1420/auth/microsoft/callback`
+- [x] **OAuth Ortak:**
+  - [x] `OAUTH_STATE_TTL=300` (saniye)
+  - [x] `OAUTH_TOKEN_ENCRYPTION_KEY=` (32 byte AES key, base64)
+- [x] `JWT_SECRET=` (64+ karakter)
+- [x] `NEXTAUTH_SECRET=` (Vercel deploy icin)
+- [x] **Mevcut .env.example degiskenleri de dahil edilmeli:**
+  - [x] `VITE_VAULT_KEY=` (32+ karakter, client-side sifreleme)
+  - [x] `GEMINI_API_KEY=` (Google Gemini AI modeli)
+  - [x] `STRIPE_SECRET_KEY=` (backend only)
+  - [x] `VITE_STRIPE_PUBLISHABLE_KEY=` (frontend icin guvenli)
+  - [x] `STRIPE_WEBHOOK_SECRET=` (webhook dogrulama)
+  - [x] `RESEND_API_KEY=` (email servisi — hosgeldin email, password reset)
+  - [x] `VITE_API_URL=https://api.promtx.ai` (backend URL)
+  - [x] `VITE_SENTRY_DSN=` (hata takibi)
+  - [x] `VITE_POSTHOG_KEY=` (analytics)
+  - [x] `VITE_POSTHOG_HOST=https://eu.i.posthog.com`
+  - [x] `TAURI_SIGNING_PRIVATE_KEY=` (desktop app signing)
+  - [x] `TAURI_SIGNING_PASSWORD=`
+- [x] `.env.docker.example` olustur (hassas degerler bos)
+- [x] `.gitignore`'a `.env.docker` ekle
 
 ### 2.9 Docker Network
-- [ ] `promtx-network` bridge network
-- [ ] Subnet: `172.20.0.0/16`
-- [ ] PostgreSQL: `172.20.0.10`
-- [ ] Redis: `172.20.0.11`
-- [ ] pgAdmin: `172.20.0.12`
-- [ ] Sentinel 1/2/3: `172.20.0.20-22`
+- [x] `promtx-network` bridge network
+- [x] Subnet: `172.20.0.0/16`
+- [x] PostgreSQL: `172.20.0.10`
+- [x] Redis: `172.20.0.11`
+- [x] pgAdmin: `172.20.0.12`
+- [x] Sentinel 1/2/3: `172.20.0.20-22`
 
 ### 2.10 Docker Yardimci Script'ler
-- [ ] `docker/scripts/start.sh` — Tum servisleri baslat
-- [ ] `docker/scripts/stop.sh` — Durdur
-- [ ] `docker/scripts/reset-db.sh` — DB sifirla
-- [ ] `docker/scripts/backup.sh` — Yedek al
-- [ ] `docker/scripts/restore.sh` — Geri yukle
-- [ ] `docker/scripts/logs.sh` — Loglar
-- [ ] `docker/scripts/shell.sh` — PG container shell
-- [ ] `docker/scripts/psql.sh` — psql baglantisi
-- [ ] `docker/scripts/health.sh` — Saglik kontrolu
-- [ ] `docker/scripts/seed.sh` — `bunx prisma db seed` calistir
-- [ ] `docker/scripts/migrate.sh` — `bunx prisma migrate deploy` calistir
-- [ ] `docker/scripts/check-ports.sh` — Port cakisma kontrolu
-- [ ] `docker/scripts/sentinel-status.sh` — Sentinel durumu
-- [ ] Her script'te hata kontrolu (`set -e, trap ERR`) ve renk kodlu cikti
+- [x] `docker/scripts/start.sh` — Tum servisleri baslat
+- [x] `docker/scripts/stop.sh` — Durdur
+- [x] `docker/scripts/reset-db.sh` — DB sifirla
+- [x] `docker/scripts/backup.sh` — Yedek al
+- [x] `docker/scripts/restore.sh` — Geri yukle
+- [x] `docker/scripts/logs.sh` — Loglar
+- [x] `docker/scripts/shell.sh` — PG container shell
+- [x] `docker/scripts/psql.sh` — psql baglantisi
+- [x] `docker/scripts/health.sh` — Saglik kontrolu
+- [x] `docker/scripts/seed.sh` — `bunx prisma db seed` calistir
+- [x] `docker/scripts/migrate.sh` — `bunx prisma migrate deploy` calistir
+- [x] `docker/scripts/check-ports.sh` — Port cakisma kontrolu
+- [x] `docker/scripts/sentinel-status.sh` — Sentinel durumu
+- [x] Her script'te hata kontrolu (`set -e, trap ERR`) ve renk kodlu cikti
 
 ---
 
@@ -266,19 +266,19 @@
 ### 3.1 Prisma Altyapisi
 > **Tum komutlar `promtx-postgresql/` dizininde calistirilacak**
 
-- [ ] `bun add -d prisma`
-- [ ] `bun add @prisma/client`
-- [ ] `bunx prisma init --datasource-provider postgresql`
-- [ ] `prisma/schema.prisma` dosyasi olustur
-- [ ] `.env` icinde `DATABASE_URL` ayarla
-- [ ] `prisma/seed.ts` dosyasi olustur (bun ile calisacak)
-- [ ] `package.json` icine prisma seed config ekle:
+- [x] `bun add -d prisma`
+- [x] `bun add @prisma/client`
+- [x] `bunx prisma init --datasource-provider postgresql`
+- [x] `prisma/schema.prisma` dosyasi olustur
+- [x] `.env` icinde `DATABASE_URL` ayarla
+- [x] `prisma/seed.ts` dosyasi olustur (bun ile calisacak)
+- [x] `package.json` icine prisma seed config ekle:
   ```json
   "prisma": {
     "seed": "bun prisma/seed.ts"
   }
   ```
-- [ ] Prisma Client Bun/TypeScript API layer'da kullanilacak
+- [x] Prisma Client Bun/TypeScript API layer'da kullanilacak
 
 ### 3.2 Prisma Schema — Enum Tanimlari
 

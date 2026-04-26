@@ -7,6 +7,9 @@ services:
     command: redis-server --requirepass ${REDIS_PASSWORD:-redis} --appendonly yes
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD:-redis}
+    networks:
+      promtx-network:
+        ipv4_address: 172.20.0.13
 
   redis-slave:
     image: redis:7-alpine
@@ -16,6 +19,9 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD:-redis}
     depends_on:
       - redis-master
+    networks:
+      promtx-network:
+        ipv4_address: 172.20.0.14
 
   sentinel-1:
     image: redis:7-alpine
@@ -28,6 +34,9 @@ services:
     depends_on:
       - redis-master
       - redis-slave
+    networks:
+      promtx-network:
+        ipv4_address: 172.20.0.20
 
   sentinel-2:
     image: redis:7-alpine
@@ -40,6 +49,9 @@ services:
     depends_on:
       - redis-master
       - redis-slave
+    networks:
+      promtx-network:
+        ipv4_address: 172.20.0.21
 
   sentinel-3:
     image: redis:7-alpine
@@ -52,3 +64,10 @@ services:
     depends_on:
       - redis-master
       - redis-slave
+    networks:
+      promtx-network:
+        ipv4_address: 172.20.0.22
+
+networks:
+  promtx-network:
+    external: true

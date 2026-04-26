@@ -29,6 +29,9 @@ services:
       options:
         max-size: "50m"
         max-file: "5"
+    networks:
+      promtx-network:
+        ipv4_address: 172.20.0.10
 
   redis:
     image: redis:7-alpine
@@ -43,6 +46,9 @@ services:
       retries: 5
     volumes:
       - redis-data:/data
+    networks:
+      promtx-network:
+        ipv4_address: 172.20.0.11
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -57,7 +63,17 @@ services:
         condition: service_healthy
     profiles:
       - dev
+    networks:
+      promtx-network:
+        ipv4_address: 172.20.0.12
 
 volumes:
   pgdata:
   redis-data:
+
+networks:
+  promtx-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
