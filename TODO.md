@@ -1956,30 +1956,30 @@ export default function OAuthCallback() {
 
 > **Mevcut:** `src/pages/Settings.tsx` — Account & Security section
 
-- [ ] Settings sayfasina "Bagli Hesaplar" (Connected Accounts) bolumu ekle
-- [ ] Her provider icin baglanti durumu goster:
-  - [ ] Bagli ise: Provider adi + email + "Baglantıyı Kal." butonu
-  - [ ] Bagli degilse: "Bagla" butonu (linking flow baslatir)
-- [ ] Unlinking uyari modali: "Bu provider ile giris yapamazsınız" + onay
-- [ ] Minimum 1 login yontemi kontrolu (son provider/email ise unlinking engellensin)
-- [ ] Bagli hesaplari `GET /api/auth/providers` ile getir
+- [x] Settings sayfasina "Bagli Hesaplar" (Connected Accounts) bolumu ekle
+- [x] Her provider icin baglanti durumu goster:
+  - [x] Bagli ise: Provider adi + email + "Baglantıyı Kal." butonu
+  - [x] Bagli degilse: "Bagla" butonu (linking flow baslatir)
+- [x] Unlinking uyari modali: "Bu provider ile giris yapamazsınız" + onay
+- [x] Minimum 1 login yontemi kontrolu (son provider/email ise unlinking engellensin)
+- [x] Bagli hesaplari `GET /api/auth/providers` ile getir
 
 ### 4.6 OAuth Guvenlik (Tum Provider'lar)
 
-- [ ] **CSRF:** State parametresi (32 byte random, OAuthState tablosunda sakla)
-- [ ] **PKCE:** code_verifier + code_challenge (Google, Microsoft)
-- [ ] **Nonce:** Apple ID token icin (replay attack onleme)
-- [ ] **State süresi:** 5 dakika (OAuthState tablosundan expired olanlari temizle)
-- [ ] **ID Token dogrulama:** Her provider'in JWKS endpoint'i ile (jose kutuphanesi)
-- [ ] **Email dogrulama:** `email_verified` claim kontrol et
-- [ ] **Rate limiting:** OAuth endpoint'lerine Redis rate limiter:
-  - [ ] `/api/auth/:provider` — 10/dk/IP
-  - [ ] `/api/auth/:provider/callback` — 20/dk/IP
-  - [ ] `/api/auth/link/:provider` — 5/dk/kullanici
-- [ ] **Suspicious login:** Yeni cihaz/IP/ulke tespit edilirse bildirim gonder
-- [ ] **Token sifreleme:** Account tablosundaki access_token/refresh_token sifrelenmis saklanmali (AES-256-GCM)
-- [ ] **Audit log:** Her OAuth login/link/unlink islemi `audit_logs` tablosuna kaydet
-- [ ] **Bot koruma:** OAuth callback'lere Turnstile/reCAPTCHA ekleme (opsiyonel, rate limit yeterli)
+- [x] **CSRF:** State parametresi (32 byte random, OAuthState tablosunda sakla)
+- [x] **PKCE:** code_verifier + code_challenge (Google, Microsoft)
+- [x] **Nonce:** Apple ID token icin (replay attack onleme)
+- [x] **State süresi:** 5 dakika (OAuthState tablosundan expired olanlari temizle)
+- [x] **ID Token dogrulama:** Her provider'in JWKS endpoint'i ile (jose kutuphanesi)
+- [x] **Email dogrulama:** `email_verified` claim kontrol et
+- [x] **Rate limiting:** OAuth endpoint'lerine Redis rate limiter:
+  - [x] `/api/auth/:provider` — 10/dk/IP
+  - [x] `/api/auth/:provider/callback` — 20/dk/IP
+  - [x] `/api/auth/link/:provider` — 5/dk/kullanici
+- [x] **Suspicious login:** Yeni cihaz/IP/ulke tespit edilirse bildirim gonder
+- [x] **Token sifreleme:** Account tablosundaki access_token/refresh_token sifrelenmis saklanmali (AES-256-GCM)
+- [x] **Audit log:** Her OAuth login/link/unlink islemi `audit_logs` tablosuna kaydet
+- [x] **Bot koruma:** OAuth callback'lere Turnstile/reCAPTCHA ekleme (opsiyonel, rate limit yeterli)
 
 ### 4.7 .env.docker OAuth Degiskenleri (Tamamlanmis)
 

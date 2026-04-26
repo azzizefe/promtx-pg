@@ -345,6 +345,16 @@ export class OAuthService {
       .setExpirationTime('1d')
       .sign(new TextEncoder().encode(process.env.JWT_SECRET || 'secret'));
 
+    await prisma.auditLog.create({
+      data: {
+        userId: user.id,
+        action: 'oauth_login',
+        resourceType: 'account',
+        resourceId: userInfo.providerAccountId,
+        newValues: { provider, isNewUser }
+      }
+    });
+
     return { token, user, isNewUser };
   }
 
@@ -368,7 +378,7 @@ export class OAuthService {
       throw new Error('This OAuth account is already linked to another user.');
     }
 
-    return prisma.account.upsert({
+    const account = await prisma.account.upsert({
       where: {
         provider_providerAccountId: {
           provider,
@@ -391,6 +401,18 @@ export class OAuthService {
         providerName: userInfo.displayName,
       }
     });
+
+    await prisma.auditLog.create({
+      data: {
+        userId,
+        action: 'oauth_link',
+        resourceType: 'account',
+        resourceId: userInfo.providerAccountId,
+        newValues: { provider }
+      }
+    });
+
+    return account;
   }
 
   async unlinkProvider(userId: string, provider: AuthProvider): Promise<void> {
@@ -409,6 +431,16 @@ export class OAuthService {
 
     await prisma.account.delete({
       where: { id: targetAccount.id }
+    });
+
+    await prisma.auditLog.create({
+      data: {
+        userId,
+        action: 'oauth_unlink',
+        resourceType: 'account',
+        resourceId: targetAccount.providerAccountId,
+        oldValues: { provider }
+      }
     });
 
     if (adapter && adapter.revokeToken && targetAccount.refreshToken) {
