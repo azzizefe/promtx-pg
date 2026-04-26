@@ -176,6 +176,8 @@ model User {
   referralsMade     Referral[]        @relation("Referrer")
   referralsReceived Referral[]        @relation("Referred")
   feedbacks         Feedback[]
+  imageLikes        ImageLike[]
+  imageReports      ImageReport[]
 
   @@map("users")
 }
@@ -415,7 +417,9 @@ model ImageGeneration {
 
   user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   parentImage ImageGeneration?  @relation("ImageVariation", fields: [parentImageId], references: [id])
-  variations  ImageGeneration[] @relation("ImageVariation")
+  variations        ImageGeneration[] @relation("ImageVariation")
+  imageLikes        ImageLike[]
+  imageReports      ImageReport[]
 
   @@index([userId, createdAt(sort: Desc)])
   @@map("image_generations")
@@ -826,4 +830,37 @@ model Feedback {
   @@index([userId, createdAt(sort: Desc)])
   @@index([type, status])
   @@map("feedbacks")
+}
+
+model ImageLike {
+  id                String          @id @default(uuid())
+  userId            String          @map("user_id")
+  imageGenerationId String          @map("image_generation_id")
+  createdAt         DateTime        @default(now()) @map("created_at")
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  imageGeneration ImageGeneration @relation(fields: [imageGenerationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, imageGenerationId])
+  @@index([imageGenerationId])
+  @@map("image_likes")
+}
+
+model ImageReport {
+  id                String          @id @default(uuid())
+  userId            String          @map("user_id")
+  imageGenerationId String          @map("image_generation_id")
+  reason            String          @db.VarChar(500)
+  status            String          @default("pending") @db.VarChar(20)
+  adminNote         String?         @map("admin_note") @db.VarChar(2000)
+  resolvedBy        String?         @map("resolved_by")
+  resolvedAt        DateTime?       @map("resolved_at")
+  createdAt         DateTime        @default(now()) @map("created_at")
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  imageGeneration ImageGeneration @relation(fields: [imageGenerationId], references: [id], onDelete: Cascade)
+
+  @@index([imageGenerationId])
+  @@index([userId])
+  @@map("image_reports")
 }

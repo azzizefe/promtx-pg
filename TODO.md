@@ -1206,7 +1206,7 @@ model Feedback {
 -- Yerine: tsvector + GIN index kullanilacak
 -- Prisma schema'da conversation.searchVector alani ile
 ```
-- [ ] SQLite FTS5 -> PostgreSQL tsvector gecisi icin migration notu
+- [x] SQLite FTS5 -> PostgreSQL tsvector gecisi icin migration notu
 
 ### 3.9 Orijinal Proje SQLite <-> Yeni Proje Prisma Tablo Eslestirme Tablosu
 
