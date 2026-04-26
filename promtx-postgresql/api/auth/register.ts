@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
+import argon2 from 'argon2';
 
 const prisma = new PrismaClient();
 
@@ -21,9 +22,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(409).json({ error: 'User already exists' });
     }
 
+    const passwordHash = await argon2.hash(password);
+
     user = await prisma.user.create({
       data: {
         email,
+        passwordHash,
         displayName: displayName || email.split('@')[0],
         role: 'Free',
       }
@@ -54,7 +58,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const JWT_SECRET = process.env.JWT_SECRET || 'placeholder-jwt-secret';
     const token = jwt.sign({ userId: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
 
-    return res.status(201).json({ token, user });
+    return res.status(201).json({
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        displayName: user.displayName || user.email,
+        role: user.role,
+        avatarUrl: user.avatarUrl || undefined,
+      },
+    });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

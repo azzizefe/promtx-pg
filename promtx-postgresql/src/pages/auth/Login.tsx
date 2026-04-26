@@ -17,12 +17,12 @@ export const Login = () => {
     setIsLoading(true);
 
     try {
-      const data = await fetchApi('/auth/login', {
+      const res = await fetchApi('/auth/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
       });
-      
-      login(data.user, data.token, data.refreshToken);
+
+      login(res.data.user, res.data.token);
       toast.success('Successfully logged in!');
       navigate('/');
     } catch (err: any) {

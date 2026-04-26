@@ -83,7 +83,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       },
     });
 
-    return res.status(200).json(success({ token, role: user.role, userId: user.id }));
+    return res.status(200).json(success({
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        displayName: user.displayName || user.email,
+        role: user.role,
+        avatarUrl: user.avatarUrl || undefined,
+      },
+    }));
   } catch (err: any) {
     if (err instanceof ApiError) return res.status(err.statusCode).json(error(err.message));
     console.error('Login error:', err);

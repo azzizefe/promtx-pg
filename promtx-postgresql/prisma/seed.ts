@@ -1,4 +1,5 @@
 import { PrismaClient, UserRole, AIProvider } from '@prisma/client';
+import argon2 from 'argon2';
 
 // @ts-ignore
 declare const process: any;
@@ -8,6 +9,9 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Seeding database...');
 
+  // Common password for all seed users: "test1234"
+  const defaultPasswordHash = await argon2.hash('test1234');
+
   // 1. Seed Admin User
   const adminUser = await prisma.user.upsert({
     where: { email: 'admin@promtx.os' },
@@ -15,6 +19,7 @@ async function main() {
     create: {
       id: 'system-admin-001',
       email: 'admin@promtx.os',
+      passwordHash: defaultPasswordHash,
       displayName: 'Promtx Admin',
       role: UserRole.Admin,
       isEmailVerified: true,
@@ -39,6 +44,7 @@ async function main() {
     update: {},
     create: {
       email: 'superadmin@promtx.os',
+      passwordHash: defaultPasswordHash,
       displayName: 'Promtx SuperAdmin',
       role: UserRole.SuperAdmin,
       isEmailVerified: true,
@@ -141,6 +147,7 @@ async function main() {
       create: {
         id: u.id,
         email: u.email,
+        passwordHash: defaultPasswordHash,
         displayName: u.displayName,
         role: u.role,
         isEmailVerified: true,

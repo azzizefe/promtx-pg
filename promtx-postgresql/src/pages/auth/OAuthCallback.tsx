@@ -32,8 +32,9 @@ export const OAuthCallback = () => {
 
     const authenticate = async () => {
       try {
-        const data = await fetchApi(`/auth/${provider}/callback?code=${code}&state=${state}`);
-        login(data.user, data.token, data.refreshToken);
+        const res = await fetchApi(`/auth/${provider}/callback?code=${code}&state=${state}`);
+        const data = res.data || res;
+        login(data.user, data.token);
         setStatus('success');
         toast.success(`Successfully authenticated with ${provider}`);
         navigate('/');
