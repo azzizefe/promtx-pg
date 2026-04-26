@@ -1424,29 +1424,29 @@ model OAuthProviderConfig {
 ### 4.2 Apple Sign-In Entegrasyonu
 
 #### 4.2.1 Apple Developer Console Ayarlari
-- [ ] Apple Developer hesabi olustur/dogrula (Apple Developer Program — $99/yil)
-- [ ] App ID olustur: `com.promtx.app`
-  - [ ] "Sign In with Apple" capability aktif et
-- [ ] Service ID olustur: `com.promtx.auth`
-  - [ ] "Sign In with Apple" aktif et
-  - [ ] Domains: `promtx.ai`, `localhost`
-  - [ ] Return URLs ekle:
-    - [ ] `https://promtx.ai/auth/apple/callback`
-    - [ ] `https://promtx.vercel.app/auth/apple/callback`
-    - [ ] `http://localhost:1420/auth/apple/callback` (dev — Apple sadece HTTPS ister, workaround gerekebilir)
-    - [ ] `http://localhost:3001/api/auth/apple/callback`
-- [ ] Key olustur (Sign In with Apple icin):
-  - [ ] Key Name: "Promtx Auth Key"
-  - [ ] "Sign In with Apple" secenegi aktif
-  - [ ] `.p8` dosyasini indir (BIR KERE indirilebilir, guvenli sakla!)
-  - [ ] Key ID'yi not al
-- [ ] Team ID'yi not al (Apple Developer hesabindaki 10 haneli kod)
-- [ ] `.env.docker`'a ekle:
-  - [ ] `APPLE_CLIENT_ID=com.promtx.auth` (Service ID)
-  - [ ] `APPLE_TEAM_ID=XXXXXXXXXX`
-  - [ ] `APPLE_KEY_ID=XXXXXXXXXX`
-  - [ ] `APPLE_PRIVATE_KEY=` (.p8 dosyasinin icerigi, PEM formati)
-  - [ ] `APPLE_REDIRECT_URI=https://promtx.ai/auth/apple/callback`
+- [x] Apple Developer hesabi olustur/dogrula (Apple Developer Program — $99/yil)
+- [x] App ID olustur: `com.promtx.app`
+  - [x] "Sign In with Apple" capability aktif et
+- [x] Service ID olustur: `com.promtx.auth`
+  - [x] "Sign In with Apple" aktif et
+  - [x] Domains: `promtx.ai`, `localhost`
+  - [x] Return URLs ekle:
+    - [x] `https://promtx.ai/auth/apple/callback`
+    - [x] `https://promtx.vercel.app/auth/apple/callback`
+    - [x] `http://localhost:1420/auth/apple/callback` (dev — Apple sadece HTTPS ister, workaround gerekebilir)
+    - [x] `http://localhost:3001/api/auth/apple/callback`
+- [x] Key olustur (Sign In with Apple icin):
+  - [x] Key Name: "Promtx Auth Key"
+  - [x] "Sign In with Apple" secenegi aktif
+  - [x] `.p8` dosyasini indir (BIR KERE indirilebilir, guvenli sakla!)
+  - [x] Key ID'yi not al
+- [x] Team ID'yi not al (Apple Developer hesabindaki 10 haneli kod)
+- [x] `.env.docker`'a ekle:
+  - [x] `APPLE_CLIENT_ID=com.promtx.auth` (Service ID)
+  - [x] `APPLE_TEAM_ID=XXXXXXXXXX`
+  - [x] `APPLE_KEY_ID=XXXXXXXXXX`
+  - [x] `APPLE_PRIVATE_KEY=` (.p8 dosyasinin icerigi, PEM formati)
+  - [x] `APPLE_REDIRECT_URI=https://promtx.ai/auth/apple/callback`
 
 #### 4.2.2 Apple Client Secret Olusturma
 > **ONEMLI:** Apple client_secret statik degil, JWT olarak dinamik uretilir!
@@ -1475,10 +1475,10 @@ export function generateAppleClientSecret(): string {
 }
 ```
 
-- [ ] Apple client secret JWT uretici fonksiyon yaz
-- [ ] `jsonwebtoken` paketi: `bun add jsonwebtoken` + `bun add -d @types/jsonwebtoken`
-- [ ] Client secret'i cache'le (6 ay gecerli, her istekte uretme)
-- [ ] Secret suresi dolmadan yenile (5 ay sonra otomatik yenileme)
+- [x] Apple client secret JWT uretici fonksiyon yaz
+- [x] `jsonwebtoken` paketi: `bun add jsonwebtoken` + `bun add -d @types/jsonwebtoken`
+- [x] Client secret'i cache'le (6 ay gecerli, her istekte uretme)
+- [x] Secret suresi dolmadan yenile (5 ay sonra otomatik yenileme)
 
 #### 4.2.3 Backend Apple OAuth Flow
 > **ONEMLI Apple Farkliliklari:**
