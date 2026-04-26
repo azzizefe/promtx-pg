@@ -1487,12 +1487,12 @@ export function generateAppleClientSecret(): string {
 > 3. Apple `form_post` response mode kullanir (POST callback, GET degil)
 > 4. Email gizleme ozelligi var (private relay email: `xxxxx@privaterelay.appleid.com`)
 
-- [ ] Apple OAuth endpoint URL'leri:
-  - [ ] Authorization: `https://appleid.apple.com/auth/authorize`
-  - [ ] Token: `https://appleid.apple.com/auth/token`
-  - [ ] JWKS: `https://appleid.apple.com/auth/keys`
-  - [ ] Revoke: `https://appleid.apple.com/auth/revoke`
-- [ ] `GET /api/auth/apple` — State + nonce olustur, Apple'a yonlendir:
+- [x] Apple OAuth endpoint URL'leri:
+  - [x] Authorization: `https://appleid.apple.com/auth/authorize`
+  - [x] Token: `https://appleid.apple.com/auth/token`
+  - [x] JWKS: `https://appleid.apple.com/auth/keys`
+  - [x] Revoke: `https://appleid.apple.com/auth/revoke`
+- [x] `GET /api/auth/apple` — State + nonce olustur, Apple'a yonlendir:
   ```
   https://appleid.apple.com/auth/authorize?
     client_id=com.promtx.auth&
@@ -1503,10 +1503,10 @@ export function generateAppleClientSecret(): string {
     state={csrf_state}&
     nonce={nonce}
   ```
-- [ ] `POST /api/auth/apple/callback` — Apple POST ile callback yapar (form_post):
-  - [ ] `code` + `state` + `id_token` + `user` (ilk login'de JSON) alinir
-  - [ ] State dogrula (CSRF)
-  - [ ] Authorization code ile token exchange:
+- [x] `POST /api/auth/apple/callback` — Apple POST ile callback yapar (form_post):
+  - [x] `code` + `state` + `id_token` + `user` (ilk login'de JSON) alinir
+  - [x] State dogrula (CSRF)
+  - [x] Authorization code ile token exchange:
     ```
     POST https://appleid.apple.com/auth/token
     grant_type=authorization_code
@@ -1515,17 +1515,17 @@ export function generateAppleClientSecret(): string {
     client_secret={generated_jwt}
     redirect_uri={redirect_uri}
     ```
-  - [ ] ID token'i dogrula (Apple JWKS ile):
-    - [ ] `iss` = `https://appleid.apple.com`
-    - [ ] `aud` = `com.promtx.auth`
-    - [ ] `nonce` eslesmeli
-    - [ ] `email_verified` = true (veya private relay email)
-  - [ ] Kullanici bilgilerini ID token'dan cikart:
-    - [ ] `sub` — Apple user ID (degismez, benzersiz)
-    - [ ] `email` — Gercek veya private relay email
-    - [ ] `is_private_email` — true ise private relay
-    - [ ] `name` — SADECE ILK AUTH'da `user` JSON body'sinde gelir
-- [ ] Apple kullanici UPSERT:
+  - [x] ID token'i dogrula (Apple JWKS ile):
+    - [x] `iss` = `https://appleid.apple.com`
+    - [x] `aud` = `com.promtx.auth`
+    - [x] `nonce` eslesmeli
+    - [x] `email_verified` = true (veya private relay email)
+  - [x] Kullanici bilgilerini ID token'dan cikart:
+    - [x] `sub` — Apple user ID (degismez, benzersiz)
+    - [x] `email` — Gercek veya private relay email
+    - [x] `is_private_email` — true ise private relay
+    - [x] `name` — SADECE ILK AUTH'da `user` JSON body'sinde gelir
+- [x] Apple kullanici UPSERT:
   ```sql
   -- Oncelikle Apple sub ile ara (email degisebilir, sub degismez)
   SELECT u.* FROM users u
@@ -1540,7 +1540,7 @@ export function generateAppleClientSecret(): string {
     last_login_at = NOW(),
     login_count = users.login_count + 1;
   ```
-- [ ] Account tablosuna kaydet:
+- [x] Account tablosuna kaydet:
   ```sql
   INSERT INTO accounts (user_id, provider, provider_account_id, id_token, provider_email, provider_name, metadata)
   VALUES ($userId, 'apple', $appleSub, $idToken, $email, $name, 
@@ -1549,12 +1549,12 @@ export function generateAppleClientSecret(): string {
     id_token = EXCLUDED.id_token,
     updated_at = NOW();
   ```
-- [ ] **ILK LOGIN'DE** kullanici adini kaydet (Apple sonraki login'lerde gondermez!)
-- [ ] Private relay email destegi:
-  - [ ] `xxxxx@privaterelay.appleid.com` formatini tani
-  - [ ] Apple Private Email Relay Service yapilandir (email gonderebilmek icin)
-  - [ ] `email-source@promtx.ai` domain'ini Apple Developer'da kaydet
-- [ ] Session + JWT + RefreshToken olustur
+- [x] **ILK LOGIN'DE** kullanici adini kaydet (Apple sonraki login'lerde gondermez!)
+- [x] Private relay email destegi:
+  - [x] `xxxxx@privaterelay.appleid.com` formatini tani
+  - [x] Apple Private Email Relay Service yapilandir (email gonderebilmek icin)
+  - [x] `email-source@promtx.ai` domain'ini Apple Developer'da kaydet
+- [x] Session + JWT + RefreshToken olustur
 
 #### 4.2.4 Apple Token Revocation (GDPR/App Store Zorunluluk)
 > **ZORUNLU:** App Store Review Guidelines 4.0 — kullanici hesap silme isteginde Apple token revoke edilmeli

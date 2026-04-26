@@ -1,5 +1,5 @@
 import { cleanExpiredOAuthStates } from './services/oauthCleanup';
-import { handleGoogleAuth, handleGoogleCallback } from './routes/auth';
+import { handleGoogleAuth, handleGoogleCallback, handleAppleAuth, handleAppleCallback } from './routes/auth';
 
 // Start cleanup cron (runs every 5 minutes)
 setInterval(cleanExpiredOAuthStates, 5 * 60 * 1000);
@@ -28,6 +28,14 @@ const server = Bun.serve({
       
       if (path === '/api/auth/google/callback' && req.method === 'GET') {
         return await handleGoogleCallback(req, headers);
+      }
+
+      if (path === '/api/auth/apple' && req.method === 'GET') {
+        return await handleAppleAuth(req, headers);
+      }
+
+      if (path === '/api/auth/apple/callback' && req.method === 'POST') {
+        return await handleAppleCallback(req, headers);
       }
       
       return new Response(JSON.stringify({ error: 'Not Found' }), {
