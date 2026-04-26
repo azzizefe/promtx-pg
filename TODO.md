@@ -63,14 +63,14 @@
   - [x] `bun.lockb` (opsiyonel — takim karari)
 
 ### 0.4 Gelistirme Araclari
-- [ ] pgAdmin 4 kur (GUI veritabani yonetimi)
-- [ ] VS Code icin "Prisma" extension kur (syntax highlighting + format)
-- [ ] VS Code icin "Docker" extension kur
-- [ ] VS Code icin "PostgreSQL" extension kur
-- [ ] Prisma CLI kur: `cd promtx-postgresql && bun add -d prisma`
-- [ ] Prisma Client kur: `bun add @prisma/client`
-- [ ] `bunx prisma --version` ile dogrula
-- [ ] Git repo baslat: `git init && git add . && git commit -m "init: promtx-postgresql project"`
+- [x] pgAdmin 4 kur (GUI veritabani yonetimi)
+- [x] VS Code icin "Prisma" extension kur (syntax highlighting + format)
+- [x] VS Code icin "Docker" extension kur
+- [x] VS Code icin "PostgreSQL" extension kur
+- [x] Prisma CLI kur: `cd promtx-postgresql && bun add -d prisma`
+- [x] Prisma Client kur: `bun add @prisma/client`
+- [x] `bunx prisma --version` ile dogrula
+- [x] Git repo baslat: `git init && git add . && git commit -m "init: promtx-postgresql project"`
 
 ---
 
