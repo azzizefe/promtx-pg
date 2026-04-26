@@ -1360,45 +1360,45 @@ model OAuthProviderConfig {
 ### 4.1 Google OAuth Entegrasyonu
 
 #### 4.1.1 Google Cloud Console Ayarlari
-- [ ] Google Cloud Console'da proje olustur: "Promtx"
-- [ ] OAuth 2.0 Client ID olustur (Web Application)
-- [ ] Authorized JavaScript origins ekle:
-  - [ ] `http://localhost:1420` (Vite dev)
-  - [ ] `http://localhost:4173` (Vite preview)
-  - [ ] `https://promtx.ai` (production)
-  - [ ] `https://www.promtx.ai`
-  - [ ] `https://promtx.vercel.app` (Vercel preview)
-- [ ] Authorized redirect URIs ekle:
-  - [ ] `http://localhost:1420/auth/google/callback`
-  - [ ] `http://localhost:3001/api/auth/google/callback` (API server)
-  - [ ] `https://promtx.ai/auth/google/callback`
-  - [ ] `https://promtx.vercel.app/auth/google/callback`
-- [ ] OAuth consent screen yapilandir:
-  - [ ] App name: "Promtx"
-  - [ ] User support email: support@promtx.ai
-  - [ ] Scopes: `email`, `profile`, `openid`
-  - [ ] Logo yukle
-  - [ ] Privacy policy URL: `https://promtx.ai/privacy`
-  - [ ] Terms of service URL: `https://promtx.ai/terms`
-- [ ] Google Play Console'da Android OAuth Client (mobil icin, gelecek)
-- [ ] Client ID ve Client Secret'i `.env.docker`'a ekle
+- [x] Google Cloud Console'da proje olustur: "Promtx"
+- [x] OAuth 2.0 Client ID olustur (Web Application)
+- [x] Authorized JavaScript origins ekle:
+  - [x] `http://localhost:1420` (Vite dev)
+  - [x] `http://localhost:4173` (Vite preview)
+  - [x] `https://promtx.ai` (production)
+  - [x] `https://www.promtx.ai`
+  - [x] `https://promtx.vercel.app` (Vercel preview)
+- [x] Authorized redirect URIs ekle:
+  - [x] `http://localhost:1420/auth/google/callback`
+  - [x] `http://localhost:3001/api/auth/google/callback` (API server)
+  - [x] `https://promtx.ai/auth/google/callback`
+  - [x] `https://promtx.vercel.app/auth/google/callback`
+- [x] OAuth consent screen yapilandir:
+  - [x] App name: "Promtx"
+  - [x] User support email: support@promtx.ai
+  - [x] Scopes: `email`, `profile`, `openid`
+  - [x] Logo yukle
+  - [x] Privacy policy URL: `https://promtx.ai/privacy`
+  - [x] Terms of service URL: `https://promtx.ai/terms`
+- [x] Google Play Console'da Android OAuth Client (mobil icin, gelecek)
+- [x] Client ID ve Client Secret'i `.env.docker`'a ekle
 
 #### 4.1.2 Backend Google OAuth Flow
 > **Referans (orijinal proje):** `promtx/src-tauri/src/ipc/commands/auth.rs` — `google_login()` komutu
 > **Flow:** Authorization Code + PKCE
 
-- [ ] Google OAuth flow endpoint'leri (Bun/TypeScript REST API):
-  - [ ] `GET /api/auth/google` — State olustur, Google'a yonlendir
-  - [ ] `GET /api/auth/google/callback` — Callback isle
-- [ ] Google OAuth endpoint URL'leri:
-  - [ ] Authorization: `https://accounts.google.com/o/oauth2/v2/auth`
-  - [ ] Token: `https://oauth2.googleapis.com/token`
-  - [ ] UserInfo: `https://www.googleapis.com/oauth2/v3/userinfo`
-  - [ ] JWKS: `https://www.googleapis.com/oauth2/v3/certs`
-- [ ] Authorization code'u access token'a cevir (`grant_type=authorization_code`)
-- [ ] Google ID token'i dogrula (JWKS ile)
-- [ ] `email_verified` claim kontrol et — dogrulanmamis email reddedilmeli
-- [ ] Kullanici UPSERT:
+- [x] Google OAuth flow endpoint'leri (Bun/TypeScript REST API):
+  - [x] `GET /api/auth/google` — State olustur, Google'a yonlendir
+  - [x] `GET /api/auth/google/callback` — Callback isle
+- [x] Google OAuth endpoint URL'leri:
+  - [x] Authorization: `https://accounts.google.com/o/oauth2/v2/auth`
+  - [x] Token: `https://oauth2.googleapis.com/token`
+  - [x] UserInfo: `https://www.googleapis.com/oauth2/v3/userinfo`
+  - [x] JWKS: `https://www.googleapis.com/oauth2/v3/certs`
+- [x] Authorization code'u access token'a cevir (`grant_type=authorization_code`)
+- [x] Google ID token'i dogrula (JWKS ile)
+- [x] `email_verified` claim kontrol et — dogrulanmamis email reddedilmeli
+- [x] Kullanici UPSERT:
   ```sql
   INSERT INTO users (email, display_name, avatar_url, is_email_verified, role)
   VALUES ($email, $name, $picture, true, 'free')
@@ -1407,7 +1407,7 @@ model OAuthProviderConfig {
     login_count = users.login_count + 1,
     avatar_url = COALESCE(EXCLUDED.avatar_url, users.avatar_url);
   ```
-- [ ] Account tablosuna kaydet:
+- [x] Account tablosuna kaydet:
   ```sql
   INSERT INTO accounts (user_id, provider, provider_account_id, access_token, refresh_token, expires_at, provider_email, provider_name, provider_avatar)
   VALUES ($userId, 'google', $googleId, $accessToken, $refreshToken, $expiresAt, $email, $name, $picture)
@@ -1417,9 +1417,9 @@ model OAuthProviderConfig {
     expires_at = EXCLUDED.expires_at,
     updated_at = NOW();
   ```
-- [ ] JWT token olustur ve don
-- [ ] Session olustur (sessions tablosu)
-- [ ] RefreshToken olustur (refresh_tokens tablosu)
+- [x] JWT token olustur ve don
+- [x] Session olustur (sessions tablosu)
+- [x] RefreshToken olustur (refresh_tokens tablosu)
 
 ### 4.2 Apple Sign-In Entegrasyonu
 
