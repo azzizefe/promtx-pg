@@ -1252,12 +1252,12 @@ model Feedback {
 | *(yeni)* | `ImageReport` | Icerik bildirimi/moderasyon |
 
 ### 3.10 Migration Olusturma ve Calistirma
-- [ ] `bunx prisma migrate dev --name init` ile ilk migration olustur
-- [ ] Migration dosyasini incele (`prisma/migrations/`)
-- [ ] `bunx prisma migrate deploy` ile migration uygula
-- [ ] `bunx prisma studio` ile tabloları kontrol et (port 5555)
-- [ ] Migration rollback proseduru belgele
-- [ ] Orijinal projedeki `promtx/src-tauri/migrations/20260424000000_init.sql` referans olarak incelenmeli
+- [x] `bunx prisma migrate dev --name init` ile ilk migration olustur
+- [x] Migration dosyasini incele (`prisma/migrations/`)
+- [x] `bunx prisma migrate deploy` ile migration uygula
+- [x] `bunx prisma studio` ile tabloları kontrol et (port 5555)
+- [x] Migration rollback proseduru belgele
+- [x] Orijinal projedeki `promtx/src-tauri/migrations/20260424000000_init.sql` referans olarak incelenmeli
 
 ---
 
@@ -1349,13 +1349,13 @@ model OAuthProviderConfig {
 }
 ```
 
-- [ ] `Account` modeline `providerEmail`, `providerName`, `providerAvatar`, `metadata`, `updatedAt` alanlari ekle
-- [ ] `Account` modeline `@@index([userId])` ve `@@index([provider, providerEmail])` index ekle
-- [ ] `OAuthState` modeli olustur (CSRF + PKCE state yonetimi)
-- [ ] `OAuthProviderConfig` modeli olustur (provider yapilandirmasi DB'den)
-- [ ] `bunx prisma migrate dev --name add_oauth_models` ile migration olustur
-- [ ] `bunx prisma generate` ile client guncelle
-- [ ] Expired `OAuthState` kayitlarini temizleyen cron/scheduled task yaz (5 dk'dan eski)
+- [x] `Account` modeline `providerEmail`, `providerName`, `providerAvatar`, `metadata`, `updatedAt` alanlari ekle
+- [x] `Account` modeline `@@index([userId])` ve `@@index([provider, providerEmail])` index ekle
+- [x] `OAuthState` modeli olustur (CSRF + PKCE state yonetimi)
+- [x] `OAuthProviderConfig` modeli olustur (provider yapilandirmasi DB'den)
+- [x] `bunx prisma migrate dev --name add_oauth_models` ile migration olustur
+- [x] `bunx prisma generate` ile client guncelle
+- [x] Expired `OAuthState` kayitlarini temizleyen cron/scheduled task yaz (5 dk'dan eski)
 
 ### 4.1 Google OAuth Entegrasyonu
 
