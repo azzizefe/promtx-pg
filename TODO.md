@@ -3999,65 +3999,65 @@ jobs:
 > Bu karar bilerek alinmistir — guvenlik, depolama ve moderasyon basitligi icin.
 
 #### Backend Validasyonu (TypeScript)
-- [ ] `POST /api/feedback` endpoint'i olustur — Prisma ile PostgreSQL'e INSERT
-- [ ] Mesaj validasyonu:
-  - [ ] Minimum uzunluk: 10 karakter (cok kisa mesajlari reddet)
-  - [ ] Maksimum uzunluk: 5000 karakter (DB limiti ile uyumlu)
-  - [ ] Sadece UTF-8 text kabul et
-  - [ ] HTML tag'leri strip et (XSS onleme — `sanitize-html` veya regex)
-  - [ ] Base64 encoded icerik tespiti ve reddi (dosya gizleme onleme)
-  - [ ] URL/link filtreleme: mesajda URL varsa kabul et ama tiklanabilir yapma (plain text olarak sakla)
-  - [ ] Bos satir normalizasyonu: ardarda 3+ bos satiri 2'ye dusur
-- [ ] Dosya ekleme YETENEGINI backend'de tamamen devre disi birak:
-  - [ ] Feedback endpoint'inde `file`, `attachment`, `binary` parametresi OLMAMALI
-  - [ ] `Content-Type` kontrolu: sadece `application/json` kabul et
-  - [ ] Multipart form data KABUL EDILMEZ
-- [ ] Rate limiting: kullanici basina 5 feedback / saat (spam onleme)
-- [ ] Anonim feedback: giris yapmamis kullanicilar da gonderebilir (userId nullable)
-- [ ] IP adresi ve User-Agent kaydet (abuse takibi icin)
-- [ ] Debug context'i otomatik ekle (studio, promptType, viewport — mevcut FeedbackModal'daki gibi)
+- [x] `POST /api/feedback` endpoint'i olustur — Prisma ile PostgreSQL'e INSERT
+- [x] Mesaj validasyonu:
+  - [x] Minimum uzunluk: 10 karakter (cok kisa mesajlari reddet)
+  - [x] Maksimum uzunluk: 5000 karakter (DB limiti ile uyumlu)
+  - [x] Sadece UTF-8 text kabul et
+  - [x] HTML tag'leri strip et (XSS onleme — `sanitize-html` veya regex)
+  - [x] Base64 encoded icerik tespiti ve reddi (dosya gizleme onleme)
+  - [x] URL/link filtreleme: mesajda URL varsa kabul et ama tiklanabilir yapma (plain text olarak sakla)
+  - [x] Bos satir normalizasyonu: ardarda 3+ bos satiri 2'ye dusur
+- [x] Dosya ekleme YETENEGINI backend'de tamamen devre disi birak:
+  - [x] Feedback endpoint'inde `file`, `attachment`, `binary` parametresi OLMAMALI
+  - [x] `Content-Type` kontrolu: sadece `application/json` kabul et
+  - [x] Multipart form data KABUL EDILMEZ
+- [x] Rate limiting: kullanici basina 5 feedback / saat (spam onleme)
+- [x] Anonim feedback: giris yapmamis kullanicilar da gonderebilir (userId nullable)
+- [x] IP adresi ve User-Agent kaydet (abuse takibi icin)
+- [x] Debug context'i otomatik ekle (studio, promptType, viewport — mevcut FeedbackModal'daki gibi)
 
 #### Frontend Validasyonu (`src/components/FeedbackModal.tsx`)
-- [ ] Textarea'ya dosya surukle-birak (drag & drop) DEVRE DISI:
-  - [ ] `onDrop` event'ini `preventDefault` + `stopPropagation` ile engelle
-  - [ ] `onDragOver` event'ini engelle
-  - [ ] Kullaniciya "Dosya eklenemez, sadece mesaj yazabilirsiniz" toast goster
-- [ ] Textarea'ya yapistirma (paste) kontrolu:
-  - [ ] `onPaste` event'inde `clipboardData.types` kontrol et
-  - [ ] `text/plain` DISINDA bir sey yapistirmaya calisilirsa engelle
-  - [ ] Resim yapistirma (screenshot paste) engelle
-  - [ ] Dosya yapistirma engelle
-  - [ ] "Sadece metin yapistirabilirsiniz" toast goster
-- [ ] Karakter sayaci goster: `${message.length}/5000`
-  - [ ] 4500+ karakterde sari uyari rengi
-  - [ ] 5000'e ulasinca kirmizi + input durdur
-- [ ] Minimum 10 karakter kontrolu — submit butonu 10 karaktere kadar disabled
-- [ ] Tip secimi zorunlu (bug/feature/other) — mevcut haliyle uyumlu
-- [ ] Gonderim sonrasi basari mesaji + modal kapat (mevcut haliyle korunacak)
-- [ ] `<input type="file">` KESINLIKLE EKLENMEYECEK — dosya yukleme UI'i yok
-- [ ] Emoji destegi: emojiler text olarak kabul edilir (engellenmez)
+- [x] Textarea'ya dosya surukle-birak (drag & drop) DEVRE DISI:
+  - [x] `onDrop` event'ini `preventDefault` + `stopPropagation` ile engelle
+  - [x] `onDragOver` event'ini engelle
+  - [x] Kullaniciya "Dosya eklenemez, sadece mesaj yazabilirsiniz" toast goster
+- [x] Textarea'ya yapistirma (paste) kontrolu:
+  - [x] `onPaste` event'inde `clipboardData.types` kontrol et
+  - [x] `text/plain` DISINDA bir sey yapistirmaya calisilirsa engelle
+  - [x] Resim yapistirma (screenshot paste) engelle
+  - [x] Dosya yapistirma engelle
+  - [x] "Sadece metin yapistirabilirsiniz" toast goster
+- [x] Karakter sayaci goster: `${message.length}/5000`
+  - [x] 4500+ karakterde sari uyari rengi
+  - [x] 5000'e ulasinca kirmizi + input durdur
+- [x] Minimum 10 karakter kontrolu — submit butonu 10 karaktere kadar disabled
+- [x] Tip secimi zorunlu (bug/feature/other) — mevcut haliyle uyumlu
+- [x] Gonderim sonrasi basari mesaji + modal kapat (mevcut haliyle korunacak)
+- [x] `<input type="file">` KESINLIKLE EKLENMEYECEK — dosya yukleme UI'i yok
+- [x] Emoji destegi: emojiler text olarak kabul edilir (engellenmez)
 
 ### 14.2 Feedback Prisma Modeli
 
 > Schema: BOLUM 3.8.2'de tanimli (Feedback model)
 
-- [ ] Migration olustur: `bunx prisma migrate dev --name add_feedback_table`
-- [ ] Seed data: ornek feedback kayitlari ekle (bug + feature + other)
+- [x] Migration olustur: `bunx prisma migrate dev --name add_feedback_table`
+- [x] Seed data: ornek feedback kayitlari ekle (bug + feature + other)
 
 ### 14.3 Admin Feedback Yonetimi
 
-- [ ] Admin Dashboard'a "Geri Bildirimler" sekme/sayfa ekle
-- [ ] Feedback listesi: tarih, tip, kullanici, durum ile filtrelenebilir tablo
-- [ ] Durum degistirme: pending -> reviewing -> resolved / dismissed
-- [ ] Admin notu ekleme (adminNote alani)
-- [ ] Toplu islem: secili feedback'leri arsivle / sil
-- [ ] Istatistikler: bug vs feature vs other dagilimi, gunluk/haftalik grafik
-- [ ] API endpoint'leri:
-  - [ ] `list_feedbacks` — admin: tum feedback'leri listele (pagination + filter)
-  - [ ] `update_feedback_status` — admin: durum degistir
-  - [ ] `add_feedback_note` — admin: not ekle
-  - [ ] `delete_feedback` — super_admin: kalici silme
-  - [ ] `get_feedback_stats` — admin: istatistikler
+- [x] Admin Dashboard'a "Geri Bildirimler" sekme/sayfa ekle
+- [x] Feedback listesi: tarih, tip, kullanici, durum ile filtrelenebilir tablo
+- [x] Durum degistirme: pending -> reviewing -> resolved / dismissed
+- [x] Admin notu ekleme (adminNote alani)
+- [x] Toplu islem: secili feedback'leri arsivle / sil
+- [x] Istatistikler: bug vs feature vs other dagilimi, gunluk/haftalik grafik
+- [x] API endpoint'leri:
+  - [x] `list_feedbacks` — admin: tum feedback'leri listele (pagination + filter)
+  - [x] `update_feedback_status` — admin: durum degistir
+  - [x] `add_feedback_note` — admin: not ekle
+  - [x] `delete_feedback` — super_admin: kalici silme
+  - [x] `get_feedback_stats` — admin: istatistikler
 
 ### 14.4 Feedback Seed Data
 
@@ -4105,9 +4105,9 @@ await prisma.feedback.createMany({
 });
 ```
 
-- [ ] 4 ornek feedback seed et (bug, feature, other, anonim)
-- [ ] Farkli durumlar: pending, reviewing, resolved
-- [ ] Debug context ornekleri
+- [x] 4 ornek feedback seed et (bug, feature, other, anonim)
+- [x] Farkli durumlar: pending, reviewing, resolved
+- [x] Debug context ornekleri
 
 ---
 
@@ -4121,28 +4121,28 @@ await prisma.feedback.createMany({
 > **Kaynak:** `src/pages/Pricing.tsx` — 3 tier: STARTER ($0), CREATOR ($29), STUDIO PRO ($69)
 > **Kaynak:** `src/pages/Checkout.tsx` — TL/USD cift para birimi, KDV hesabi, promo code
 
-- [ ] Stripe Dashboard Product ayarlari:
-  - [ ] Product metadata'ya `promtx_plan` ekle (starter/creator/studio_pro)
-  - [ ] Product metadata'ya `monthly_credits` ekle (100/5000/15000)
-  - [ ] Product description Turkce ve Ingilizce
-- [ ] Stripe Tax ayarlari:
-  - [ ] Turkiye KDV (%20) otomatik hesaplama: `automatic_tax: { enabled: true }`
-  - [ ] Tax ID toplama: `tax_id_collection: { enabled: true }` (kurumsal musteriler icin)
-  - [ ] Mevcut `Checkout.tsx`'teki %20 KDV hesabini Stripe'a devret (cift hesaplama onleme)
-- [ ] Stripe Currency ayarlari:
-  - [ ] Primary currency: USD
-  - [ ] Mevcut `Checkout.tsx`'teki TL gosterimi icin: Stripe `currency: 'usd'` + frontend'de exchange rate ile TL goster (mevcut haliyle korunacak)
-  - [ ] Exchange rate API: `open.er-api.com/v6/latest/USD` (mevcut Checkout.tsx'te var)
-- [ ] Stripe Checkout Session olusturma ayarlari:
-  - [ ] `allow_promotion_codes: true` (mevcut — Stripe tarafli promo code)
-  - [ ] `billing_address_collection: 'auto'`
-  - [ ] `customer_email` prefill (mevcut store'daki email)
-  - [ ] `payment_method_types: ['card']` (Turkiye icin sadece kart)
-  - [ ] `locale: 'tr'` (Turkce checkout deneyimi)
-- [ ] Stripe Checkout branding:
-  - [ ] Logo yukle (Promtx logo)
-  - [ ] Brand color ayarla
-  - [ ] Stripe Dashboard -> Settings -> Branding
+- [x] Stripe Dashboard Product ayarlari:
+  - [x] Product metadata'ya `promtx_plan` ekle (starter/creator/studio_pro)
+  - [x] Product metadata'ya `monthly_credits` ekle (100/5000/15000)
+  - [x] Product description Turkce ve Ingilizce
+- [x] Stripe Tax ayarlari:
+  - [x] Turkiye KDV (%20) otomatik hesaplama: `automatic_tax: { enabled: true }`
+  - [x] Tax ID toplama: `tax_id_collection: { enabled: true }` (kurumsal musteriler icin)
+  - [x] Mevcut `Checkout.tsx`'teki %20 KDV hesabini Stripe'a devret (cift hesaplama onleme)
+- [x] Stripe Currency ayarlari:
+  - [x] Primary currency: USD
+  - [x] Mevcut `Checkout.tsx`'teki TL gosterimi icin: Stripe `currency: 'usd'` + frontend'de exchange rate ile TL goster (mevcut haliyle korunacak)
+  - [x] Exchange rate API: `open.er-api.com/v6/latest/USD` (mevcut Checkout.tsx'te var)
+- [x] Stripe Checkout Session olusturma ayarlari:
+  - [x] `allow_promotion_codes: true` (mevcut — Stripe tarafli promo code)
+  - [x] `billing_address_collection: 'auto'`
+  - [x] `customer_email` prefill (mevcut store'daki email)
+  - [x] `payment_method_types: ['card']` (Turkiye icin sadece kart)
+  - [x] `locale: 'tr'` (Turkce checkout deneyimi)
+- [x] Stripe Checkout branding:
+  - [x] Logo yukle (Promtx logo)
+  - [x] Brand color ayarla
+  - [x] Stripe Dashboard -> Settings -> Branding
 
 ### 15.2 Tek Seferlik Kredi Yukleme (Top-Up) — Mevcut Sistem Korunacak
 
@@ -4158,73 +4158,69 @@ await prisma.feedback.createMany({
 | Buyuk | 5000 | $59.99 | `price_topup_5000` |
 | Mega | 15000 | $149.99 | `price_topup_15000` |
 
-- [ ] Stripe'da one-time Price'lar olustur (`type: 'one_time'`)
-- [ ] `create_topup_session` API endpoint'i: mevcut `create_checkout_session` uzerine kurulacak
-- [ ] Top-up basarili olunca: wallet'a kredi ekle + ledger entry (TransactionReason::TopUp)
-- [ ] Top-up receipt PDF olustur (mevcut `generate_receipt` fonksiyonu)
-- [ ] Checkout sayfasinda top-up paket secimi bilesen'i:
-  - [ ] `/checkout/topup` route ekle
-  - [ ] Kredi paketi kartlari (miktar + fiyat + "en populer" badge)
+- [x] Stripe'da one-time Price'lar olustur (`type: 'one_time'`)
+- [x] `create_topup_session` API endpoint'i: mevcut `create_checkout_session` uzerine kurulacak
+- [x] Top-up basarili olunca: wallet'a kredi ekle + ledger entry (TransactionReason::TopUp)
+- [x] Top-up receipt PDF olustur (mevcut `generate_receipt` fonksiyonu)
+- [x] Checkout sayfasinda top-up paket secimi bilesen'i:
+  - [x] `/checkout/topup` route ekle
+  - [x] Kredi paketi kartlari (miktar + fiyat + "en populer" badge)
 
 ### 15.3 Stripe Promo Code Entegrasyonu
 
 > **Mevcut:** `validate_promo_code()` — hardcoded 3 kod: PROMTX20, LAUNCH50, WELCOME10
 > **Hedef:** Stripe Coupon/Promotion Code + DB PromoCode tablosu senkronizasyonu
 
-- [ ] Stripe Dashboard'da Coupon'lar olustur:
-  - [ ] `PROMTX20` — %20 indirim (tum planlar)
-  - [ ] `LAUNCH50` — %50 indirim (ilk 3 ay)
-  - [ ] `WELCOME10` — %10 indirim (ilk ay)
-  - [ ] Yeni: `ANNUAL25` — %25 indirim (sadece yillik planlar)
-- [ ] Stripe Promotion Code'lari Coupon'lara bagla
-- [ ] Mevcut `validate_promo_code()` fonksiyonunu guncelle:
-  - [ ] Once DB'den kontrol et (PromoCode tablosu)
-  - [ ] DB'de yoksa Stripe API'den kontrol et: `GET /v1/promotion_codes?code=XXX`
-  - [ ] Gecerlilik kontrol: expiry, max_uses, min_purchase
-- [ ] Checkout'ta promo code uygulamasi:
-  - [ ] Abonelik: `subscription_data.discounts` ile Stripe tarafli indirim
-  - [ ] Top-up: `discounts` ile Stripe tarafli indirim
-  - [ ] Mevcut frontend promo code input'u korunacak (`Checkout.tsx` line 66-74)
+- [x] Stripe Dashboard'da Coupon'lar olustur:
+  - [x] `PROMTX20` — %20 indirim (tum planlar)
+  - [x] `LAUNCH50` — %50 indirim (ilk 3 ay)
+  - [x] `WELCOME10` — %10 indirim (ilk ay)
+  - [x] Yeni: `ANNUAL25` — %25 indirim (sadece yillik planlar)
+- [x] Stripe Promotion Code'lari Coupon'lara bagla
+- [x] Mevcut `validate_promo_code()` fonksiyonunu guncelle:
+  - [x] Once DB'den kontrol et (PromoCode tablosu)
+  - [x] DB'de yoksa Stripe API'den kontrol et: `GET /v1/promotion_codes?code=XXX`
+  - [x] Gecerlilik kontrol: expiry, max_uses, min_purchase
+- [x] Checkout'ta promo code uygulamasi:
+  - [x] Abonelik: `subscription_data.discounts` ile Stripe tarafli indirim
+  - [x] Top-up: `discounts` ile Stripe tarafli indirim
+  - [x] Mevcut frontend promo code input'u korunacak (`Checkout.tsx` line 66-74)
 
 ### 15.4 Stripe Fatura ve Receipt Yonetimi
 
 > **Mevcut:** `generate_receipt()` — jsPDF ile PDF olusturma (calisiyor)
 
-- [ ] Stripe Invoice ayarlari:
-  - [ ] Otomatik fatura olusturma: abonelik odemeleri icin
-  - [ ] Fatura numarasi formati: `PROMTX-2026-XXXX`
-  - [ ] Fatura PDF'i Stripe'dan indirilebilir (Customer Portal)
-- [ ] Mevcut `generate_receipt()` ile Stripe Invoice senkronizasyonu:
-  - [ ] Stripe invoice URL'ini Receipt tablosunda sakla
-  - [ ] Hem Stripe faturasi hem Promtx receipt PDF'i olustur
-- [ ] Receipt'lari Settings sayfasinda listele:
-  - [ ] Tarih, tutar, durum, PDF indirme butonu
-  - [ ] Stripe Customer Portal'dan da erisilebilir
+- [x] Stripe Invoice ayarlari:
+  - [x] Otomatik fatura olusturma: abonelik odemeleri icin
+  - [x] Fatura numarasi formati: `PROMTX-2026-XXXX`
+  - [x] Fatura PDF'i Stripe'dan indirilebilir (Customer Portal)
+- [x] Mevcut `generate_receipt()` ile Stripe Invoice senkronizasyonu:
+  - [x] Stripe invoice URL'ini Receipt tablosunda sakla
+  - [x] Hem Stripe faturasi hem Promtx receipt PDF'i olustur
+- [x] Receipt'lari Settings sayfasinda listele:
+  - [x] Tarih, tutar, durum, PDF indirme butonu
+  - [x] Stripe Customer Portal'dan da erisilebilir
 
 ### 15.5 Stripe Guvenlik
-
-- [ ] Webhook imza dogrulamasi: `stripe.webhooks.constructEvent()` (mevcut HMAC var)
-- [ ] Idempotency: StripeEvent tablosunda event.id ile tekrar kontrol (BOLUM 9B.9'da tanimli)
-- [ ] Stripe API key rotasyonu proseduru belgele
-- [ ] PCI DSS uyumluluk: kart bilgileri ASLA Promtx sunucularinda saklanmaz (Stripe Elements kullan)
-- [ ] Stripe Radar (fraud detection) aktif et
-- [ ] Test/Live mode gecis kontrol listesi:
-  - [ ] Tum `sk_test_` -> `sk_live_` degisimi
-  - [ ] Tum `pk_test_` -> `pk_live_` degisimi
-  - [ ] Webhook secret guncelleme
-  - [ ] Product/Price ID'lerin live ortamda yeniden olusturulmasi
-  - [ ] Customer Portal live URL
+- [x] Webhook imza dogrulamasi: `stripe.webhooks.constructEvent()` (mevcut HMAC var)
+- [x] Idempotency: StripeEvent tablosunda event.id ile tekrar kontrol (BOLUM 9B.9'da tanimli)
+- [x] Stripe API key rotasyonu proseduru belgele
+- [x] PCI DSS uyumluluk: kart bilgileri ASLA Promtx sunucularinda saklanmaz (Stripe Elements kullan)
+- [x] Stripe Radar (fraud detection) aktif et
+- [x] Test/Live mode gecis kontrol listesi:
+  - [x] Tum `sk_test_` -> `sk_live_` degisimi
+  - [x] Tum `pk_test_` -> `pk_live_` degisimi
+  - [x] Webhook secret guncelleme
+  - [x] Product/Price ID'lerin live ortamda yeniden olusturulmasi
+  - [x] Customer Portal live URL
 
 ### 15.6 Mevcut Checkout.tsx Uyumluluk Kontrol Listesi
-
-> **Kaynak:** `src/pages/Checkout.tsx` — TL/USD, exchange rate, promo code, KDV
-
-- [ ] Mevcut exchange rate API (`open.er-api.com`) korunacak — sadece gorsel amaçli TL gosterimi
-- [ ] Mevcut promo code input'u korunacak — backend validation ile calisacak
-- [ ] Mevcut KDV (%20) hesabi: Stripe Tax aktif edilince frontend'den kaldirilacak veya sadece preview olarak kalacak
-- [ ] `handlePayment` fonksiyonu: `POST /api/billing/checkout` -> Stripe URL -> `window.location.href` ile yonlendir
-- [ ] Success callback: `/checkout/success` route'u
-- [ ] Cancel callback: `/checkout/cancel` route'u
+- [x] Mevcut exchange rate API (`open.er-api.com`) korunacak — sadece gorsel amaçli TL gosterimi
+- [x] Mevcut promo code input'u korunacak — backend validation ile calisacak
+- [x] Mevcut KDV (%20) hesabi: Stripe Tax aktif edilince frontend'den kaldirilacak veya sadece preview olarak kalacak
+- [x] `handlePayment` fonksiyonu: `POST /api/billing/checkout` -> Stripe URL -> `window.location.href` ile yonlendir
+- [x] Success callback: `/checkout/success` route'u
+- [x] Cancel callback: `/checkout/cancel` route'u
 
 ---
 

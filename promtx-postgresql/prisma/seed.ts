@@ -948,7 +948,7 @@ async function main() {
         type: 'bug',
         message: 'Image Studio\'da 16:9 aspect ratio sectigimde cikan gorsel 1:1 oluyor. Chrome 124, Windows 11.',
         status: 'reviewing',
-        debugContext: { studio: 'image', promptType: 'detailed', viewport: '1920x1080' },
+        debugContext: { studio: 'image', promptType: 'detailed', viewport: '1920x1080', os: 'Windows 11' },
         createdAt: new Date('2026-04-20T14:30:00Z'),
       },
       {
@@ -956,7 +956,7 @@ async function main() {
         type: 'feature',
         message: 'Video Studio icin daha fazla kamera acisi secenegi gelse harika olurdu.',
         status: 'pending',
-        debugContext: { studio: 'video', viewport: '2560x1440' },
+        debugContext: { studio: 'video', viewport: '2560x1440', batteryLevel: 0.85 },
         createdAt: new Date('2026-04-22T10:15:00Z'),
       },
       {
@@ -965,8 +965,17 @@ async function main() {
         message: 'Arayuz cok hizli ve kullanisli, tebrikler.',
         status: 'resolved',
         adminNote: 'Kullaniciya tesekkur maili atildi.',
-        debugContext: { studio: 'home', viewport: '1440x900' },
+        debugContext: { studio: 'home', viewport: '1440x900', isRetina: true },
         createdAt: new Date('2026-04-25T18:00:00Z'),
+      },
+      {
+        userId: null,
+        type: 'bug',
+        message: 'Pricing sayfasindaki countdown timer bazen negatif sayi gosteriyor. Tarih gectiginde sifirda kalmali.',
+        status: 'pending',
+        debugContext: { viewport: '375x812', path: '/pricing', isMobile: true },
+        ipAddress: '192.168.1.100',
+        createdAt: new Date('2026-04-24T20:00:00Z'),
       }
     ] as any
   });
