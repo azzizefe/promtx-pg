@@ -118,3 +118,712 @@ enum TransactionReason {
   Refund
   Subscription
 }
+
+enum FeedbackType {
+  bug
+  feature
+  other
+}
+
+enum FeedbackStatus {
+  pending
+  reviewing
+  resolved
+  dismissed
+  archived
+}
+
+model User {
+  id               String    @id @default(uuid())
+  email            String    @unique @db.VarChar(255)
+  displayName      String?   @map("display_name") @db.VarChar(255)
+  passwordHash     String?   @map("password_hash")
+  role             UserRole  @default(Free)
+  isFrozen         Boolean   @default(false) @map("is_frozen")
+  isEmailVerified  Boolean   @default(false) @map("is_email_verified")
+  avatarUrl        String?   @map("avatar_url") @db.VarChar(1024)
+  locale           String    @default("tr") @db.VarChar(10)
+  timezone         String    @default("Europe/Istanbul") @db.VarChar(50)
+  lastLoginAt      DateTime? @map("last_login_at")
+  loginCount       Int       @default(0) @map("login_count")
+  failedLoginCount Int       @default(0) @map("failed_login_count")
+  lockedUntil      DateTime? @map("locked_until")
+  totpSecret       String?   @map("totp_secret")
+  totpEnabled      Boolean   @default(false) @map("totp_enabled")
+  metadata         Json      @default("{}")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  accounts          Account[]
+  sessions          Session[]
+  refreshTokens     RefreshToken[]
+  apiKeys           ApiKey[]
+  notifications     Notification[]
+  conversations     Conversation[]
+  promptHistory     PromptHistory[]
+  imageGenerations  ImageGeneration[]
+  dnaVault          DnaVault[]
+  promptTemplates   PromptTemplate[]
+  wallet            Wallet?
+  ledgerEntries     LedgerEntry[]
+  receipts          Receipt[]
+  fileUploads       FileUpload[]
+  tokenUsage        TokenUsage[]
+  workspacesOwned   Workspace[]       @relation("WorkspaceOwner")
+  workspaceMembers  WorkspaceMember[]
+  folders           Folder[]
+  referralsMade     Referral[]        @relation("Referrer")
+  referralsReceived Referral[]        @relation("Referred")
+  feedbacks         Feedback[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String       @id @default(uuid())
+  userId            String       @map("user_id")
+  provider          AuthProvider
+  providerAccountId String       @map("provider_account_id")
+  accessToken       String?      @map("access_token")
+  refreshToken      String?      @map("refresh_token")
+  expiresAt         DateTime?    @map("expires_at")
+  tokenType         String?      @map("token_type")
+  scope             String?
+  idToken           String?      @map("id_token")
+  providerEmail     String?      @map("provider_email") @db.VarChar(255)
+  providerName      String?      @map("provider_name") @db.VarChar(255)
+  providerAvatar    String?      @map("provider_avatar") @db.VarChar(1024)
+  metadata          Json         @default("{}")
+  createdAt         DateTime     @default(now()) @map("created_at")
+  updatedAt         DateTime     @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@index([provider, providerEmail])
+  @@map("accounts")
+}
+
+model OAuthState {
+  id           String       @id @default(uuid())
+  state        String       @unique @db.VarChar(128)
+  codeVerifier String?      @map("code_verifier") @db.VarChar(128)
+  nonce        String?      @db.VarChar(128)
+  provider     AuthProvider
+  redirectUri  String       @map("redirect_uri") @db.VarChar(512)
+  clientType   String       @default("web") @map("client_type") @db.VarChar(20)
+  expiresAt    DateTime     @map("expires_at")
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  @@index([state])
+  @@index([expiresAt])
+  @@map("oauth_states")
+}
+
+model OAuthProviderConfig {
+  id           String       @id @default(uuid())
+  provider     AuthProvider @unique
+  clientId     String       @map("client_id") @db.VarChar(512)
+  clientSecret String       @map("client_secret") @db.VarChar(512)
+  tenantId     String?      @map("tenant_id") @db.VarChar(255)
+  teamId       String?      @map("team_id") @db.VarChar(20)
+  keyId        String?      @map("key_id") @db.VarChar(20)
+  privateKey   String?      @map("private_key")
+  scopes       String[]     @default([])
+  isActive     Boolean      @default(true) @map("is_active")
+  metadata     Json         @default("{}")
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+
+  @@map("oauth_provider_configs")
+}
+
+model Session {
+  id                String        @id @default(uuid())
+  userId            String        @map("user_id")
+  tokenHash         String        @map("token_hash")
+  status            SessionStatus @default(active)
+  ipAddress         String?       @map("ip_address") @db.VarChar(45)
+  userAgent         String?       @map("user_agent")
+  deviceFingerprint String?       @map("device_fingerprint") @db.VarChar(255)
+  expiresAt         DateTime      @map("expires_at")
+  lastActivityAt    DateTime      @default(now()) @map("last_activity_at")
+  createdAt         DateTime      @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([tokenHash])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+model RefreshToken {
+  id            String    @id @default(uuid())
+  userId        String    @map("user_id")
+  tokenHash     String    @unique @map("token_hash")
+  parentTokenId String?   @map("parent_token_id")
+  sessionId     String?   @map("session_id")
+  isRevoked     Boolean   @default(false) @map("is_revoked")
+  revokedAt     DateTime? @map("revoked_at")
+  revokedReason String?   @map("revoked_reason") @db.VarChar(255)
+  expiresAt     DateTime  @map("expires_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model ApiKey {
+  id              String    @id @default(uuid())
+  userId          String    @map("user_id")
+  name            String    @db.VarChar(255)
+  keyPrefix       String    @map("key_prefix") @db.VarChar(8)
+  keyHash         String    @unique @map("key_hash")
+  scopes          String[]  @default([])
+  rateLimitPerMin Int       @default(60) @map("rate_limit_per_minute")
+  expiresAt       DateTime? @map("expires_at")
+  lastUsedAt      DateTime? @map("last_used_at")
+  lastUsedIp      String?   @map("last_used_ip") @db.VarChar(45)
+  isActive        Boolean   @default(true) @map("is_active")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("api_keys")
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String           @map("user_id")
+  type      NotificationType
+  title     String           @db.VarChar(255)
+  body      String?
+  data      Json             @default("{}")
+  isRead    Boolean          @default(false) @map("is_read")
+  readAt    DateTime?        @map("read_at")
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("notifications")
+}
+
+model Conversation {
+  id            String      @id @default(uuid())
+  userId        String      @map("user_id")
+  workspaceId   String?     @map("workspace_id")
+  folderId      String?     @map("folder_id")
+  title         String      @db.VarChar(512)
+  studioType    StudioType? @map("studio_type")
+  isArchived    Boolean     @default(false) @map("is_archived")
+  isPinned      Boolean     @default(false) @map("is_pinned")
+  isFavorite    Boolean     @default(false) @map("is_favorite")
+  messageCount  Int         @default(0) @map("message_count")
+  lastMessageAt DateTime?   @map("last_message_at")
+  metadata      Json        @default("{}")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace Workspace? @relation(fields: [workspaceId], references: [id])
+  folder    Folder?    @relation(fields: [folderId], references: [id])
+  messages  Message[]
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([workspaceId])
+  @@index([folderId])
+  @@map("conversations")
+}
+
+model Message {
+  id               String      @id @default(uuid())
+  conversationId   String      @map("conversation_id")
+  parentId         String?     @map("parent_id")
+  role             String      @db.VarChar(20)
+  content          String
+  modelId          String?     @map("model_id") @db.VarChar(100)
+  provider         AIProvider?
+  tokenCountInput  Int         @default(0) @map("token_count_input")
+  tokenCountOutput Int         @default(0) @map("token_count_output")
+  durationMs       Int?        @map("duration_ms")
+  isEdited         Boolean     @default(false) @map("is_edited")
+  editHistory      Json        @default("[]") @map("edit_history")
+  metadata         Json        @default("{}")
+  createdAt        DateTime    @default(now()) @map("created_at")
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  parent       Message?     @relation("MessageThread", fields: [parentId], references: [id])
+  replies      Message[]    @relation("MessageThread")
+
+  @@index([conversationId, createdAt])
+  @@index([parentId])
+  @@map("messages")
+}
+
+model PromptHistory {
+  id              String      @id @default(uuid())
+  userId          String      @map("user_id")
+  studioType      StudioType  @map("studio_type")
+  promptText      String      @map("prompt_text")
+  generatedOutput String?     @map("generated_output")
+  modelId         String?     @map("model_id") @db.VarChar(100)
+  provider        AIProvider?
+  parameters      Json        @default("{}")
+  qualityScore    Float?      @map("quality_score")
+  isFavorite      Boolean     @default(false) @map("is_favorite")
+  tags            String[]    @default([])
+  createdAt       DateTime    @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, studioType, createdAt(sort: Desc)])
+  @@map("prompt_history")
+}
+
+model ImageGeneration {
+  id             String      @id @default(uuid())
+  userId         String      @map("user_id")
+  prompt         String
+  negativePrompt String?     @map("negative_prompt")
+  resultUrl      String      @map("result_url")
+  thumbnailUrl   String?     @map("thumbnail_url")
+  s3Key          String?     @map("s3_key") @db.VarChar(512)
+  sizeBytes      BigInt      @default(0) @map("size_bytes")
+  width          Int?
+  height         Int?
+  aspectRatio    String      @default("1:1") @map("aspect_ratio") @db.VarChar(10)
+  modelId        String?     @map("model_id") @db.VarChar(100)
+  provider       AIProvider?
+  seed           BigInt?
+  steps          Int?
+  cfgScale       Float?      @map("cfg_scale")
+  parentImageId  String?     @map("parent_image_id")
+  status         ImageStatus @default(completed)
+  isPublic       Boolean     @default(false) @map("is_public")
+  isNsfw         Boolean     @default(false) @map("is_nsfw")
+  nsfwScore      Float?      @map("nsfw_score")
+  likesCount     Int         @default(0) @map("likes_count")
+  metadata       Json        @default("{}")
+  createdAt      DateTime    @default(now()) @map("created_at")
+
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentImage ImageGeneration?  @relation("ImageVariation", fields: [parentImageId], references: [id])
+  variations  ImageGeneration[] @relation("ImageVariation")
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("image_generations")
+}
+
+model DnaVault {
+  id          String      @id @default(uuid())
+  userId      String      @map("user_id")
+  name        String      @db.VarChar(255)
+  description String?
+  dnaJson     Json        @map("dna_json")
+  studioType  StudioType? @map("studio_type")
+  version     Int         @default(1)
+  isDefault   Boolean     @default(false) @map("is_default")
+  isShared    Boolean     @default(false) @map("is_shared")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, name])
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("dna_vault")
+}
+
+model PromptTemplate {
+  id           String     @id @default(uuid())
+  userId       String?    @map("user_id")
+  name         String     @db.VarChar(255)
+  description  String?
+  templateText String     @map("template_text")
+  studioType   StudioType @map("studio_type")
+  variables    Json       @default("[]")
+  category     String?    @db.VarChar(100)
+  isSystem     Boolean    @default(false) @map("is_system")
+  isPublic     Boolean    @default(false) @map("is_public")
+  usageCount   Int        @default(0) @map("usage_count")
+  ratingAvg    Float      @default(0) @map("rating_avg")
+  ratingCount  Int        @default(0) @map("rating_count")
+  tags         String[]   @default([])
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("prompt_templates")
+}
+
+model Wallet {
+  userId          String   @id @map("user_id")
+  credits         Decimal  @default(0) @db.Decimal(15, 4)
+  lifetimeCredits Decimal  @default(0) @map("lifetime_credits") @db.Decimal(15, 4)
+  currency        String   @default("USD") @db.VarChar(3)
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("wallets")
+}
+
+model LedgerEntry {
+  id            String     @id @default(uuid())
+  userId        String     @map("user_id")
+  type          LedgerType
+  amount        Decimal    @db.Decimal(15, 4)
+  balanceAfter  Decimal    @map("balance_after") @db.Decimal(15, 4)
+  description   String?
+  referenceId   String?    @map("reference_id") @db.VarChar(255)
+  referenceType String?    @map("reference_type") @db.VarChar(50)
+  metadata      Json       @default("{}")
+  createdAt     DateTime   @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([referenceId, referenceType])
+  @@map("ledger_entries")
+}
+
+model StripeEvent {
+  id           String        @id @db.VarChar(255)
+  eventType    String        @map("event_type") @db.VarChar(100)
+  userId       String?       @map("user_id")
+  data         Json
+  status       PaymentStatus @default(pending)
+  processedAt  DateTime?     @map("processed_at")
+  errorMessage String?       @map("error_message")
+  retryCount   Int           @default(0) @map("retry_count")
+  createdAt    DateTime      @default(now()) @map("created_at")
+
+  @@index([eventType, createdAt(sort: Desc)])
+  @@map("stripe_events")
+}
+
+model IapTransaction {
+  id                    String        @id @default(uuid())
+  userId                String        @map("user_id")
+  platform              IAPPlatform
+  transactionId         String        @map("transaction_id") @db.VarChar(255)
+  originalTransactionId String        @map("original_transaction_id") @db.VarChar(255)
+  productId             String        @map("product_id") @db.VarChar(255)
+  amount                Decimal?      @db.Decimal(15, 4)
+  currency              String?       @db.VarChar(3)
+  status                PaymentStatus @default(pending)
+  receiptData           String?       @map("receipt_data")
+  purchasedAt           DateTime      @default(now()) @map("purchased_at")
+  expiresAt             DateTime?     @map("expires_at")
+  createdAt             DateTime      @default(now()) @map("created_at")
+
+  @@unique([platform, transactionId])
+  @@index([userId, purchasedAt(sort: Desc)])
+  @@map("iap_transactions")
+}
+
+model Receipt {
+  id             String        @id @default(uuid())
+  userId         String        @map("user_id")
+  orderId        String        @unique @map("order_id") @db.VarChar(255)
+  amount         Decimal       @db.Decimal(15, 4)
+  currency       String        @default("USD") @db.VarChar(3)
+  taxAmount      Decimal       @default(0) @map("tax_amount") @db.Decimal(15, 4)
+  status         PaymentStatus
+  pdfUrl         String?       @map("pdf_url")
+  s3Key          String?       @map("s3_key") @db.VarChar(512)
+  invoiceNumber  String?       @unique @map("invoice_number") @db.VarChar(50)
+  billingAddress Json?         @map("billing_address")
+  createdAt      DateTime      @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("receipts")
+}
+
+model RecurringAllowance {
+  userId        String    @id @map("user_id")
+  amount        Decimal   @db.Decimal(15, 4)
+  intervalDays  Int       @default(30) @map("interval_days")
+  lastGrantedAt DateTime  @default(now()) @map("last_granted_at")
+  nextGrantAt   DateTime? @map("next_grant_at")
+  isActive      Boolean   @default(true) @map("is_active")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  @@map("recurring_allowances")
+}
+
+model PromoCode {
+  id              String    @id @default(uuid())
+  code            String    @unique @db.VarChar(50)
+  discountPercent Int?      @map("discount_percent")
+  discountAmount  Decimal?  @map("discount_amount") @db.Decimal(15, 4)
+  maxUses         Int?      @map("max_uses")
+  currentUses     Int       @default(0) @map("current_uses")
+  minPurchase     Decimal   @default(0) @map("min_purchase") @db.Decimal(15, 4)
+  validFrom       DateTime  @default(now()) @map("valid_from")
+  validUntil      DateTime? @map("valid_until")
+  isActive        Boolean   @default(true) @map("is_active")
+  createdBy       String?   @map("created_by")
+  metadata        Json      @default("{}")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  usages PromoCodeUsage[]
+
+  @@map("promo_codes")
+}
+
+model PromoCodeUsage {
+  id          String   @id @default(uuid())
+  promoCodeId String   @map("promo_code_id")
+  userId      String   @map("user_id")
+  orderId     String?  @map("order_id") @db.VarChar(255)
+  usedAt      DateTime @default(now()) @map("used_at")
+
+  promoCode PromoCode @relation(fields: [promoCodeId], references: [id])
+
+  @@unique([promoCodeId, userId])
+  @@map("promo_code_usages")
+}
+
+model Workspace {
+  id          String   @id @default(uuid())
+  name        String   @db.VarChar(255)
+  slug        String?  @unique @db.VarChar(255)
+  ownerId     String   @map("owner_id")
+  description String?
+  avatarUrl   String?  @map("avatar_url") @db.VarChar(1024)
+  settings    Json     @default("{}")
+  maxMembers  Int      @default(10) @map("max_members")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  owner         User                  @relation("WorkspaceOwner", fields: [ownerId], references: [id])
+  members       WorkspaceMember[]
+  invitations   WorkspaceInvitation[]
+  conversations Conversation[]
+  folders       Folder[]
+
+  @@index([ownerId])
+  @@map("workspaces")
+}
+
+model WorkspaceMember {
+  workspaceId String        @map("workspace_id")
+  userId      String        @map("user_id")
+  role        WorkspaceRole @default(Member)
+  permissions Json          @default("{}")
+  invitedBy   String?       @map("invited_by")
+  joinedAt    DateTime      @default(now()) @map("joined_at")
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([workspaceId, userId])
+  @@index([userId])
+  @@map("workspace_members")
+}
+
+model WorkspaceInvitation {
+  id          String        @id @default(uuid())
+  workspaceId String        @map("workspace_id")
+  email       String        @db.VarChar(255)
+  role        WorkspaceRole @default(Member)
+  invitedBy   String        @map("invited_by")
+  tokenHash   String        @unique @map("token_hash")
+  status      String        @default("pending") @db.VarChar(20)
+  expiresAt   DateTime      @map("expires_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@map("workspace_invitations")
+}
+
+model Folder {
+  id          String   @id @default(uuid())
+  workspaceId String?  @map("workspace_id")
+  userId      String   @map("user_id")
+  name        String   @db.VarChar(255)
+  parentId    String?  @map("parent_id")
+  sortOrder   Int      @default(0) @map("sort_order")
+  color       String?  @db.VarChar(7)
+  icon        String?  @db.VarChar(50)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  workspace     Workspace?     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent        Folder?        @relation("FolderHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children      Folder[]       @relation("FolderHierarchy")
+  conversations Conversation[]
+
+  @@index([userId])
+  @@index([parentId])
+  @@map("folders")
+}
+
+model AuditLog {
+  id           String   @id @default(uuid())
+  userId       String?  @map("user_id")
+  action       String   @db.VarChar(100)
+  resourceType String?  @map("resource_type") @db.VarChar(50)
+  resourceId   String?  @map("resource_id") @db.VarChar(255)
+  oldValues    Json?    @map("old_values")
+  newValues    Json?    @map("new_values")
+  ipAddress    String?  @map("ip_address") @db.VarChar(45)
+  userAgent    String?  @map("user_agent")
+  sessionId    String?  @map("session_id")
+  level        LogLevel @default(info)
+  metadata     Json     @default("{}")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([action, createdAt(sort: Desc)])
+  @@index([resourceType, resourceId])
+  @@map("audit_logs")
+}
+
+model SecurityEvent {
+  id         String    @id @default(uuid())
+  eventType  String    @map("event_type") @db.VarChar(50)
+  severity   LogLevel  @default(warn)
+  userId     String?   @map("user_id")
+  ipAddress  String    @map("ip_address") @db.VarChar(45)
+  userAgent  String?   @map("user_agent")
+  details    Json      @default("{}")
+  isResolved Boolean   @default(false) @map("is_resolved")
+  resolvedBy String?   @map("resolved_by")
+  resolvedAt DateTime? @map("resolved_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@index([ipAddress, createdAt(sort: Desc)])
+  @@index([eventType, createdAt(sort: Desc)])
+  @@map("security_events")
+}
+
+model AppLog {
+  id        String   @id @default(uuid())
+  level     LogLevel
+  action    String   @db.VarChar(255)
+  message   String?
+  context   Json     @default("{}")
+  source    String?  @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([level, createdAt(sort: Desc)])
+  @@map("app_logs")
+}
+
+model SecurePayload {
+  key              String   @id @db.VarChar(255)
+  payload          Bytes
+  encryptionMethod String   @default("aes-256-gcm") @map("encryption_method") @db.VarChar(50)
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("secure_payloads")
+}
+
+model FileUpload {
+  id               String   @id @default(uuid())
+  userId           String   @map("user_id")
+  filename         String   @db.VarChar(255)
+  originalFilename String   @map("original_filename") @db.VarChar(255)
+  mimeType         String   @map("mime_type") @db.VarChar(100)
+  sizeBytes        BigInt   @map("size_bytes")
+  s3Bucket         String?  @map("s3_bucket") @db.VarChar(100)
+  s3Key            String   @map("s3_key") @db.VarChar(512)
+  cdnUrl           String?  @map("cdn_url")
+  checksumSha256   String?  @map("checksum_sha256") @db.VarChar(64)
+  isPublic         Boolean  @default(false) @map("is_public")
+  metadata         Json     @default("{}")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([s3Key])
+  @@map("file_uploads")
+}
+
+model TokenUsage {
+  id             String      @id @default(uuid())
+  userId         String      @map("user_id")
+  modelId        String      @map("model_id") @db.VarChar(100)
+  provider       AIProvider
+  studioType     StudioType? @map("studio_type")
+  inputTokens    Int         @default(0) @map("input_tokens")
+  outputTokens   Int         @default(0) @map("output_tokens")
+  costUsd        Decimal     @default(0) @map("cost_usd") @db.Decimal(10, 6)
+  conversationId String?     @map("conversation_id")
+  promptId       String?     @map("prompt_id")
+  latencyMs      Int?        @map("latency_ms")
+  isCached       Boolean     @default(false) @map("is_cached")
+  createdAt      DateTime    @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([modelId, createdAt(sort: Desc)])
+  @@map("token_usage")
+}
+
+model Referral {
+  id            String    @id @default(uuid())
+  referrerId    String    @map("referrer_id")
+  referredId    String    @map("referred_id")
+  referralCode  String    @map("referral_code") @db.VarChar(20)
+  rewardCredits Decimal   @default(0) @map("reward_credits") @db.Decimal(15, 4)
+  status        String    @default("pending") @db.VarChar(20)
+  completedAt   DateTime? @map("completed_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  referrer User @relation("Referrer", fields: [referrerId], references: [id])
+  referred User @relation("Referred", fields: [referredId], references: [id])
+
+  @@unique([referrerId, referredId])
+  @@index([referralCode])
+  @@map("referrals")
+}
+
+model PricingMatrix {
+  modelId       String      @id @map("model_id") @db.VarChar(100)
+  provider      AIProvider?
+  basePrice1m   Decimal     @map("base_price_1m") @db.Decimal(15, 6)
+  outputPrice1m Decimal?    @map("output_price_1m") @db.Decimal(15, 6)
+  isActive      Boolean     @default(true) @map("is_active")
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@map("pricing_matrix")
+}
+
+model Feedback {
+  id           String         @id @default(uuid())
+  userId       String?        @map("user_id")
+  type         FeedbackType   @default(other)
+  message      String         @db.VarChar(5000)
+  status       FeedbackStatus @default(pending)
+  debugContext Json           @default("{}") @map("debug_context")
+  ipAddress    String?        @map("ip_address") @db.VarChar(45)
+  userAgent    String?        @map("user_agent")
+  adminNote    String?        @map("admin_note") @db.VarChar(2000)
+  resolvedBy   String?        @map("resolved_by")
+  resolvedAt   DateTime?      @map("resolved_at")
+  createdAt    DateTime       @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([type, status])
+  @@map("feedbacks")
+}

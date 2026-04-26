@@ -601,12 +601,12 @@ model Notification {
 }
 ```
 
-- [ ] Core modelleri schema.prisma'ya ekle
-- [ ] Account modeli Multi-Provider OAuth icin ZORUNLU (Google, Apple, Microsoft)
-- [ ] OAuthState modeli CSRF + PKCE state yonetimi icin ZORUNLU
-- [ ] OAuthProviderConfig modeli provider yapilandirmasi icin ZORUNLU
-- [ ] `passwordHash` nullable (Google ile kayit olanlarda sifre yok)
-- [ ] `bunx prisma format` ile dogrula
+- [x] Core modelleri schema.prisma'ya ekle
+- [x] Account modeli Multi-Provider OAuth icin ZORUNLU (Google, Apple, Microsoft)
+- [x] OAuthState modeli CSRF + PKCE state yonetimi icin ZORUNLU
+- [x] OAuthProviderConfig modeli provider yapilandirmasi icin ZORUNLU
+- [x] `passwordHash` nullable (Google ile kayit olanlarda sifre yok)
+- [x] `bunx prisma format` ile dogrula
 
 #### Orijinal Proje Referansi (users tablosu)
 > **Referans (orijinal proje):** `promtx/src-tauri/migrations/20260424000000_init.sql`
