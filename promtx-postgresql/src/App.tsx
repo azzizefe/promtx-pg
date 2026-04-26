@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { NotificationManager } from './components/NotificationManager';
 
 // Auth Pages
 import { Login } from './pages/auth/Login';
@@ -41,6 +42,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
         {children}
       </Suspense>
     </main>
+    <NotificationManager />
     <Toaster position="top-right" richColors />
   </div>
 );

@@ -3140,23 +3140,23 @@ const iapProducts = [
 - [x] Settings sayfasina "Bagli Hesaplar" bolumu (BOLUM 4.5.4)
 
 ### 9.5 Yeni Bilesenler
-- [ ] `OAuthButtons` bilesen (Google + Apple + Microsoft — BOLUM 4.5.1)
-- [ ] `OAuthCallback` sayfa bilesen (dinamik provider — BOLUM 4.5.3)
-- [ ] `ConnectedAccounts` bilesen (Settings icin — BOLUM 4.5.4)
-- [ ] Notification bilesenni (real-time, Sonner toast ile entegre)
-- [ ] Pagination bilesenni (gallery, prompt history, admin listeler)
-- [ ] Full-text search bilesen (conversations arama)
-- [ ] API key yonetim sayfasi
-- [ ] Referral kod paylasim bilesen
+- [x] `OAuthButtons` bilesen (Google + Apple + Microsoft — BOLUM 4.5.1)
+- [x] `OAuthCallback` sayfa bilesen (dinamik provider — BOLUM 4.5.3)
+- [x] `ConnectedAccounts` bilesen (Settings icin — BOLUM 4.5.4)
+- [x] Notification bilesenni (real-time, Sonner toast ile entegre)
+- [x] Pagination bilesenni (gallery, prompt history, admin listeler)
+- [x] Full-text search bilesen (conversations arama)
+- [x] API key yonetim sayfasi
+- [x] Referral kod paylasim bilesen
 
 ### 9.6 Zustand Store Guncellemesi (`src/lib/store.ts`)
-- [ ] `PromptHistoryItem` tip guncelleme: `id: string` (UUID formatinda gelecek)
-- [ ] `PromptPreset` tip guncelleme: `id: string` (UUID)
-- [ ] Auth state: `user`, `accessToken`, `refreshToken`, `isAuthenticated`
-- [ ] Wallet state: `credits: number` (Decimal -> number frontend'de)
-- [ ] Notification state: `unreadCount`, `notifications[]`
-- [ ] Studio state guncelleme: 8 studio type enum uyumu
-- [ ] Persistence middleware: IndexedDB (idb) ile uyumlu olmaya devam
+- [x] `PromptHistoryItem` tip guncelleme: `id: string` (UUID formatinda gelecek)
+- [x] `PromptPreset` tip guncelleme: `id: string` (UUID)
+- [x] Auth state: `user`, `accessToken`, `refreshToken`, `isAuthenticated`
+- [x] Wallet state: `credits: number` (Decimal -> number frontend'de)
+- [x] Notification state: `unreadCount`, `notifications[]`
+- [x] Studio state guncelleme: 8 studio type enum uyumu
+- [x] Persistence middleware: IndexedDB (idb) ile uyumlu olmaya devam
 
 ---
 
@@ -3184,7 +3184,7 @@ const iapProducts = [
 
 ### 9B.1 Stripe Product ve Price Tanimlari
 
-- [ ] Stripe Dashboard'da Product'lar olustur:
+- [x] Stripe Dashboard'da Product'lar olustur:
 
 | Product | Stripe Product ID | Aciklama |
 |---------|------------------|----------|
@@ -3192,7 +3192,7 @@ const iapProducts = [
 | Promtx Creator | `prod_creator` | Profesyonel icerik uretimi |
 | Promtx Studio Pro | `prod_studio_pro` | Tam studio erisimi |
 
-- [ ] Stripe Price'lar olustur (recurring):
+- [x] Stripe Price'lar olustur (recurring):
 
 | Price | Product | Tutar | Periyot | Stripe Price ID |
 |-------|---------|-------|---------|-----------------|
@@ -3201,11 +3201,11 @@ const iapProducts = [
 | Studio Pro Aylik | Promtx Studio Pro | $69/ay | monthly | `price_studio_pro_monthly` |
 | Studio Pro Yillik | Promtx Studio Pro | $690/yil (%17 indirim) | yearly | `price_studio_pro_yearly` |
 
-- [ ] Stripe Price ID'leri `.env.docker`'a ekle:
-  - [ ] `STRIPE_PRICE_CREATOR_MONTHLY=price_xxx`
-  - [ ] `STRIPE_PRICE_CREATOR_YEARLY=price_xxx`
-  - [ ] `STRIPE_PRICE_STUDIO_PRO_MONTHLY=price_xxx`
-  - [ ] `STRIPE_PRICE_STUDIO_PRO_YEARLY=price_xxx`
+- [x] Stripe Price ID'leri `.env.docker`'a ekle:
+  - [x] `STRIPE_PRICE_CREATOR_MONTHLY=price_xxx`
+  - [x] `STRIPE_PRICE_CREATOR_YEARLY=price_xxx`
+  - [x] `STRIPE_PRICE_STUDIO_PRO_MONTHLY=price_xxx`
+  - [x] `STRIPE_PRICE_STUDIO_PRO_YEARLY=price_xxx`
 
 ### 9B.2 Prisma Subscription Modelleri
 

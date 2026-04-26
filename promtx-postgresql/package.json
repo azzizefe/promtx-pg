@@ -15,6 +15,7 @@
     "@prisma/client": "6",
     "@react-oauth/google": "^0.13.5",
     "hono": "^4.12.15",
+    "idb-keyval": "^6.2.2",
     "ioredis": "^5.10.1",
     "jose": "^6.2.2",
     "jsonwebtoken": "^9.0.3",

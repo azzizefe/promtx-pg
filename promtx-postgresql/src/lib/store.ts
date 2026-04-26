@@ -1,18 +1,32 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
+import { get, set, del } from 'idb-keyval';
 
-type AuthProvider = 'google' | 'apple' | 'microsoft';
+// IndexedDB storage provider for Zustand
+const idbStorage: StateStorage = {
+  getItem: async (name: string): Promise<string | null> => {
+    return (await get(name)) || null;
+  },
+  setItem: async (name: string, value: string): Promise<void> => {
+    await set(name, value);
+  },
+  removeItem: async (name: string): Promise<void> => {
+    await del(name);
+  },
+};
 
-interface User {
-  id: string;
+export type AuthProvider = 'google' | 'apple' | 'microsoft';
+
+export interface User {
+  id: string; // UUID format
   email: string;
   displayName: string;
   role: string;
   avatarUrl?: string;
 }
 
-interface Notification {
-  id: string;
+export interface Notification {
+  id: string; // UUID format
   type: string;
   title: string;
   body: string;
@@ -105,6 +119,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'promtx-auth-storage',
+      storage: createJSONStorage(() => idbStorage),
       // only persist specific fields
       partialize: (state) => ({
         user: state.user,
@@ -112,6 +127,56 @@ export const useAuthStore = create<AuthState>()(
         refreshToken: state.refreshToken,
         isAuthenticated: state.isAuthenticated,
         linkedProviders: state.linkedProviders,
+      }),
+    }
+  )
+);
+
+// Studio State Types Update
+export type StudioType = 'image' | 'video' | 'cinema' | 'audio' | 'character' | 'fashion' | 'marketing' | 'edit';
+
+export interface PromptHistoryItem {
+  id: string; // UUID format
+  promptText: string;
+  parameters: any;
+  studioType: StudioType;
+  modelId: string;
+  createdAt: string; // ISO 8601
+}
+
+export interface PromptPreset {
+  id: string; // UUID format
+  name: string;
+  description: string;
+  templateText: string;
+  studioType: StudioType;
+  tags: string[];
+}
+
+interface StudioState {
+  currentStudio: StudioType;
+  history: PromptHistoryItem[];
+  presets: PromptPreset[];
+  setCurrentStudio: (studio: StudioType) => void;
+  addHistoryItem: (item: PromptHistoryItem) => void;
+  setPresets: (presets: PromptPreset[]) => void;
+}
+
+export const useStudioStore = create<StudioState>()(
+  persist(
+    (set) => ({
+      currentStudio: 'image',
+      history: [],
+      presets: [],
+      setCurrentStudio: (studio) => set({ currentStudio: studio }),
+      addHistoryItem: (item) => set((state) => ({ history: [item, ...state.history] })),
+      setPresets: (presets) => set({ presets }),
+    }),
+    {
+      name: 'promtx-studio-storage',
+      storage: createJSONStorage(() => idbStorage),
+      partialize: (state) => ({
+        currentStudio: state.currentStudio,
       }),
     }
   )
