@@ -5590,14 +5590,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
 ### 17.6 API Guvenligi
 
-- [ ] CORS: sadece `promtx.ai`, `promtx.vercel.app`, `localhost:1420` izin ver
-- [ ] Tum endpoint'lerde `Content-Type: application/json` kontrolu
-- [ ] SQL injection onleme: Prisma ORM zaten parameterized query kullaniyor
-- [ ] XSS onleme: response'larda HTML encode
-- [ ] CSRF: SameSite cookie + Origin header kontrolu
-- [ ] Helmet headers: `X-Content-Type-Options`, `X-Frame-Options`, `Strict-Transport-Security`
-- [ ] Request body size limiti: 1MB (gorsel yuklemeleri haric)
-- [ ] Sensitive data log'lama: password, token ASLA loglanmaz
+- [x] CORS: sadece `promtx.ai`, `promtx.vercel.app`, `localhost:1420` izin ver
+- [x] Tum endpoint'lerde `Content-Type: application/json` kontrolu
+- [x] SQL injection onleme: Prisma ORM zaten parameterized query kullaniyor
+- [x] XSS onleme: response'larda HTML encode
+- [x] CSRF: SameSite cookie + Origin header kontrolu
+- [x] Helmet headers: `X-Content-Type-Options`, `X-Frame-Options`, `Strict-Transport-Security`
+- [x] Request body size limiti: 1MB (gorsel yuklemeleri haric)
+- [x] Sensitive data log'lama: password, token ASLA loglanmaz
 
 ### 17.7 API Port Haritasi (BOLUM 1 Guncellemesi)
 
@@ -5606,44 +5606,44 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 | Vercel Serverless API | — | Prod | `https://promtx.ai/api/*` (serverless, port yok) |
 | Vercel Dev (local) | 3000 | Dev | `vercel dev` ile lokal test |
 
-- [ ] `vercel dev` komutu ile lokal API testi
-- [ ] BOLUM 1 port tablosuna Vercel dev port ekle
-- [ ] `.env.local` icine `VITE_API_URL=http://localhost:3000` (dev icin)
+- [x] `vercel dev` komutu ile lokal API testi
+- [x] BOLUM 1 port tablosuna Vercel dev port ekle
+- [x] `.env.local` icine `VITE_API_URL=http://localhost:3000` (dev icin)
 
 ### 17.8 API Test Stratejisi
 
-- [ ] Her endpoint icin Vitest unit test yaz (`api/__tests__/`)
-- [ ] Supertest veya `fetch` ile integration test
-- [ ] Test DB: `promtx_test` (BOLUM 2.7'deki test Docker compose)
-- [ ] Mock veriler: Prisma seed'den gelen verilerle test
-- [ ] CI/CD: GitHub Actions'da API testleri calistir (BOLUM 11 ile entegre)
-- [ ] Endpoint test listesi:
-  - [ ] `POST /api/auth/login` — basarili + yanlis sifre + kilitli hesap + frozen
-  - [ ] `POST /api/auth/register` — basarili + duplicate email + zayif sifre
-  - [ ] `GET /api/gallery/public` — pagination + filtre + bos sonuc
-  - [ ] `GET /api/prompt/history` — auth zorunlu + filtre + pagination
-  - [ ] `GET /api/billing/wallet` — auth zorunlu + dogru bakiye
-  - [ ] `POST /api/feedback` — basarili + validasyon hatasi + rate limit
-  - [ ] `GET /api/admin/users` — admin yetkisi zorunlu + pagination
-  - [ ] `POST /api/webhooks/stripe` — imza dogrulama + idempotency
+- [x] Her endpoint icin Vitest unit test yaz (`api/__tests__/`)
+- [x] Supertest veya `fetch` ile integration test
+- [x] Test DB: `promtx_test` (BOLUM 2.7'deki test Docker compose)
+- [x] Mock veriler: Prisma seed'den gelen verilerle test
+- [x] CI/CD: GitHub Actions'da API testleri calistir (BOLUM 11 ile entegre)
+- [x] Endpoint test listesi:
+  - [x] `POST /api/auth/login` — basarili + yanlis sifre + kilitli hesap + frozen
+  - [x] `POST /api/auth/register` — basarili + duplicate email + zayif sifre
+  - [x] `GET /api/gallery/public` — pagination + filtre + bos sonuc
+  - [x] `GET /api/prompt/history` — auth zorunlu + filtre + pagination
+  - [x] `GET /api/billing/wallet` — auth zorunlu + dogru bakiye
+  - [x] `POST /api/feedback` — basarili + validasyon hatasi + rate limit
+  - [x] `GET /api/admin/users` — admin yetkisi zorunlu + pagination
+  - [x] `POST /api/webhooks/stripe` — imza dogrulama + idempotency
 
 ### 17.9 Frontend API Entegrasyonu
 
 > **Referans (orijinal proje):** `promtx/src/lib/api.ts` — `apiInvoke()` fonksiyonu
 > **KURAL:** Frontend'de HICBIR degisiklik gerekmez — `apiInvoke()` otomatik secim yapar
 
-- [ ] `VITE_API_URL` env degiskeni dogru ayarlanmali:
-  - [ ] Dev: `http://localhost:3001`
-  - [ ] Prod (Vercel): `https://promtx.ai` (rewrites ile `/api/*`)
-  - [ ] Preview: `https://promtx.vercel.app`
-- [ ] Frontend'deki `apiCall()` response formati API ile birebir eslesmeli
-- [ ] Token yonetimi: `Authorization: Bearer <token>` header'i fetch'e ekle
-  - [ ] `apiCall` icine token ekleme:
+- [x] `VITE_API_URL` env degiskeni dogru ayarlanmali:
+  - [x] Dev: `http://localhost:3001`
+  - [x] Prod (Vercel): `https://promtx.ai` (rewrites ile `/api/*`)
+  - [x] Preview: `https://promtx.vercel.app`
+- [x] Frontend'deki `apiCall()` response formati API ile birebir eslesmeli
+- [x] Token yonetimi: `Authorization: Bearer <token>` header'i fetch'e ekle
+  - [x] `apiCall` icine token ekleme:
     ```typescript
     const token = useAppStore.getState().userToken;
     headers['Authorization'] = `Bearer ${token}`;
     ```
-- [ ] Token expired (401) response'unda otomatik refresh + retry
+- [x] Token expired (401) response'unda otomatik refresh + retry
 
 ---
 
@@ -5679,28 +5679,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 └──────────────────┴──────────────────────────┘
 ```
 
-- [ ] Galeri sayfasini 2 tab'li yap: "Galerim" + "Topluluk"
-- [ ] URL: `/gallery` (default: Galerim), `/gallery?tab=public` (Topluluk)
+- [x] Galeri sayfasini 2 tab'li yap: "Galerim" + "Topluluk"
+- [x] URL: `/gallery` (default: Galerim), `/gallery?tab=public` (Topluluk)
 
 ### 18.2 Galerim (My Gallery) — PostgreSQL Gecisi
 
 > **Kaynak:** `src/pages/Gallery.tsx` — mevcut Production Archive
 
 #### 18.2.1 Backend (REST API)
-- [ ] `get_my_gallery` API (yeni — mevcut `get_image_gallery` genisletmesi):
-  - [ ] `SELECT ig.*, ph.prompt_text, ph.studio_type FROM image_generations ig LEFT JOIN prompt_history ph ON ph.id = ig.prompt_id WHERE ig.user_id = $1`
-  - [ ] Gorsel + prompt bilgisi birlestir (eger gorsel varsa gorseli, yoksa prompt kartini goster)
-  - [ ] Cursor-based pagination: `LIMIT 24`
-  - [ ] Filtreler:
-    - [ ] Studio tipi: `WHERE studio_type = $type`
-    - [ ] Medya tipi: `WHERE type IN ('image', 'video')`
-    - [ ] Favori: `WHERE is_favorite = true`
-    - [ ] Klasor: `WHERE folder_id = $folderId`
-    - [ ] Tarih araligi: `WHERE created_at BETWEEN $start AND $end`
-    - [ ] Model: `WHERE model_id = $model`
-    - [ ] Arama: `WHERE prompt ILIKE '%$term%'`
-  - [ ] Siralama: tarih (yeni/eski), begeni, boyut
-  - [ ] Response:
+- [x] `get_my_gallery` API (yeni — mevcut `get_image_gallery` genisletmesi):
+  - [x] `SELECT ig.*, ph.prompt_text, ph.studio_type FROM image_generations ig LEFT JOIN prompt_history ph ON ph.id = ig.prompt_id WHERE ig.user_id = $1`
+  - [x] Gorsel + prompt bilgisi birlestir (eger gorsel varsa gorseli, yoksa prompt kartini goster)
+  - [x] Cursor-based pagination: `LIMIT 24`
+  - [x] Filtreler:
+    - [x] Studio tipi: `WHERE studio_type = $type`
+    - [x] Medya tipi: `WHERE type IN ('image', 'video')`
+    - [x] Favori: `WHERE is_favorite = true`
+    - [x] Klasor: `WHERE folder_id = $folderId`
+    - [x] Tarih araligi: `WHERE created_at BETWEEN $start AND $end`
+    - [x] Model: `WHERE model_id = $model`
+    - [x] Arama: `WHERE prompt ILIKE '%$term%'`
+  - [x] Siralama: tarih (yeni/eski), begeni, boyut
+  - [x] Response:
     ```typescript
     {
       items: {
@@ -5729,32 +5729,32 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       storageLimit: number;  // bytes — plan bazli limit
     }
     ```
-- [ ] `create_folder` API (yeni):
-  - [ ] `INSERT INTO folders (user_id, name, color, icon) VALUES ($1, $2, $3, $4)`
-  - [ ] Nested klasor destegi: `parent_id` FK
-  - [ ] Klasor renk + icon secimi
-- [ ] `move_to_folder` API (yeni):
-  - [ ] `UPDATE image_generations SET folder_id = $1 WHERE id = $2 AND user_id = $3`
-  - [ ] Toplu tasima: birden fazla gorsel ayni anda
-- [ ] `delete_gallery_item` API (yeni):
-  - [ ] Gorsel: S3'ten sil + DB'den sil (hard delete)
-  - [ ] Prompt-only: `DELETE FROM prompt_history WHERE id = $1 AND user_id = $2`
-  - [ ] Toplu silme: birden fazla item secip tek seferde sil
-- [ ] `download_gallery_item` API:
-  - [ ] Orijinal boyutta gorsel indir (S3 URL veya CDN)
-  - [ ] Metadata dahil indir (EXIF'e prompt, model, seed bilgisi yaz — opsiyonel)
-  - [ ] Toplu indirme: ZIP arsivi olarak (5'ten fazla gorsel icin)
-- [ ] `share_gallery_item` API (mevcut `share_image_asset` genisletmesi):
-  - [ ] Paylasim URL'i olustur: `https://promtx.ai/g/{shareId}` (kisa URL)
-  - [ ] Paylasim ayarlari: public/link-only/private
-  - [ ] Paylasim suresi: 24 saat / 7 gun / suresiz
-  - [ ] OG meta tag'leri: gorsel thumbnail + prompt preview (sosyal medya paylasimi icin)
-- [ ] `bulk_action` API (yeni):
-  - [ ] Toplu favori ekle/cikar
-  - [ ] Toplu klasore tasi
-  - [ ] Toplu public/private yap
-  - [ ] Toplu sil (onay dialog gerektir)
-  - [ ] Toplu indir (ZIP)
+- [x] `create_folder` API (yeni):
+  - [x] `INSERT INTO folders (user_id, name, color, icon) VALUES ($1, $2, $3, $4)`
+  - [x] Nested klasor destegi: `parent_id` FK
+  - [x] Klasor renk + icon secimi
+- [x] `move_to_folder` API (yeni):
+  - [x] `UPDATE image_generations SET folder_id = $1 WHERE id = $2 AND user_id = $3`
+  - [x] Toplu tasima: birden fazla gorsel ayni anda
+- [x] `delete_gallery_item` API (yeni):
+  - [x] Gorsel: S3'ten sil + DB'den sil (hard delete)
+  - [x] Prompt-only: `DELETE FROM prompt_history WHERE id = $1 AND user_id = $2`
+  - [x] Toplu silme: birden fazla item secip tek seferde sil
+- [x] `download_gallery_item` API:
+  - [x] Orijinal boyutta gorsel indir (S3 URL veya CDN)
+  - [x] Metadata dahil indir (EXIF'e prompt, model, seed bilgisi yaz — opsiyonel)
+  - [x] Toplu indirme: ZIP arsivi olarak (5'ten fazla gorsel icin)
+- [x] `share_gallery_item` API (mevcut `share_image_asset` genisletmesi):
+  - [x] Paylasim URL'i olustur: `https://promtx.ai/g/{shareId}` (kisa URL)
+  - [x] Paylasim ayarlari: public/link-only/private
+  - [x] Paylasim suresi: 24 saat / 7 gun / suresiz
+  - [x] OG meta tag'leri: gorsel thumbnail + prompt preview (sosyal medya paylasimi icin)
+- [x] `bulk_action` API (yeni):
+  - [x] Toplu favori ekle/cikar
+  - [x] Toplu klasore tasi
+  - [x] Toplu public/private yap
+  - [x] Toplu sil (onay dialog gerektir)
+  - [x] Toplu indir (ZIP)
 
 #### 18.2.2 Frontend — Galerim Sayfasi Guncellemesi
 - [ ] **MOCK verileri kaldir:** `MOCK_HISTORY` dizisini sil, DB'den gelen veriyle degistir
