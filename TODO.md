@@ -769,8 +769,8 @@ model PromptTemplate {
 }
 ```
 
-- [ ] AI modellerini schema.prisma'ya ekle
-- [ ] `bunx prisma format` ile dogrula
+- [x] AI modellerini schema.prisma'ya ekle
+- [x] `bunx prisma format` ile dogrula
 
 ### 3.5 Prisma Schema — Billing Modelleri
 
@@ -991,7 +991,7 @@ model Folder {
 }
 ```
 
-- [ ] Workspace modellerini schema.prisma'ya ekle
+- [x] Workspace modellerini schema.prisma'ya ekle
 
 ### 3.7 Prisma Schema — Audit & Analytics Modelleri
 
@@ -1120,10 +1120,10 @@ model Referral {
 }
 ```
 
-- [ ] Audit & Analytics modellerini schema.prisma'ya ekle
-- [ ] `bunx prisma format` ile tum schema'yi dogrula
-- [ ] `bunx prisma validate` ile dogrula
-- [ ] `bunx prisma generate` ile client olustur
+- [x] Audit & Analytics modellerini schema.prisma'ya ekle
+- [x] `bunx prisma format` ile tum schema'yi dogrula
+- [x] `bunx prisma validate` ile dogrula
+- [x] `bunx prisma generate` ile client olustur
 
 ### 3.8 Ek Prisma Modelleri (Orijinal projede SQLite tablosu olarak mevcut)
 
@@ -1142,7 +1142,7 @@ model PricingMatrix {
   @@map("pricing_matrix")
 }
 ```
-- [ ] PricingMatrix modeli ekle (ModelRegistry'nin DB karsiligi)
+- [x] PricingMatrix modeli ekle (ModelRegistry'nin DB karsiligi)
 
 #### 3.8.2 Feedback Tablosu
 
