@@ -1799,16 +1799,16 @@ POST /api/auth/{provider}/refresh    — Provider token yenile
 POST /api/auth/{provider}/revoke     — Provider token iptal (Apple zorunlu)
 ```
 
-- [ ] `GET /api/auth/:provider` — Provider'a gore yonlendirme
-- [ ] `GET /api/auth/:provider/callback` — Google + Microsoft callback
-- [ ] `POST /api/auth/:provider/callback` — Apple callback (form_post)
-- [ ] `POST /api/auth/link/:provider` — Account linking (auth middleware gerekli)
-- [ ] `DELETE /api/auth/link/:provider` — Account unlinking
-- [ ] `GET /api/auth/providers` — Bagli provider listesi
-- [ ] Tum endpoint'lere rate limiting uygula (Redis):
-  - [ ] Login: 10 istek/dk/IP
-  - [ ] Link: 5 istek/dk/kullanici
-  - [ ] Callback: 20 istek/dk/IP
+- [x] `GET /api/auth/:provider` — Provider'a gore yonlendirme
+- [x] `GET /api/auth/:provider/callback` — Google + Microsoft callback
+- [x] `POST /api/auth/:provider/callback` — Apple callback (form_post)
+- [x] `POST /api/auth/link/:provider` — Account linking (auth middleware gerekli)
+- [x] `DELETE /api/auth/link/:provider` — Account unlinking
+- [x] `GET /api/auth/providers` — Bagli provider listesi
+- [x] Tum endpoint'lere rate limiting uygula (Redis):
+  - [x] Login: 10 istek/dk/IP
+  - [x] Link: 5 istek/dk/kullanici
+  - [x] Callback: 20 istek/dk/IP
 
 #### 4.4.3 PKCE (Proof Key for Code Exchange)
 
@@ -1825,10 +1825,10 @@ export function generateCodeChallenge(verifier: string): string {
 }
 ```
 
-- [ ] PKCE code_verifier + code_challenge uretici yaz
-- [ ] `OAuthState` tablosunda code_verifier sakla
-- [ ] Google ve Microsoft icin PKCE zorunlu
-- [ ] Apple icin nonce kullan (PKCE yerine)
+- [x] PKCE code_verifier + code_challenge uretici yaz
+- [x] `OAuthState` tablosunda code_verifier sakla
+- [x] Google ve Microsoft icin PKCE zorunlu
+- [x] Apple icin nonce kullan (PKCE yerine)
 
 ### 4.5 Frontend OAuth Bilesen'leri
 
@@ -1877,26 +1877,26 @@ export function OAuthButtons({ mode, onSuccess, onError }: OAuthButtonsProps) {
 }
 ```
 
-- [ ] `OAuthButtons` ortak bilesen olustur (Google + Apple + Microsoft)
-- [ ] Google butonu: Beyaz zemin, Google renk logosu (Branding Guidelines uyumlu)
-- [ ] Apple butonu: Siyah zemin, beyaz Apple logosu (Human Interface Guidelines uyumlu)
-- [ ] Microsoft butonu: Koyu gri zemin, Microsoft 4-kare logosu (Brand Guidelines uyumlu)
-- [ ] Her buton icin SVG ikonlar (`GoogleIcon`, `AppleIcon`, `MicrosoftIcon`)
-- [ ] Dark mode uyumlu renk paleti
-- [ ] Loading state (spinner) her buton icin
-- [ ] Disabled state (baska provider islemi devam ederken)
-- [ ] `bun add @react-oauth/google` (Google One Tap icin opsiyonel)
+- [x] `OAuthButtons` ortak bilesen olustur (Google + Apple + Microsoft)
+- [x] Google butonu: Beyaz zemin, Google renk logosu (Branding Guidelines uyumlu)
+- [x] Apple butonu: Siyah zemin, beyaz Apple logosu (Human Interface Guidelines uyumlu)
+- [x] Microsoft butonu: Koyu gri zemin, Microsoft 4-kare logosu (Brand Guidelines uyumlu)
+- [x] Her buton icin SVG ikonlar (`GoogleIcon`, `AppleIcon`, `MicrosoftIcon`)
+- [x] Dark mode uyumlu renk paleti
+- [x] Loading state (spinner) her buton icin
+- [x] Disabled state (baska provider islemi devam ederken)
+- [x] `bun add @react-oauth/google` (Google One Tap icin opsiyonel)
 
 #### 4.5.2 LoginModal Guncelleme
 
 > **Mevcut:** `src/components/LoginModal.tsx` — email/password login + register
 
-- [ ] `LoginModal.tsx`'e `OAuthButtons` ekle (email formunun USTUNE)
-- [ ] OAuth separator: "veya email ile devam et"
-- [ ] Login tab: OAuth butonlari + email/password formu
-- [ ] Register tab: OAuth butonlari + email/password/ad soyad formu
-- [ ] OAuth basarili ise modal'i kapat ve store'u guncelle
-- [ ] OAuth hatasi ise toast ile bildir
+- [x] `LoginModal.tsx`'e `OAuthButtons` ekle (email formunun USTUNE)
+- [x] OAuth separator: "veya email ile devam et"
+- [x] Login tab: OAuth butonlari + email/password formu
+- [x] Register tab: OAuth butonlari + email/password/ad soyad formu
+- [x] OAuth basarili ise modal'i kapat ve store'u guncelle
+- [x] OAuth hatasi ise toast ile bildir
 
 #### 4.5.3 OAuth Callback Sayfasi
 

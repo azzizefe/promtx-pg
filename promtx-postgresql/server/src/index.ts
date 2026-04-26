@@ -2,7 +2,8 @@ import { cleanExpiredOAuthStates } from './services/oauthCleanup';
 import { 
   handleGoogleAuth, handleGoogleCallback, 
   handleAppleAuth, handleAppleCallback, handleAppleRevoke,
-  handleMicrosoftAuth, handleMicrosoftCallback 
+  handleMicrosoftAuth, handleMicrosoftCallback,
+  handleOAuthInit, handleOAuthCallback, handleAccountLink, handleAccountUnlink, handleListProviders
 } from './routes/auth';
 
 // Start cleanup cron (runs every 5 minutes)
@@ -52,6 +53,32 @@ const server = Bun.serve({
 
       if (path === '/api/auth/microsoft/callback' && req.method === 'GET') {
         return await handleMicrosoftCallback(req, headers);
+      }
+
+      // Dynamic endpoints
+      const authMatch = path.match(/^\/api\/auth\/([^\/]+)$/);
+      if (authMatch && req.method === 'GET') {
+        const provider = authMatch[1];
+        if (provider !== 'providers') {
+          return await handleOAuthInit(req, provider, headers);
+        } else {
+          // For testing, mock userId as 'mock-user-id'
+          return await handleListProviders(req, 'mock-user-id', headers);
+        }
+      }
+
+      const callbackMatch = path.match(/^\/api\/auth\/([^\/]+)\/callback$/);
+      if (callbackMatch) {
+        return await handleOAuthCallback(req, callbackMatch[1], headers);
+      }
+
+      const linkMatch = path.match(/^\/api\/auth\/link\/([^\/]+)$/);
+      if (linkMatch) {
+        if (req.method === 'POST') {
+          return await handleAccountLink(req, linkMatch[1], 'mock-user-id', headers);
+        } else if (req.method === 'DELETE') {
+          return await handleAccountUnlink(req, linkMatch[1], 'mock-user-id', headers);
+        }
       }
       
       return new Response(JSON.stringify({ error: 'Not Found' }), {

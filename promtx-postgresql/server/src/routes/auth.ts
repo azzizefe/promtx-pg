@@ -1,8 +1,11 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, AuthProvider } from '@prisma/client';
 import * as jose from 'jose';
 import { getAppleClientSecret } from '../services/appleAuth';
+import { OAuthService } from '../services/oauthService';
+import { generateCodeVerifier, generateCodeChallenge } from '../lib/auth/pkce';
 
 const prisma = new PrismaClient();
+const oauthService = new OAuthService();
 
 const GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
@@ -701,4 +704,122 @@ export async function handleMicrosoftCallback(req: Request, headers: Headers) {
     status: 200,
     headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' }
   });
+}
+
+export async function handleOAuthInit(req: Request, providerStr: string, headers: Headers) {
+  try {
+    const provider = providerStr.toLowerCase() as AuthProvider;
+    const state = crypto.randomUUID();
+    
+    let codeVerifier: string | undefined = undefined;
+    let codeChallenge: string | undefined = undefined;
+    
+    if (provider === 'google' || provider === 'microsoft') {
+      codeVerifier = generateCodeVerifier();
+      codeChallenge = generateCodeChallenge(codeVerifier);
+    }
+
+    const nonce = provider === 'apple' ? crypto.randomUUID() : undefined;
+
+    await prisma.oAuthState.create({
+      data: {
+        state,
+        codeVerifier,
+        nonce,
+        provider,
+        redirectUri: process.env[`${providerStr.toUpperCase()}_REDIRECT_URI`] || '',
+        expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+      }
+    });
+
+    let authUrl = '';
+    if (provider === 'google') {
+      authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&response_type=code&scope=openid email profile&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+    } else if (provider === 'apple') {
+      authUrl = `https://appleid.apple.com/auth/authorize?client_id=${process.env.APPLE_CLIENT_ID}&redirect_uri=${process.env.APPLE_REDIRECT_URI}&response_type=code&response_mode=form_post&scope=name email&state=${state}&nonce=${nonce}`;
+    } else if (provider === 'microsoft') {
+      authUrl = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=${process.env.MICROSOFT_CLIENT_ID}&redirect_uri=${process.env.MICROSOFT_REDIRECT_URI}&response_type=code&scope=openid email profile User.Read&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256&prompt=select_account`;
+    } else {
+      return new Response(JSON.stringify({ error: 'Unsupported provider' }), { status: 400, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+    }
+
+    return new Response(null, {
+      status: 302,
+      headers: { ...Object.fromEntries(headers), 'Location': authUrl }
+    });
+  } catch (err: any) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+  }
+}
+
+export async function handleOAuthCallback(req: Request, providerStr: string, headers: Headers) {
+  const provider = providerStr.toLowerCase() as AuthProvider;
+  const url = new URL(req.url);
+  
+  let code = url.searchParams.get('code');
+  let state = url.searchParams.get('state');
+
+  if (req.method === 'POST' && provider === 'apple') {
+    const formData = await req.formData();
+    code = formData.get('code') as string;
+    state = formData.get('state') as string;
+  }
+
+  if (!code || !state) {
+    return new Response(JSON.stringify({ error: 'Missing code or state' }), { status: 400, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+  }
+
+  const savedState = await prisma.oAuthState.findUnique({ where: { state } });
+  if (!savedState || savedState.expiresAt < new Date()) {
+    return new Response(JSON.stringify({ error: 'Invalid or expired state' }), { status: 400, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+  }
+
+  await prisma.oAuthState.delete({ where: { state } });
+
+  try {
+    const result = await oauthService.authenticateWithProvider(provider, code, state, savedState.codeVerifier || undefined);
+    return new Response(JSON.stringify(result), { status: 200, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+  } catch (err: any) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+  }
+}
+
+export async function handleAccountLink(req: Request, providerStr: string, userId: string, headers: Headers) {
+  const provider = providerStr.toLowerCase() as AuthProvider;
+  const url = new URL(req.url);
+  const code = url.searchParams.get('code');
+
+  if (!code) {
+    return new Response(JSON.stringify({ error: 'Missing authorization code' }), { status: 400, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+  }
+
+  try {
+    const account = await oauthService.linkProvider(userId, provider, code);
+    return new Response(JSON.stringify(account), { status: 200, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+  } catch (err: any) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+  }
+}
+
+export async function handleAccountUnlink(req: Request, providerStr: string, userId: string, headers: Headers) {
+  const provider = providerStr.toLowerCase() as AuthProvider;
+
+  try {
+    await oauthService.unlinkProvider(userId, provider);
+    return new Response(JSON.stringify({ message: `Unlinked ${provider} successfully` }), { status: 200, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+  } catch (err: any) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 400, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+  }
+}
+
+export async function handleListProviders(req: Request, userId: string, headers: Headers) {
+  try {
+    const accounts = await prisma.account.findMany({
+      where: { userId },
+      select: { provider: true, providerEmail: true, providerName: true, createdAt: true }
+    });
+    return new Response(JSON.stringify(accounts), { status: 200, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+  } catch (err: any) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { ...Object.fromEntries(headers), 'Content-Type': 'application/json' } });
+  }
 }
