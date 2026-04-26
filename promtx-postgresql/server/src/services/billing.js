@@ -10,7 +10,6 @@ export async function getOrCreateCustomer(userId, email) {
         select: { stripeCustomerId: true },
     });
     if (user?.stripeCustomerId) {
-        // Sync to Subscription if missing
         const sub = await prisma.subscription.findUnique({ where: { userId } });
         if (!sub) {
             await prisma.subscription.create({
@@ -24,7 +23,6 @@ export async function getOrCreateCustomer(userId, email) {
         }
         return user.stripeCustomerId;
     }
-    // Check Subscription table directly too
     const existingSub = await prisma.subscription.findUnique({
         where: { userId },
         select: { stripeCustomerId: true },
@@ -254,6 +252,42 @@ export async function changeSubscriptionPlan(userId, newPlan, newPriceId) {
             resourceType: 'subscription',
             resourceId: subscription.id,
             metadata: { fromPlan: currentPlan, toPlan: newPlan },
+        }
+    });
+}
+export async function carryOverCredits(userId) {
+    const subscription = await prisma.subscription.findUnique({
+        where: { userId },
+    });
+    if (!subscription)
+        return;
+    const plan = subscription.plan;
+    const planSpecs = {
+        starter: { monthly: 100, carryLimit: 0 },
+        creator: { monthly: 5000, carryLimit: 2000 },
+        studio_pro: { monthly: 15000, carryLimit: 5000 },
+    };
+    const specs = planSpecs[plan] || planSpecs.starter;
+    const unused = Math.max(0, specs.monthly - (subscription.creditsUsedThisPeriod || 0));
+    const carryOver = Math.min(unused, specs.carryLimit);
+    const newCredits = specs.monthly + carryOver;
+    if (!subscription.cancelAtPeriodEnd) {
+        await prisma.wallet.upsert({
+            where: { userId },
+            update: {
+                credits: newCredits,
+            },
+            create: {
+                userId,
+                credits: newCredits,
+                lifetimeCredits: newCredits,
+            }
+        });
+    }
+    await prisma.subscription.update({
+        where: { userId },
+        data: {
+            creditsUsedThisPeriod: 0,
         }
     });
 }

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { createCustomerPortalSession } from '../services/billing';
+import { createCustomerPortalSession, carryOverCredits } from '../services/billing';
 const prisma = new PrismaClient();
 export async function handleBillingWallet(req, headers) {
     try {
@@ -23,10 +23,30 @@ export async function handleBillingPaymentIntent(req, headers) {
     });
 }
 export async function handleBillingWebhooks(req, headers) {
-    return new Response(JSON.stringify({ received: true }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) }
-    });
+    try {
+        const body = await req.json();
+        const event = body;
+        if (event.type === 'invoice.paid') {
+            const invoice = event.data.object;
+            const customerId = invoice.customer;
+            const subscription = await prisma.subscription.findFirst({
+                where: { stripeCustomerId: customerId },
+            });
+            if (subscription) {
+                await carryOverCredits(subscription.userId);
+            }
+        }
+        return new Response(JSON.stringify({ received: true }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) }
+        });
+    }
+    catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) }
+        });
+    }
 }
 export async function handleBillingLedger(req, headers) {
     try {

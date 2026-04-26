@@ -13,30 +13,28 @@ export async function getOrCreateCustomer(userId: string, email: string): Promis
     select: { stripeCustomerId: true },
   });
 
-  if (user?.stripeCustomerId) {
-    // Sync to Subscription if missing
+  if ((user as any)?.stripeCustomerId) {
     const sub = await prisma.subscription.findUnique({ where: { userId } });
     if (!sub) {
       await prisma.subscription.create({
         data: {
           userId,
-          stripeCustomerId: user.stripeCustomerId,
+          stripeCustomerId: (user as any).stripeCustomerId,
           plan: 'starter',
           status: 'active',
-        }
+        } as any
       });
     }
-    return user.stripeCustomerId;
+    return (user as any).stripeCustomerId;
   }
 
-  // Check Subscription table directly too
   const existingSub = await prisma.subscription.findUnique({
     where: { userId },
     select: { stripeCustomerId: true },
   });
 
-  if (existingSub?.stripeCustomerId) {
-    return existingSub.stripeCustomerId;
+  if ((existingSub as any)?.stripeCustomerId) {
+    return (existingSub as any).stripeCustomerId;
   }
 
   const customer = await stripe.customers.create({
@@ -54,13 +52,13 @@ export async function getOrCreateCustomer(userId: string, email: string): Promis
 
   await prisma.subscription.upsert({
     where: { userId },
-    update: { stripeCustomerId: customer.id },
+    update: { stripeCustomerId: customer.id } as any,
     create: {
       userId,
       stripeCustomerId: customer.id,
       plan: 'starter',
       status: 'active',
-    },
+    } as any,
   });
 
   return customer.id;
@@ -276,7 +274,7 @@ export async function changeSubscriptionPlan(
       data: { 
         plan: newPlan,
         stripePriceId: newPriceId,
-      }
+      } as any
     });
     
     await prisma.user.update({
@@ -290,10 +288,10 @@ export async function changeSubscriptionPlan(
       userId,
       fromPlan: currentPlan,
       toPlan: newPlan,
-      fromPrice: subscription.stripePriceId,
+      fromPrice: (subscription as any).stripePriceId,
       toPrice: newPriceId,
       reason: newLevel > currentLevel ? 'upgrade' : 'downgrade',
-    }
+    } as any
   });
 
   await prisma.auditLog.create({
@@ -304,5 +302,47 @@ export async function changeSubscriptionPlan(
       resourceId: subscription.id,
       metadata: { fromPlan: currentPlan, toPlan: newPlan },
     }
+  });
+}
+
+export async function carryOverCredits(userId: string): Promise<void> {
+  const subscription = await prisma.subscription.findUnique({
+    where: { userId },
+  });
+
+  if (!subscription) return;
+
+  const plan = subscription.plan as 'starter' | 'creator' | 'studio_pro';
+  
+  const planSpecs = {
+    starter: { monthly: 100, carryLimit: 0 },
+    creator: { monthly: 5000, carryLimit: 2000 },
+    studio_pro: { monthly: 15000, carryLimit: 5000 },
+  };
+
+  const specs = planSpecs[plan] || planSpecs.starter;
+  const unused = Math.max(0, specs.monthly - ((subscription as any).creditsUsedThisPeriod || 0));
+  const carryOver = Math.min(unused, specs.carryLimit);
+  const newCredits = specs.monthly + carryOver;
+
+  if (!subscription.cancelAtPeriodEnd) {
+    await prisma.wallet.upsert({
+      where: { userId },
+      update: {
+        credits: newCredits,
+      },
+      create: {
+        userId,
+        credits: newCredits,
+        lifetimeCredits: newCredits,
+      }
+    });
+  }
+
+  await prisma.subscription.update({
+    where: { userId },
+    data: {
+      creditsUsedThisPeriod: 0,
+    } as any
   });
 }

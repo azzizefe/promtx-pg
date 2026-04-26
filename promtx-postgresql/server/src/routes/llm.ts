@@ -5,7 +5,52 @@ const prisma = new PrismaClient();
 export async function handleLlmGenerate(req: Request, headers: Headers) {
   try {
     const body = await req.json();
-    // Mock LLM generation using database metrics
+    let userId = 'mock-user-id';
+    if (body.userId) userId = body.userId;
+
+    const user = await prisma.user.findFirst();
+    if (user && userId === 'mock-user-id') {
+      userId = user.id;
+    }
+
+    const wallet = await prisma.wallet.findUnique({
+      where: { userId },
+    });
+
+    if (!wallet || Number(wallet.credits) <= 0) {
+      const subscription = await prisma.subscription.findUnique({
+        where: { userId },
+      });
+      
+      const plan = subscription?.plan || 'starter';
+      
+      if (plan === 'starter') {
+        return new Response(
+          JSON.stringify({ error: 'Krediniz bitti. Aboneliğinizi yükseltin.' }), 
+          { status: 402, headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) } }
+        );
+      } else {
+        return new Response(
+          JSON.stringify({ error: 'Krediniz bitti. Ek kredi satın alın.' }), 
+          { status: 402, headers: { 'Content-Type': 'application/json', ...Object.fromEntries(headers) } }
+        );
+      }
+    }
+
+    await prisma.wallet.update({
+      where: { userId },
+      data: {
+        credits: { decrement: 1 },
+      }
+    });
+
+    await prisma.subscription.update({
+      where: { userId },
+      data: {
+        creditsUsedThisPeriod: { increment: 1 },
+      } as any
+    });
+
     return new Response(
       JSON.stringify({ 
         status: 'success', 

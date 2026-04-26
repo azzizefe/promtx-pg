@@ -3476,15 +3476,15 @@ async function changeSubscriptionPlan(
 | Creator ($29) | 5000 | Maks 2000 sonraki aya | Tek seferlik satin alim |
 | Studio Pro ($69) | 15000 | Maks 5000 sonraki aya | Tek seferlik satin alim |
 
-- [ ] Aylik kredi yenileme: `invoice.paid` webhook'unda
-- [ ] Kredi tasima mantigi: `carry_over_credits()` fonksiyonu
-  - [ ] Periyod sonunda kullanilmayan kredilerin bir kismini tasima
-  - [ ] Tasima limiti: plan bazli (yukaridaki tablo)
-- [ ] `credits_used_this_period` sayaci: her generation'da artir
-- [ ] Kredi bittiyse:
-  - [ ] Starter: "Aboneliginizi yukseltin" mesaji goster
-  - [ ] Creator/Studio Pro: "Ek kredi satin alin" secenegi (mevcut tek seferlik checkout)
-- [ ] Abonelik iptali sonrasi: mevcut kredi bakiyesi korunur, yeni kredi eklenmez
+- [x] Aylik kredi yenileme: `invoice.paid` webhook'unda
+- [x] Kredi tasima mantigi: `carry_over_credits()` fonksiyonu
+  - [x] Periyod sonunda kullanilmayan kredilerin bir kismini tasima
+  - [x] Tasima limiti: plan bazli (yukaridaki tablo)
+- [x] `credits_used_this_period` sayaci: her generation'da artir
+- [x] Kredi bittiyse:
+  - [x] Starter: "Aboneliginizi yukseltin" mesaji goster
+  - [x] Creator/Studio Pro: "Ek kredi satin alin" secenegi (mevcut tek seferlik checkout)
+- [x] Abonelik iptali sonrasi: mevcut kredi bakiyesi korunur, yeni kredi eklenmez
 
 ### 9B.9 Stripe Webhook Endpoint (Vercel)
 
