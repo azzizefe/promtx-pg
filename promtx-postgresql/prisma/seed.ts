@@ -15,7 +15,7 @@ async function main() {
   // 1. Seed Admin User
   const adminUser = await prisma.user.upsert({
     where: { email: 'admin@promtx.os' },
-    update: {},
+    update: { passwordHash: defaultPasswordHash },
     create: {
       id: 'system-admin-001',
       email: 'admin@promtx.os',
@@ -41,7 +41,7 @@ async function main() {
   // SuperAdmin User
   const superAdmin = await prisma.user.upsert({
     where: { email: 'superadmin@promtx.os' },
-    update: {},
+    update: { passwordHash: defaultPasswordHash },
     create: {
       email: 'superadmin@promtx.os',
       passwordHash: defaultPasswordHash,
@@ -143,7 +143,7 @@ async function main() {
   for (const u of testUsers) {
     const user = await prisma.user.upsert({
       where: { email: u.email },
-      update: {},
+      update: { passwordHash: defaultPasswordHash },
       create: {
         id: u.id,
         email: u.email,

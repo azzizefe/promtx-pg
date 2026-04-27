@@ -17,11 +17,13 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
     headers,
   });
 
-  if (response.status === 401) {
-    // If unauthorized, token might be expired. Logout to clear state.
+  if (response.status === 401 && token) {
+    // Only auto-logout if we had a token (session expired).
+    // Don't redirect if we're already on an auth page (login/register).
     logout();
-    window.location.href = '/login';
-    throw new Error('Unauthorized');
+    if (!window.location.pathname.startsWith('/login') && !window.location.pathname.startsWith('/register')) {
+      window.location.href = '/login';
+    }
   }
 
   const contentType = response.headers.get('content-type');
