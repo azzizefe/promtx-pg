@@ -1,8 +1,0 @@
-[package]
-name = "promtx-server"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-redis = { version = "0.24.0", features = ["sentinel"] }
-tokio = { version = "1", features = ["full"] }
